@@ -53,8 +53,8 @@ public class WeatherHourlyCmd extends Cmd {
       String hours = "";
       String temps = "";
       for (int i = 0; i < hourlyWeatherData.getTimes().length; i++) {
-        hours += String.format("%4s ", hourlyWeatherData.getTimes()[i]);
-        temps += String.format("%4s ", hourlyWeatherData.getTemperatures()[i]);
+        hours += String.format("%4s", hourlyWeatherData.getTimes()[i]);
+        temps += String.format("%4s", hourlyWeatherData.getTemperatures()[i]);
       }
       sb.append(hours);
       sb.append("\n");
