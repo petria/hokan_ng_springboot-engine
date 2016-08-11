@@ -37,7 +37,7 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_PLACE;
 public class WeatherCmd extends Cmd {
 
   public WeatherCmd() {
-    super();
+
     setHelp("Queries weather from http://alk.tiehallinto.fi/alk/tiesaa/");
 
     FlaggedOption flg = new FlaggedOption(ARG_COUNT)
