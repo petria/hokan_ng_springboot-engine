@@ -62,7 +62,7 @@ public class WeatherHourlyCmd extends Cmd {
       sb.append("\n");
       response.addResponse("%s", sb.toString());
     }
-    int foo = 0;
+
   }
 
 }
