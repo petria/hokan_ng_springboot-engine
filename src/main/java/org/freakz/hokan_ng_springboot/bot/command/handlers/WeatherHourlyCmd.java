@@ -45,7 +45,8 @@ public class WeatherHourlyCmd extends Cmd {
 
     ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.ILMATIETEENLAITOS_HOURLY_REQUEST, request.getIrcEvent(), place);
     HourlyWeatherData hourlyWeatherData = serviceResponse.getHourlyWeatherData();
-    if (hourlyWeatherData.getTimes().length > 0) {
+
+    if (hourlyWeatherData.getTimes() != null) {
       StringBuilder sb = new StringBuilder();
       sb.append("Hourly forecast: ");
       sb.append(place);
@@ -61,8 +62,12 @@ public class WeatherHourlyCmd extends Cmd {
       sb.append(temps);
       sb.append("\n");
       response.addResponse("%s", sb.toString());
-    }
 
+    } else {
+
+      response.addResponse("Nothing found: %s, use whole city names!", place);
+
+    }
   }
 
 }
