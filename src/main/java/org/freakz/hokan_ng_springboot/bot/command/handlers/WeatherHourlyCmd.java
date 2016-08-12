@@ -9,7 +9,10 @@ import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.events.ServiceRequestType;
 import org.freakz.hokan_ng_springboot.bot.events.ServiceResponse;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
+import org.freakz.hokan_ng_springboot.bot.models.CityData;
 import org.freakz.hokan_ng_springboot.bot.models.HourlyWeatherData;
+import org.freakz.hokan_ng_springboot.bot.service.cityresolver.CityResolver;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -25,6 +28,9 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_PLACE;
     helpGroups = {HelpGroup.DATA_FETCHERS}
 )
 public class WeatherHourlyCmd extends Cmd {
+
+  @Autowired
+  private CityResolver cityResolver;
 
   public WeatherHourlyCmd() {
 
@@ -42,32 +48,37 @@ public class WeatherHourlyCmd extends Cmd {
   @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
     String place = results.getString(ARG_PLACE).toLowerCase();
+    CityData cityData = cityResolver.resolveCityNames(place);
 
-    ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.ILMATIETEENLAITOS_HOURLY_REQUEST, request.getIrcEvent(), place);
-    HourlyWeatherData hourlyWeatherData = serviceResponse.getHourlyWeatherData();
+    for (String city : cityData.getResolvedCityNames()) {
 
-    if (hourlyWeatherData.getTimes() != null) {
-      StringBuilder sb = new StringBuilder();
-      sb.append("Hourly forecast: ");
-      sb.append(place);
-      sb.append("\n");
-      String hours = "";
-      String temps = "";
-      for (int i = 0; i < hourlyWeatherData.getTimes().length; i++) {
-        hours += String.format("%4s", hourlyWeatherData.getTimes()[i]);
-        temps += String.format("%4s", hourlyWeatherData.getTemperatures()[i]);
+      ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.ILMATIETEENLAITOS_HOURLY_REQUEST, request.getIrcEvent(), city);
+      HourlyWeatherData hourlyWeatherData = serviceResponse.getHourlyWeatherData();
+
+      if (hourlyWeatherData.getTimes() != null) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Hourly forecast: ");
+        sb.append(city);
+        sb.append("\n");
+        String hours = "";
+        String temps = "";
+        for (int i = 0; i < hourlyWeatherData.getTimes().length; i++) {
+          hours += String.format("%4s", hourlyWeatherData.getTimes()[i]);
+          temps += String.format("%4s", hourlyWeatherData.getTemperatures()[i]);
+        }
+        sb.append(hours);
+        sb.append("\n");
+        sb.append(temps);
+        sb.append("\n");
+        response.addResponse("%s", sb.toString());
+
+      } else {
+
+        response.addResponse("Nothing found: %s, use whole city names!", place);
+
       }
-      sb.append(hours);
-      sb.append("\n");
-      sb.append(temps);
-      sb.append("\n");
-      response.addResponse("%s", sb.toString());
-
-    } else {
-
-      response.addResponse("Nothing found: %s, use whole city names!", place);
-
     }
+
   }
 
 }
