@@ -74,7 +74,7 @@ public class LunchCmd extends Cmd {
       menuText = lunchMenu.getMenu();
     }
     String dayStr = StringStuff.formatTime(day.toDate(), StringStuff.STRING_STUFF_DF_DM);
-    response.addResponse("%s %s: %s", dayStr, lunchData.getLunchPlace().getName(), menuText);
+    response.addResponse("%s %s - %s", dayStr, lunchData.getLunchPlace().getName(), menuText);
   }
 
 }
