@@ -43,6 +43,7 @@ public class LastLogCmd extends Cmd {
 
   @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+
     String logPattern = results.getString(ARG_LOG_PATTERN);
     List<IrcLog> ircLogs = ircLogService.findMatchingLogRows(logPattern);
 

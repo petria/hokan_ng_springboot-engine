@@ -61,6 +61,10 @@ public class LunchCmd extends Cmd {
     DateTime day = DateTime.now();
     ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.LUNCH_REQUEST, request.getIrcEvent(), place, day);
     LunchData lunchData = serviceResponse.getLunchResponse();
+    if (lunchData == null) {
+      response.addResponse("n/a");
+      return;
+    }
     LunchDay lunchDay = LunchDay.getFromDateTime(day);
     LunchMenu lunchMenu = lunchData.getMenu().get(lunchDay);
     String menuText;
