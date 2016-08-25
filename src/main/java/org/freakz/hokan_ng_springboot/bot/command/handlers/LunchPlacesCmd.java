@@ -23,28 +23,28 @@ import java.util.List;
 @Scope("prototype")
 @Slf4j
 @HelpGroups(
-    helpGroups = {HelpGroup.DATA_FETCHERS, HelpGroup.LUNCH}
+        helpGroups = {HelpGroup.DATA_FETCHERS, HelpGroup.LUNCH}
 )
 public class LunchPlacesCmd extends Cmd {
 
-  public LunchPlacesCmd() {
-    super();
-    setHelp("Shows available Lunch places where menu lists are fetched.");
-  }
-
-  @Override
-  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.LUNCH_PLACES_REQUEST, request.getIrcEvent(), "");
-    List<LunchPlace> lunchPlaces = serviceResponse.getLunchPlacesResponse();
-    if (lunchPlaces.size() == 0) {
-      response.addResponse("No lunch places!!");
-    } else {
-      String places = "I know following lunch places: ";
-      for (LunchPlace lunchPlace : lunchPlaces) {
-        places += "  " + lunchPlace.getName();
-      }
-      response.addResponse("%s", places);
+    public LunchPlacesCmd() {
+        super();
+        setHelp("Shows available Lunch places where menu lists are fetched.");
     }
-  }
+
+    @Override
+    public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+        ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.LUNCH_PLACES_REQUEST, request.getIrcEvent(), "");
+        List<LunchPlace> lunchPlaces = serviceResponse.getLunchPlacesResponse();
+        if (lunchPlaces.size() == 0) {
+            response.addResponse("No lunch places!!");
+        } else {
+            String places = "I know following lunch places: ";
+            for (LunchPlace lunchPlace : lunchPlaces) {
+                places += "  " + lunchPlace.getName();
+            }
+            response.addResponse("%s", places);
+        }
+    }
 
 }

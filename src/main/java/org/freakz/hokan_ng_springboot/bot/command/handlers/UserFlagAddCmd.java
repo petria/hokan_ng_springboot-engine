@@ -26,55 +26,55 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_NICK;
 @Slf4j
 @Scope("prototype")
 @HelpGroups(
-    helpGroups = {HelpGroup.ACCESS_CONTROL, HelpGroup.USERS}
+        helpGroups = {HelpGroup.ACCESS_CONTROL, HelpGroup.USERS}
 )
 public class UserFlagAddCmd extends Cmd {
 
-  public UserFlagAddCmd() {
+    public UserFlagAddCmd() {
 
-    setHelp("Adds user flags.");
-    setHelpWikiUrl("https://github.com/petria/hokan_ng_springboot/wiki/UserFlags");
-    setAdminUserOnly(true);
+        setHelp("Adds user flags.");
+        setHelpWikiUrl("https://github.com/petria/hokan_ng_springboot/wiki/UserFlags");
+        setAdminUserOnly(true);
 
-    UnflaggedOption unflaggedOption = new UnflaggedOption(ARG_NICK)
-        .setRequired(true)
-        .setGreedy(false);
-    registerParameter(unflaggedOption);
+        UnflaggedOption unflaggedOption = new UnflaggedOption(ARG_NICK)
+                .setRequired(true)
+                .setGreedy(false);
+        registerParameter(unflaggedOption);
 
-    unflaggedOption = new UnflaggedOption(ARG_FLAGS)
-        .setRequired(false)
-        .setGreedy(false);
-    registerParameter(unflaggedOption);
+        unflaggedOption = new UnflaggedOption(ARG_FLAGS)
+                .setRequired(false)
+                .setGreedy(false);
+        registerParameter(unflaggedOption);
 
-  }
-
-  @Override
-  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    String target = results.getString(ARG_NICK, null);
-
-    User user;
-    if (target.equals("me")) {
-      user = request.getUser();
-    } else {
-      user = userService.findFirstByNick(target);
-    }
-    if (user == null) {
-      response.addResponse("No User found with: " + target);
-      return;
     }
 
-    String flagsStr = results.getString(ARG_FLAGS, null);
-    if (flagsStr == null) {
-      response.addResponse("%s UserFlags: %s", user.getNick(), UserFlag.getStringFromFlagSet(user));
-      return;
+    @Override
+    public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+        String target = results.getString(ARG_NICK, null);
+
+        User user;
+        if (target.equals("me")) {
+            user = request.getUser();
+        } else {
+            user = userService.findFirstByNick(target);
+        }
+        if (user == null) {
+            response.addResponse("No User found with: " + target);
+            return;
+        }
+
+        String flagsStr = results.getString(ARG_FLAGS, null);
+        if (flagsStr == null) {
+            response.addResponse("%s UserFlags: %s", user.getNick(), UserFlag.getStringFromFlagSet(user));
+            return;
+        }
+        Set<UserFlag> flags = UserFlag.getFlagSetFromString(flagsStr);
+        if (flags.size() == 0) {
+            response.addResponse("No flags: " + flagsStr);
+            return;
+        }
+        user = accessControlService.addUserFlags(user, flags);
+        response.addResponse("%s flags now: %s", user.getNick(), UserFlag.getStringFromFlagSet(user.getUserFlagsSet()));
     }
-    Set<UserFlag> flags = UserFlag.getFlagSetFromString(flagsStr);
-    if (flags.size() == 0) {
-      response.addResponse("No flags: " + flagsStr);
-      return;
-    }
-    user = accessControlService.addUserFlags(user, flags);
-    response.addResponse("%s flags now: %s", user.getNick(), UserFlag.getStringFromFlagSet(user.getUserFlagsSet()));
-  }
 
 }

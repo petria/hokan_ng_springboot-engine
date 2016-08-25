@@ -27,51 +27,51 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_CHANNEL_
 @Component
 @Scope("prototype")
 @HelpGroups(
-    helpGroups = {HelpGroup.PROPERTIES}
+        helpGroups = {HelpGroup.PROPERTIES}
 )
 public class ChanEnvCmd extends Cmd {
 
-  @Autowired
-  private ChannelPropertyService properties;
+    @Autowired
+    private ChannelPropertyService properties;
 
-  public ChanEnvCmd() {
-    super();
-    setHelp("Shows properties set for the channel");
+    public ChanEnvCmd() {
+        super();
+        setHelp("Shows properties set for the channel");
 
-    UnflaggedOption flg = new UnflaggedOption(ARG_CHANNEL_ID)
-        .setRequired(false)
-        .setGreedy(false);
-    registerParameter(flg);
+        UnflaggedOption flg = new UnflaggedOption(ARG_CHANNEL_ID)
+                .setRequired(false)
+                .setGreedy(false);
+        registerParameter(flg);
 
-  }
-
-  @Override
-  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-
-    String channelId = results.getString(ARG_CHANNEL_ID, null);
-    if (request.getIrcEvent().isPrivate() && channelId == null) {
-      response.addResponse("ChannelID parameter is needed when using private message, try: !chanlist to get ID.");
-      return;
-    }
-    Channel theChannel = request.getChannel();
-    if (channelId != null) {
-      long id;
-      try {
-        id = Long.parseLong(channelId);
-      } catch (NumberFormatException ex) {
-        response.addResponse("Valid ChannelID parameter is needed, try: !chanlist");
-        return;
-      }
-      theChannel = channelService.findOne(id);
-      if (theChannel == null) {
-        response.addResponse("No valid Channel found with id: %d, try: !chanlist to get ID.", id);
-        return;
-      }
     }
 
-    List propertyList = properties.findByChannel(theChannel);
-    for (Object property : propertyList) {
-      response.addResponse("%s\n", property.toString());
+    @Override
+    public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+
+        String channelId = results.getString(ARG_CHANNEL_ID, null);
+        if (request.getIrcEvent().isPrivate() && channelId == null) {
+            response.addResponse("ChannelID parameter is needed when using private message, try: !chanlist to get ID.");
+            return;
+        }
+        Channel theChannel = request.getChannel();
+        if (channelId != null) {
+            long id;
+            try {
+                id = Long.parseLong(channelId);
+            } catch (NumberFormatException ex) {
+                response.addResponse("Valid ChannelID parameter is needed, try: !chanlist");
+                return;
+            }
+            theChannel = channelService.findOne(id);
+            if (theChannel == null) {
+                response.addResponse("No valid Channel found with id: %d, try: !chanlist to get ID.", id);
+                return;
+            }
+        }
+
+        List propertyList = properties.findByChannel(theChannel);
+        for (Object property : propertyList) {
+            response.addResponse("%s\n", property.toString());
+        }
     }
-  }
 }

@@ -13,13 +13,13 @@ import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
  */
 public interface HokanCommand {
 
-  String getMatchPattern();
+    String getMatchPattern();
 
-  String getName();
+    String getName();
 
-  String getExample();
+    String getExample();
 
-  void handleLine(InternalRequest request, EngineResponse response);
+    void handleLine(InternalRequest request, EngineResponse response);
 
 
 }

@@ -15,35 +15,34 @@ import java.util.List;
 
 /**
  * Created by Petri Airio (petri.j.airio@gmail.com) on 11.9.2015.
- *
  */
 @Component
 @Slf4j
 @Scope("prototype")
 @HelpGroups(
-    helpGroups = {HelpGroup.ACCESS_CONTROL, HelpGroup.USERS}
+        helpGroups = {HelpGroup.ACCESS_CONTROL, HelpGroup.USERS}
 )
 public class WhoCmd extends Cmd {
 
-  public WhoCmd() {
-    super();
-    setHelp("Shows who has logged in to the bot.");
-  }
+    public WhoCmd() {
+        super();
+        setHelp("Shows who has logged in to the bot.");
+    }
 
-  @Override
-  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    List<User> users = userService.findAll();
-    StringBuilder sb = new StringBuilder();
-    for (User user : users) {
-      if (user.isLoggedIn() > 0) {
-        sb.append(String.format("%s ", user.getNick()));
-      }
+    @Override
+    public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+        List<User> users = userService.findAll();
+        StringBuilder sb = new StringBuilder();
+        for (User user : users) {
+            if (user.isLoggedIn() > 0) {
+                sb.append(String.format("%s ", user.getNick()));
+            }
+        }
+        if (sb.length() > 0) {
+            response.addResponse("Logged in users: %s", sb.toString());
+        } else {
+            response.addResponse("No one logged in!");
+        }
     }
-    if (sb.length() > 0) {
-      response.addResponse("Logged in users: %s", sb.toString());
-    } else {
-      response.addResponse("No one logged in!");
-    }
-  }
 
 }

@@ -19,18 +19,18 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 @Slf4j
 @HelpGroups(
-    helpGroups = {HelpGroup.PROCESS, HelpGroup.SYSTEM}
+        helpGroups = {HelpGroup.PROCESS, HelpGroup.SYSTEM}
 )
 public class LastPIDCmd extends Cmd {
 
-  public LastPIDCmd() {
-    setHelp("Shows last PID of internal thread execution.");
-  }
+    public LastPIDCmd() {
+        setHelp("Shows last PID of internal thread execution.");
+    }
 
-  @Override
-  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    long lastPID = propertyService.getPropertyAsLong(PropertyName.PROP_SYS_PID_COUNTER, -1);
-    response.addResponse("Last PID: %d", lastPID);
-  }
+    @Override
+    public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+        long lastPID = propertyService.getPropertyAsLong(PropertyName.PROP_SYS_PID_COUNTER, -1);
+        response.addResponse("Last PID: %d", lastPID);
+    }
 
 }

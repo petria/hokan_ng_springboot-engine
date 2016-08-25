@@ -29,49 +29,49 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_PROGRAM;
 @Component
 @Scope("prototype")
 @HelpGroups(
-    helpGroups = {HelpGroup.TV}
+        helpGroups = {HelpGroup.TV}
 )
 public class TvFindCmd extends Cmd {
 
-  public TvFindCmd() {
-    super();
-    setHelp("Search TV programs.");
+    public TvFindCmd() {
+        super();
+        setHelp("Search TV programs.");
 
-    UnflaggedOption opt = new UnflaggedOption(ARG_PROGRAM)
-        .setRequired(true)
-        .setGreedy(false);
-    registerParameter(opt);
+        UnflaggedOption opt = new UnflaggedOption(ARG_PROGRAM)
+                .setRequired(true)
+                .setGreedy(false);
+        registerParameter(opt);
 
-  }
-
-  @Override
-  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    String program = results.getString(ARG_PROGRAM);
-    ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.TV_FIND_REQUEST, request.getIrcEvent(), program);
-    List<TelkkuProgram> matching = serviceResponse.getTvFindData();
-    if (matching.size() > 0) {
-      String reply = "";
-      String lastChannel = "";
-      for (TelkkuProgram prg : matching) {
-        SimpleDateFormat dateFormat;
-        if (StringStuff.isDateToday(prg.getStartTimeD())) {
-          dateFormat = StringStuff.STRING_STUFF_DF_HHMM;
-        } else {
-          dateFormat = StringStuff.STRING_STUFF_DF_DDMMHHMM;
-        }
-
-        String channel = prg.getChannel();
-        if (!channel.equalsIgnoreCase(lastChannel)) {
-          reply += "[" + channel + "] ";
-        }
-        lastChannel = channel;
-        reply += StringStuff.formatTime(prg.getStartTimeD(), dateFormat) +
-            " " + prg.getProgram() + "(" + prg.getId() + ") ";
-
-      }
-      response.addResponse(reply);
-    } else {
-      response.addResponse("No matching Telkku programs found with: " + program);
     }
-  }
+
+    @Override
+    public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+        String program = results.getString(ARG_PROGRAM);
+        ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.TV_FIND_REQUEST, request.getIrcEvent(), program);
+        List<TelkkuProgram> matching = serviceResponse.getTvFindData();
+        if (matching.size() > 0) {
+            String reply = "";
+            String lastChannel = "";
+            for (TelkkuProgram prg : matching) {
+                SimpleDateFormat dateFormat;
+                if (StringStuff.isDateToday(prg.getStartTimeD())) {
+                    dateFormat = StringStuff.STRING_STUFF_DF_HHMM;
+                } else {
+                    dateFormat = StringStuff.STRING_STUFF_DF_DDMMHHMM;
+                }
+
+                String channel = prg.getChannel();
+                if (!channel.equalsIgnoreCase(lastChannel)) {
+                    reply += "[" + channel + "] ";
+                }
+                lastChannel = channel;
+                reply += StringStuff.formatTime(prg.getStartTimeD(), dateFormat) +
+                        " " + prg.getProgram() + "(" + prg.getId() + ") ";
+
+            }
+            response.addResponse(reply);
+        } else {
+            response.addResponse("No matching Telkku programs found with: " + program);
+        }
+    }
 }

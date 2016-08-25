@@ -24,7 +24,7 @@
         </repository>
 
     </repositories>
-	
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <start-class>org.freakz.hokan_ng_springboot.bot.HokanNgSpringBootEngine</start-class>

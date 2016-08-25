@@ -18,50 +18,49 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_LOG_PATT
 
 /**
  * Created by Petri Airio on 21.8.2015.
- *
  */
 @Component
 @Scope("prototype")
 @Slf4j
 @HelpGroups(
-    helpGroups = {HelpGroup.LOGS}
+        helpGroups = {HelpGroup.LOGS}
 )
 public class LastLogCmd extends Cmd {
 
-  private static final int SHOW_MAX = 3;
+    private static final int SHOW_MAX = 3;
 
-  public LastLogCmd() {
-    super();
-    setHelp("Shows channel messages.");
+    public LastLogCmd() {
+        super();
+        setHelp("Shows channel messages.");
 
-    UnflaggedOption unflaggedOption = new UnflaggedOption(ARG_LOG_PATTERN)
-        .setRequired(true)
-        .setGreedy(false);
-    registerParameter(unflaggedOption);
+        UnflaggedOption unflaggedOption = new UnflaggedOption(ARG_LOG_PATTERN)
+                .setRequired(true)
+                .setGreedy(false);
+        registerParameter(unflaggedOption);
 
-  }
-
-  @Override
-  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-
-    String logPattern = results.getString(ARG_LOG_PATTERN);
-    List<IrcLog> ircLogs = ircLogService.findMatchingLogRows(logPattern);
-
-    if (ircLogs.size() > 0) {
-      int max = SHOW_MAX;
-      for (IrcLog log : ircLogs) {
-        response.addResponse("LOG: %s\n", log.toString());
-        max--;
-        if (max == 0) {
-          if (ircLogs.size() - SHOW_MAX > 0) {
-            response.addResponse("... %d matching rows more", ircLogs.size() - SHOW_MAX);
-          }
-          break;
-        }
-      }
-    } else {
-      response.addResponse("LOG: nothing found with %s\n", logPattern);
     }
-  }
+
+    @Override
+    public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+
+        String logPattern = results.getString(ARG_LOG_PATTERN);
+        List<IrcLog> ircLogs = ircLogService.findMatchingLogRows(logPattern);
+
+        if (ircLogs.size() > 0) {
+            int max = SHOW_MAX;
+            for (IrcLog log : ircLogs) {
+                response.addResponse("LOG: %s\n", log.toString());
+                max--;
+                if (max == 0) {
+                    if (ircLogs.size() - SHOW_MAX > 0) {
+                        response.addResponse("... %d matching rows more", ircLogs.size() - SHOW_MAX);
+                    }
+                    break;
+                }
+            }
+        } else {
+            response.addResponse("LOG: nothing found with %s\n", logPattern);
+        }
+    }
 
 }

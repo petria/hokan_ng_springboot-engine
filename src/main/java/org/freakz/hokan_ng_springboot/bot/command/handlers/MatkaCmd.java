@@ -28,59 +28,59 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_CITY_2;
 @Slf4j
 public class MatkaCmd extends Cmd {
 
-  public MatkaCmd() {
-    super();
-    setHelp("Distance between city1 <-> city2");
+    public MatkaCmd() {
+        super();
+        setHelp("Distance between city1 <-> city2");
 
-    UnflaggedOption flg = new UnflaggedOption(ARG_CITY_1)
-        .setRequired(true)
-        .setGreedy(false);
-    registerParameter(flg);
+        UnflaggedOption flg = new UnflaggedOption(ARG_CITY_1)
+                .setRequired(true)
+                .setGreedy(false);
+        registerParameter(flg);
 
-    flg = new UnflaggedOption(ARG_CITY_2)
-        .setRequired(true)
-        .setGreedy(false);
-    registerParameter(flg);
+        flg = new UnflaggedOption(ARG_CITY_2)
+                .setRequired(true)
+                .setGreedy(false);
+        registerParameter(flg);
 
-  }
-
-  @Override
-  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-
-    StringBuilder sb = new StringBuilder();
-    String city1 = StringStuff.capitalize(results.getString(ARG_CITY_1));
-    String city2 = StringStuff.capitalize(results.getString(ARG_CITY_2));
-
-    String from = "MISTÄ=" + city1;
-    String to = "MIHIN=" + city2;
-    String speed = "NOPEUS=80";
-
-    try {
-      HttpPostFetcher post = context.getBean(HttpPostFetcher.class);
-
-      post.fetch("http://alk.tiehallinto.fi/cgi-bin/pq9.cgi", "utf-8", from, to, speed);
-
-      String page = post.getHtmlBuffer();
-
-      Pattern p0 = Pattern.compile(".*<li> Välimatka on (\\d+) km<li>.*");
-      Matcher m0 = p0.matcher(page);
-      String dist = null;
-      if (m0.find()) {
-        dist = m0.group(1);
-      }
-      sb.append(city1);
-      sb.append(" <-> ");
-      sb.append(city2);
-      sb.append(" = ");
-      sb.append(dist);
-
-    } catch (IOException e1) {
-      e1.printStackTrace();
-      sb.append("Cmd failed: ");
-      sb.append(e1);
     }
 
-    response.addResponse(sb.toString());
-  }
+    @Override
+    public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+
+        StringBuilder sb = new StringBuilder();
+        String city1 = StringStuff.capitalize(results.getString(ARG_CITY_1));
+        String city2 = StringStuff.capitalize(results.getString(ARG_CITY_2));
+
+        String from = "MISTÄ=" + city1;
+        String to = "MIHIN=" + city2;
+        String speed = "NOPEUS=80";
+
+        try {
+            HttpPostFetcher post = context.getBean(HttpPostFetcher.class);
+
+            post.fetch("http://alk.tiehallinto.fi/cgi-bin/pq9.cgi", "utf-8", from, to, speed);
+
+            String page = post.getHtmlBuffer();
+
+            Pattern p0 = Pattern.compile(".*<li> Välimatka on (\\d+) km<li>.*");
+            Matcher m0 = p0.matcher(page);
+            String dist = null;
+            if (m0.find()) {
+                dist = m0.group(1);
+            }
+            sb.append(city1);
+            sb.append(" <-> ");
+            sb.append(city2);
+            sb.append(" = ");
+            sb.append(dist);
+
+        } catch (IOException e1) {
+            e1.printStackTrace();
+            sb.append("Cmd failed: ");
+            sb.append(e1);
+        }
+
+        response.addResponse(sb.toString());
+    }
 
 }

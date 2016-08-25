@@ -24,25 +24,25 @@ import java.util.List;
 @Component
 @Scope("prototype")
 @HelpGroups(
-    helpGroups = {HelpGroup.TV}
+        helpGroups = {HelpGroup.TV}
 )
 public class TvNotifyListCmd extends Cmd {
 
-  @Autowired
-  private TvNotifyService tvNotifyService;
+    @Autowired
+    private TvNotifyService tvNotifyService;
 
-  public TvNotifyListCmd() {
-    super();
-    setHelp("Show channel TV notify list.");
-  }
-
-  @Override
-  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    List<TvNotify> notifies = tvNotifyService.getTvNotifies(request.getChannel());
-    response.addResponse("Keywords currently on TV notify in channel %s:", request.getChannel().getChannelName());
-    for (TvNotify notify : notifies) {
-      response.addResponse(" %d: %s", notify.getId(), notify.getNotifyPattern());
+    public TvNotifyListCmd() {
+        super();
+        setHelp("Show channel TV notify list.");
     }
-  }
+
+    @Override
+    public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+        List<TvNotify> notifies = tvNotifyService.getTvNotifies(request.getChannel());
+        response.addResponse("Keywords currently on TV notify in channel %s:", request.getChannel().getChannelName());
+        for (TvNotify notify : notifies) {
+            response.addResponse(" %d: %s", notify.getId(), notify.getNotifyPattern());
+        }
+    }
 
 }

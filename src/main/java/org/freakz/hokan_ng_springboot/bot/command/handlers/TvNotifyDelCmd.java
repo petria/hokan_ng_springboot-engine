@@ -25,47 +25,47 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_PROGRAM;
 @Component
 @Scope("prototype")
 @HelpGroups(
-    helpGroups = {HelpGroup.TV}
+        helpGroups = {HelpGroup.TV}
 )
 public class TvNotifyDelCmd extends Cmd {
 
-  @Autowired
-  private TvNotifyService tvNotifyService;
+    @Autowired
+    private TvNotifyService tvNotifyService;
 
-  public TvNotifyDelCmd() {
-    super();
-    setHelp("Removes TvNotify either by Id or by keyword");
+    public TvNotifyDelCmd() {
+        super();
+        setHelp("Removes TvNotify either by Id or by keyword");
 
-    UnflaggedOption opt = new UnflaggedOption(ARG_PROGRAM)
-        .setRequired(true)
-        .setGreedy(false);
-    registerParameter(opt);
+        UnflaggedOption opt = new UnflaggedOption(ARG_PROGRAM)
+                .setRequired(true)
+                .setGreedy(false);
+        registerParameter(opt);
 
-  }
-
-  @Override
-  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-
-    String program = results.getString(ARG_PROGRAM);
-    if (program.equals("all")) {
-      int removed = tvNotifyService.delTvNotifies(request.getChannel());
-      response.addResponse("Removed %d TvNotifies.", removed);
-    } else {
-      TvNotify notify;
-      try {
-        long id = Long.parseLong(program);
-        notify = tvNotifyService.getTvNotifyById(id);
-      } catch (NumberFormatException e) {
-        notify = tvNotifyService.getTvNotify(request.getChannel(), program);
-      }
-      if (notify != null) {
-        tvNotifyService.delTvNotify(notify);
-        response.addResponse("Removed TvNotify: %d: %s", notify.getId(), notify.getNotifyPattern());
-
-      } else {
-        response.addResponse("No TvNotify found with: %s", program);
-      }
     }
-  }
+
+    @Override
+    public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+
+        String program = results.getString(ARG_PROGRAM);
+        if (program.equals("all")) {
+            int removed = tvNotifyService.delTvNotifies(request.getChannel());
+            response.addResponse("Removed %d TvNotifies.", removed);
+        } else {
+            TvNotify notify;
+            try {
+                long id = Long.parseLong(program);
+                notify = tvNotifyService.getTvNotifyById(id);
+            } catch (NumberFormatException e) {
+                notify = tvNotifyService.getTvNotify(request.getChannel(), program);
+            }
+            if (notify != null) {
+                tvNotifyService.delTvNotify(notify);
+                response.addResponse("Removed TvNotify: %d: %s", notify.getId(), notify.getNotifyPattern());
+
+            } else {
+                response.addResponse("No TvNotify found with: %s", program);
+            }
+        }
+    }
 
 }

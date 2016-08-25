@@ -25,60 +25,60 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_PLACE;
 @Component
 @Scope("prototype")
 @HelpGroups(
-    helpGroups = {HelpGroup.DATA_FETCHERS}
+        helpGroups = {HelpGroup.DATA_FETCHERS}
 )
 public class WeatherHourlyCmd extends Cmd {
 
-  @Autowired
-  private CityResolver cityResolver;
+    @Autowired
+    private CityResolver cityResolver;
 
-  public WeatherHourlyCmd() {
+    public WeatherHourlyCmd() {
 
-    UnflaggedOption opt = new UnflaggedOption(ARG_PLACE)
-        .setDefault("Jyväskylä")
-        .setRequired(true)
-        .setGreedy(false);
-    registerParameter(opt);
+        UnflaggedOption opt = new UnflaggedOption(ARG_PLACE)
+                .setDefault("Jyväskylä")
+                .setRequired(true)
+                .setGreedy(false);
+        registerParameter(opt);
 
-    setHelp("Queries weather from http://alk.tiehallinto.fi/alk/tiesaa/");
+        setHelp("Queries weather from http://alk.tiehallinto.fi/alk/tiesaa/");
 
 
-  }
-
-  @Override
-  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    String place = results.getString(ARG_PLACE).toLowerCase();
-    CityData cityData = cityResolver.resolveCityNames(place);
-
-    for (String city : cityData.getResolvedCityNames()) {
-
-      ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.ILMATIETEENLAITOS_HOURLY_REQUEST, request.getIrcEvent(), city);
-      HourlyWeatherData hourlyWeatherData = serviceResponse.getHourlyWeatherData();
-
-      if (hourlyWeatherData.getTimes() != null) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Hourly forecast: ");
-        sb.append(city);
-        sb.append("\n");
-        String hours = "";
-        String temps = "";
-        for (int i = 0; i < hourlyWeatherData.getTimes().length; i++) {
-          hours += String.format("%4s", hourlyWeatherData.getTimes()[i]);
-          temps += String.format("%4s", hourlyWeatherData.getTemperatures()[i]);
-        }
-        sb.append(hours);
-        sb.append("\n");
-        sb.append(temps);
-        sb.append("\n");
-        response.addResponse("%s", sb.toString());
-
-      } else {
-
-        response.addResponse("Nothing found: %s, use whole city names!", place);
-
-      }
     }
 
-  }
+    @Override
+    public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+        String place = results.getString(ARG_PLACE).toLowerCase();
+        CityData cityData = cityResolver.resolveCityNames(place);
+
+        for (String city : cityData.getResolvedCityNames()) {
+
+            ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.ILMATIETEENLAITOS_HOURLY_REQUEST, request.getIrcEvent(), city);
+            HourlyWeatherData hourlyWeatherData = serviceResponse.getHourlyWeatherData();
+
+            if (hourlyWeatherData.getTimes() != null) {
+                StringBuilder sb = new StringBuilder();
+                sb.append("Hourly forecast: ");
+                sb.append(city);
+                sb.append("\n");
+                String hours = "";
+                String temps = "";
+                for (int i = 0; i < hourlyWeatherData.getTimes().length; i++) {
+                    hours += String.format("%4s", hourlyWeatherData.getTimes()[i]);
+                    temps += String.format("%4s", hourlyWeatherData.getTemperatures()[i]);
+                }
+                sb.append(hours);
+                sb.append("\n");
+                sb.append(temps);
+                sb.append("\n");
+                response.addResponse("%s", sb.toString());
+
+            } else {
+
+                response.addResponse("Nothing found: %s, use whole city names!", place);
+
+            }
+        }
+
+    }
 
 }

@@ -30,39 +30,39 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_NICK;
 @Slf4j
 @Scope("prototype")
 @HelpGroups(
-    helpGroups = {HelpGroup.USERS}
+        helpGroups = {HelpGroup.USERS}
 )
 public class UsersCmd extends Cmd {
 
-  @Autowired
-  private UserService userService;
+    @Autowired
+    private UserService userService;
 
-  public UsersCmd() {
-    super();
-    setHelp("Lists users the Bot has meet on channels.");
+    public UsersCmd() {
+        super();
+        setHelp("Lists users the Bot has meet on channels.");
 
-    UnflaggedOption flg = new UnflaggedOption(ARG_NICK)
-        .setRequired(false)
-        .setGreedy(false);
-    registerParameter(flg);
+        UnflaggedOption flg = new UnflaggedOption(ARG_NICK)
+                .setRequired(false)
+                .setGreedy(false);
+        registerParameter(flg);
 
-  }
-
-  @Override
-  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    String nick = results.getString(ARG_NICK);
-    if (nick == null) {
-      nick = ".*";
-    } else {
-      nick = ".*" + nick + ".*";
     }
-    List<User> users = userService.findAll();
-    response.addResponse("Known users: ");
-    for (User user : users) {
-      if (StringStuff.match(user.getNick(), nick)) {
-        response.addResponse("%s ", user.getNick());
-      }
+
+    @Override
+    public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+        String nick = results.getString(ARG_NICK);
+        if (nick == null) {
+            nick = ".*";
+        } else {
+            nick = ".*" + nick + ".*";
+        }
+        List<User> users = userService.findAll();
+        response.addResponse("Known users: ");
+        for (User user : users) {
+            if (StringStuff.match(user.getNick(), nick)) {
+                response.addResponse("%s ", user.getNick());
+            }
+        }
     }
-  }
 
 }

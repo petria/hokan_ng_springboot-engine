@@ -28,56 +28,56 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_NICK;
 @Slf4j
 @Scope("prototype")
 @HelpGroups(
-    helpGroups = {HelpGroup.USERS}
+        helpGroups = {HelpGroup.USERS}
 )
 public class UserViewCmd extends Cmd {
 
-  public UserViewCmd() {
-    super();
-    setHelp("UserViewCmd help");
+    public UserViewCmd() {
+        super();
+        setHelp("UserViewCmd help");
 
-    UnflaggedOption flg = new UnflaggedOption(ARG_NICK)
-        .setRequired(false)
-        .setGreedy(false);
-    registerParameter(flg);
-  }
-
-  @Override
-  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    String nick = results.getString(ARG_NICK);
-    User hUser;
-    if (nick == null) {
-      hUser = request.getUser();
-    } else {
-      hUser = userService.findFirstByNick(nick);
-      if (hUser == null) {
-        response.addResponse("User not found: %s", nick);
-        return;
-      }
+        UnflaggedOption flg = new UnflaggedOption(ARG_NICK)
+                .setRequired(false)
+                .setGreedy(false);
+        registerParameter(flg);
     }
 
-    String ret = "-= " + hUser.getNick() + " (" + hUser.getFullName();
-    if (hUser.getEmail() != null && hUser.getEmail().length() > 0) {
-      ret += ", " + hUser.getEmail();
-    }
-    ret += ") ";
-    if (accessControlService.isAdminUser(hUser)) {
-      ret += "[AdminUser] ";
-    }
-    if (accessControlService.isChannelOp(hUser, request.getChannel())) {
-      ret += "[ChannelOp] ";
-    }
-    ret += "=-\n";
+    @Override
+    public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+        String nick = results.getString(ARG_NICK);
+        User hUser;
+        if (nick == null) {
+            hUser = request.getUser();
+        } else {
+            hUser = userService.findFirstByNick(nick);
+            if (hUser == null) {
+                response.addResponse("User not found: %s", nick);
+                return;
+            }
+        }
 
-    ret += "SetMask  : " + hUser.getMask() + " (CurrentMask: " + hUser.getRealMask() + ")\n";
-    ret += "Flags    : " + hUser.getFlagsString() + "\n";
-    ret += "Channels :\n";
+        String ret = "-= " + hUser.getNick() + " (" + hUser.getFullName();
+        if (hUser.getEmail() != null && hUser.getEmail().length() > 0) {
+            ret += ", " + hUser.getEmail();
+        }
+        ret += ") ";
+        if (accessControlService.isAdminUser(hUser)) {
+            ret += "[AdminUser] ";
+        }
+        if (accessControlService.isChannelOp(hUser, request.getChannel())) {
+            ret += "[ChannelOp] ";
+        }
+        ret += "=-\n";
 
-    List<UserChannel> userChannels = userChannelService.findByUser(hUser);
-    for (UserChannel channel : userChannels) {
-      ret += "  " + channel.getChannel().getChannelName() + "\n";
+        ret += "SetMask  : " + hUser.getMask() + " (CurrentMask: " + hUser.getRealMask() + ")\n";
+        ret += "Flags    : " + hUser.getFlagsString() + "\n";
+        ret += "Channels :\n";
+
+        List<UserChannel> userChannels = userChannelService.findByUser(hUser);
+        for (UserChannel channel : userChannels) {
+            ret += "  " + channel.getChannel().getChannelName() + "\n";
+        }
+        response.addResponse(ret);
     }
-    response.addResponse(ret);
-  }
 
 }

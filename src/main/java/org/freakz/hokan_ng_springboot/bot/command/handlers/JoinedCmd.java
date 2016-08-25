@@ -29,58 +29,58 @@ import java.util.List;
 @Component
 @Scope("prototype")
 @HelpGroups(
-    helpGroups = {HelpGroup.CHANNELS}
+        helpGroups = {HelpGroup.CHANNELS}
 )
 public class JoinedCmd extends Cmd {
 
-  @Autowired
-  private ChannelService channelService;
+    @Autowired
+    private ChannelService channelService;
 
-  @Autowired
-  private JoinedUserService joinedUsersService;
+    @Autowired
+    private JoinedUserService joinedUsersService;
 
-  @Autowired
-  private NetworkService networkService;
+    @Autowired
+    private NetworkService networkService;
 
-  public JoinedCmd() {
-    super();
-    setHelp("Shows channel where the Bot currently is joined.");
-  }
+    public JoinedCmd() {
+        super();
+        setHelp("Shows channel where the Bot currently is joined.");
+    }
 
 
 /*  public String getMatchPattern() {
     return "!joined";
   }*/
 
-  @Override
-  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+    @Override
+    public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
 
-    StringBuilder sb = new StringBuilder();
-    List<Network> networks = networkService.findAll();
-    for (Network network : networks) {
-      List<Channel> channels = channelService.findChannels(network, ChannelState.JOINED);
-      if (channels.size() > 0) {
-        sb.append(String.format("[%s]\n", network.getName()));
-        for (Channel channel : channels) {
-          if (channels.size() > 0) {
-            sb.append(String.format("  %s (%d)\n", channel.getChannelName(), channel.getId()));
-            List<JoinedUser> joinedUsers = joinedUsersService.findJoinedUsers(channel);
-            sb.append("    ");
-            for (JoinedUser joinedUser : joinedUsers) {
-              if (joinedUser.isOp()) {
-                sb.append("@");
-              }
-              if (joinedUser.hasVoice()) {
-                sb.append("+");
-              }
-              sb.append(joinedUser.getUser().getNick());
-              sb.append(" ");
+        StringBuilder sb = new StringBuilder();
+        List<Network> networks = networkService.findAll();
+        for (Network network : networks) {
+            List<Channel> channels = channelService.findChannels(network, ChannelState.JOINED);
+            if (channels.size() > 0) {
+                sb.append(String.format("[%s]\n", network.getName()));
+                for (Channel channel : channels) {
+                    if (channels.size() > 0) {
+                        sb.append(String.format("  %s (%d)\n", channel.getChannelName(), channel.getId()));
+                        List<JoinedUser> joinedUsers = joinedUsersService.findJoinedUsers(channel);
+                        sb.append("    ");
+                        for (JoinedUser joinedUser : joinedUsers) {
+                            if (joinedUser.isOp()) {
+                                sb.append("@");
+                            }
+                            if (joinedUser.hasVoice()) {
+                                sb.append("+");
+                            }
+                            sb.append(joinedUser.getUser().getNick());
+                            sb.append(" ");
+                        }
+                        sb.append("\n");
+                    }
+                }
             }
-            sb.append("\n");
-          }
         }
-      }
+        response.setResponseMessage(sb.toString());
     }
-    response.setResponseMessage(sb.toString());
-  }
 }

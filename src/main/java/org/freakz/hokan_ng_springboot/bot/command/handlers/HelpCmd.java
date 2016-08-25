@@ -28,113 +28,113 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_COMMAND;
 @Component
 @Scope("prototype")
 @HelpGroups(
-    helpGroups = {HelpGroup.HELP}
+        helpGroups = {HelpGroup.HELP}
 )
 public class HelpCmd extends Cmd {
 
-  @Autowired
-  private CommandHandlerService commandHandler;
+    @Autowired
+    private CommandHandlerService commandHandler;
 
-  public HelpCmd() {
-    super();
-    setHelp("Shows command list / help about specific command.");
-    UnflaggedOption flg = new UnflaggedOption(ARG_COMMAND)
-        .setRequired(false)
-        .setGreedy(false);
-    registerParameter(flg);
-  }
+    public HelpCmd() {
+        super();
+        setHelp("Shows command list / help about specific command.");
+        UnflaggedOption flg = new UnflaggedOption(ARG_COMMAND)
+                .setRequired(false)
+                .setGreedy(false);
+        registerParameter(flg);
+    }
 
-  @Override
-  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+    @Override
+    public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
 
-    String command = results.getString(ARG_COMMAND);
+        String command = results.getString(ARG_COMMAND);
 
-    StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
 
-    Comparator<Cmd> comparator = (cmd1, cmd2) -> cmd1.getName().compareTo(cmd2.getName());
+        Comparator<Cmd> comparator = (cmd1, cmd2) -> cmd1.getName().compareTo(cmd2.getName());
 
-    if (command == null) {
+        if (command == null) {
 
-      List<Cmd> commands = commandHandler.getCommandHandlers();
-      Collections.sort(commands, comparator);
+            List<Cmd> commands = commandHandler.getCommandHandlers();
+            Collections.sort(commands, comparator);
 
-      sb.append("== ALL COMMANDS ==");
-      sb.append("\n");
+            sb.append("== ALL COMMANDS ==");
+            sb.append("\n");
 
-      for (Cmd cmd : commands) {
+            for (Cmd cmd : commands) {
 
-        if (cmd.isChannelOpOnly() && !isChannelOp && !isAdminUser) {
-          continue;
-        }
+                if (cmd.isChannelOpOnly() && !isChannelOp && !isAdminUser) {
+                    continue;
+                }
 
-        if (cmd.isAdminUserOnly() && (!isAdminUser)) {
-          continue;
-        }
+                if (cmd.isAdminUserOnly() && (!isAdminUser)) {
+                    continue;
+                }
 
-        sb.append("  ");
-        sb.append(cmd.getName());
-        String flags = "";
-        if (cmd.toBotOnly) {
-          flags += "B";
-        }
-        if (cmd.channelOpOnly) {
-          flags += "C";
-        }
-        if (cmd.loggedInOnly) {
-          flags += "L";
-        }
-        if (cmd.adminUserOnly) {
-          flags += "A";
-        }
-        if (cmd.privateOnly) {
-          flags += "P";
-        }
-        if (flags.length() > 0) {
-          sb.append("[").append(flags).append("]");
-        }
-      }
-      sb.append("\nTry '!help <command>' to get detailed help\n");
-      sb.append("B: to bot only ");
-      if (isAdminUser || isChannelOp) {
-        sb.append("C: channel op only ");
-      }
-      sb.append("L: logged in only ");
-      if (isAdminUser) {
-        sb.append("A: admin user only ");
-      }
-      sb.append("P: private msg only");
+                sb.append("  ");
+                sb.append(cmd.getName());
+                String flags = "";
+                if (cmd.toBotOnly) {
+                    flags += "B";
+                }
+                if (cmd.channelOpOnly) {
+                    flags += "C";
+                }
+                if (cmd.loggedInOnly) {
+                    flags += "L";
+                }
+                if (cmd.adminUserOnly) {
+                    flags += "A";
+                }
+                if (cmd.privateOnly) {
+                    flags += "P";
+                }
+                if (flags.length() > 0) {
+                    sb.append("[").append(flags).append("]");
+                }
+            }
+            sb.append("\nTry '!help <command>' to get detailed help\n");
+            sb.append("B: to bot only ");
+            if (isAdminUser || isChannelOp) {
+                sb.append("C: channel op only ");
+            }
+            sb.append("L: logged in only ");
+            if (isAdminUser) {
+                sb.append("A: admin user only ");
+            }
+            sb.append("P: private msg only");
 
-    } else {
-      List<Cmd> commands = commandHandler.getCommandHandlersByName(command);
-      Collections.sort(commands, comparator);
-      for (Cmd cmd : commands) {
-        String usage = "!" + cmd.getName().toLowerCase() + " " + cmd.jsap.getUsage();
-        String help = cmd.jsap.getHelp();
-        sb.append("Usage    : ");
-        sb.append(usage);
-        sb.append("\n");
-        String example = cmd.getExample();
-        if (example != null) {
-          sb.append("Example  : ");
-          sb.append(example);
-          sb.append("\n");
+        } else {
+            List<Cmd> commands = commandHandler.getCommandHandlersByName(command);
+            Collections.sort(commands, comparator);
+            for (Cmd cmd : commands) {
+                String usage = "!" + cmd.getName().toLowerCase() + " " + cmd.jsap.getUsage();
+                String help = cmd.jsap.getHelp();
+                sb.append("Usage    : ");
+                sb.append(usage);
+                sb.append("\n");
+                String example = cmd.getExample();
+                if (example != null) {
+                    sb.append("Example  : ");
+                    sb.append(example);
+                    sb.append("\n");
 
-        }
-        sb.append("Help     : ");
-        sb.append(help);
-        sb.append("\n");
-        if (cmd.getHelpWikiUrl() != null && cmd.getHelpWikiUrl().length() > 0) {
-          sb.append("Wiki URL : ");
-          sb.append(cmd.getHelpWikiUrl());
-          sb.append("\n");
-        }
-        sb.append(buildSeeAlso(cmd));
+                }
+                sb.append("Help     : ");
+                sb.append(help);
+                sb.append("\n");
+                if (cmd.getHelpWikiUrl() != null && cmd.getHelpWikiUrl().length() > 0) {
+                    sb.append("Wiki URL : ");
+                    sb.append(cmd.getHelpWikiUrl());
+                    sb.append("\n");
+                }
+                sb.append(buildSeeAlso(cmd));
 //        sb.append("\n");
 
-      }
-    }
-    response.setResponseMessage(sb.toString());
+            }
+        }
+        response.setResponseMessage(sb.toString());
 
-  }
+    }
 
 }

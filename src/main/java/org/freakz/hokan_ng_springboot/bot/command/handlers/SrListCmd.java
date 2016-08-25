@@ -21,29 +21,29 @@ import java.util.List;
 @Slf4j
 public class SrListCmd extends Cmd {
 
-  public SrListCmd() {
-    super();
-    setHelp("Lists Search / Replaces.");
-  }
-
-  @Override
-  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    List<SearchReplace> list = searchReplaceService.findAll();
-    StringBuilder sb = new StringBuilder("Search/Replace list: ");
-    if (list.size() > 0) {
-      boolean first = true;
-      for (SearchReplace sr : list) {
-        if (first) {
-          first = false;
-        } else {
-          sb.append(", ");
-        }
-        sb.append(String.format("%d) s/%s/%s/", sr.getId(), sr.getSearch(), sr.getReplace()));
-      }
-    } else {
-      sb.append("<empty>");
+    public SrListCmd() {
+        super();
+        setHelp("Lists Search / Replaces.");
     }
-    response.addResponse(sb);
-    response.setNoSearchReplace(true);
-  }
+
+    @Override
+    public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+        List<SearchReplace> list = searchReplaceService.findAll();
+        StringBuilder sb = new StringBuilder("Search/Replace list: ");
+        if (list.size() > 0) {
+            boolean first = true;
+            for (SearchReplace sr : list) {
+                if (first) {
+                    first = false;
+                } else {
+                    sb.append(", ");
+                }
+                sb.append(String.format("%d) s/%s/%s/", sr.getId(), sr.getSearch(), sr.getReplace()));
+            }
+        } else {
+            sb.append("<empty>");
+        }
+        response.addResponse(sb);
+        response.setNoSearchReplace(true);
+    }
 }

@@ -19,59 +19,59 @@ import java.util.List;
 @Service
 public class CommandHandlerServiceImpl implements CommandHandlerService {
 
-  @Autowired
-  private ApplicationContext context;
+    @Autowired
+    private ApplicationContext context;
 
-  public CommandHandlerServiceImpl() {
-  }
-
-  @Override
-  public CmdHandlerMatches getMatchingCommands(String line) {
-    String firstWord = line.split(" ")[0].toLowerCase();
-
-    List<Cmd> matches = new ArrayList<>();
-    for (Cmd base : getCommandHandlers()) {
-      String baseMatch = base.getMatchPattern();
-      if (baseMatch.startsWith(firstWord)) {
-        matches.add(base);
-      }
+    public CommandHandlerServiceImpl() {
     }
 
-    CmdHandlerMatches cmdHandlerMatches = new CmdHandlerMatches(firstWord);
-    if (matches.size() == 1) {
-      cmdHandlerMatches.getMatches().add(context.getBean(matches.get(0).getClass()));
-    } else if (matches.size() > 1) {
-      for (Cmd base : matches) {
-        String baseMatch = base.getMatchPattern();
-        if (firstWord.equals(baseMatch)) {
-          cmdHandlerMatches.getMatches().add(context.getBean(base.getClass()));
-          return cmdHandlerMatches;
+    @Override
+    public CmdHandlerMatches getMatchingCommands(String line) {
+        String firstWord = line.split(" ")[0].toLowerCase();
+
+        List<Cmd> matches = new ArrayList<>();
+        for (Cmd base : getCommandHandlers()) {
+            String baseMatch = base.getMatchPattern();
+            if (baseMatch.startsWith(firstWord)) {
+                matches.add(base);
+            }
         }
-      }
-      cmdHandlerMatches.getMatches().addAll(matches);
-    }
-    return cmdHandlerMatches;
-  }
 
-  @Override
-  public Cmd getCommandHandler(String line) {
+        CmdHandlerMatches cmdHandlerMatches = new CmdHandlerMatches(firstWord);
+        if (matches.size() == 1) {
+            cmdHandlerMatches.getMatches().add(context.getBean(matches.get(0).getClass()));
+        } else if (matches.size() > 1) {
+            for (Cmd base : matches) {
+                String baseMatch = base.getMatchPattern();
+                if (firstWord.equals(baseMatch)) {
+                    cmdHandlerMatches.getMatches().add(context.getBean(base.getClass()));
+                    return cmdHandlerMatches;
+                }
+            }
+            cmdHandlerMatches.getMatches().addAll(matches);
+        }
+        return cmdHandlerMatches;
+    }
+
+    @Override
+    public Cmd getCommandHandler(String line) {
     /* Deprecated */
-    return null;
-  }
-
-  @Override
-  public List<Cmd> getCommandHandlers() {
-    return new ArrayList<>(context.getBeansOfType(Cmd.class).values());
-  }
-
-  @Override
-  public List<Cmd> getCommandHandlersByName(String name) {
-    List<Cmd> matches = new ArrayList<>();
-    for (Cmd cmd : getCommandHandlers()) {
-      if (cmd.getName().toLowerCase().startsWith(name.toLowerCase())) {
-        matches.add(cmd);
-      }
+        return null;
     }
-    return matches;
-  }
+
+    @Override
+    public List<Cmd> getCommandHandlers() {
+        return new ArrayList<>(context.getBeansOfType(Cmd.class).values());
+    }
+
+    @Override
+    public List<Cmd> getCommandHandlersByName(String name) {
+        List<Cmd> matches = new ArrayList<>();
+        for (Cmd cmd : getCommandHandlers()) {
+            if (cmd.getName().toLowerCase().startsWith(name.toLowerCase())) {
+                matches.add(cmd);
+            }
+        }
+        return matches;
+    }
 }

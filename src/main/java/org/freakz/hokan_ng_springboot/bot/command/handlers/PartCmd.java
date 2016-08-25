@@ -22,31 +22,31 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_CHANNEL;
 @Component
 @Scope("prototype")
 @HelpGroups(
-    helpGroups = {HelpGroup.CHANNELS}
+        helpGroups = {HelpGroup.CHANNELS}
 )
 public class PartCmd extends Cmd {
 
-  public PartCmd() {
-    super();
+    public PartCmd() {
+        super();
 
-    UnflaggedOption uflg = new UnflaggedOption(ARG_CHANNEL)
-        .setRequired(true)
-        .setGreedy(false);
-    registerParameter(uflg);
+        UnflaggedOption uflg = new UnflaggedOption(ARG_CHANNEL)
+                .setRequired(true)
+                .setGreedy(false);
+        registerParameter(uflg);
 
-    setAdminUserOnly(true);
-  }
+        setAdminUserOnly(true);
+    }
 
 /*  @Override
   public String getMatchPattern() {
     return "!part.*";
   }*/
 
-  @Override
-  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    String channel = results.getString(ARG_CHANNEL);
-    response.setResponseMessage("Leaving: " + channel);
-    response.addEngineMethodCall("partChannel", channel);
-  }
+    @Override
+    public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+        String channel = results.getString(ARG_CHANNEL);
+        response.setResponseMessage("Leaving: " + channel);
+        response.addEngineMethodCall("partChannel", channel);
+    }
 
 }

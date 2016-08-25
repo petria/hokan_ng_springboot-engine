@@ -18,47 +18,46 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_PROPERTY
 
 /**
  * Created by Petri Airio (petri.j.airio@gmail.com) on 26.8.2015.
- *
  */
 @Component
 @Scope("prototype")
 @HelpGroups(
-    helpGroups = {HelpGroup.PROPERTIES, HelpGroup.SYSTEM}
+        helpGroups = {HelpGroup.PROPERTIES, HelpGroup.SYSTEM}
 )
 public class SysEnvSetCmd extends Cmd {
 
-  public SysEnvSetCmd() {
-    super();
-    setHelp("Sets system environment properties.");
+    public SysEnvSetCmd() {
+        super();
+        setHelp("Sets system environment properties.");
 
-    UnflaggedOption flg = new UnflaggedOption(ARG_PROPERTY)
-        .setRequired(true)
-        .setGreedy(false);
-    registerParameter(flg);
+        UnflaggedOption flg = new UnflaggedOption(ARG_PROPERTY)
+                .setRequired(true)
+                .setGreedy(false);
+        registerParameter(flg);
 
-    setAdminUserOnly(true);
-  }
+        setAdminUserOnly(true);
+    }
 
-  @Override
-  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    String[] split = results.getString(ARG_PROPERTY).split("=");
-    if (split.length != 2) {
-      response.addResponse("Syntax error, usage: %s <PropertyName>=<Value>", getName());
-      return;
+    @Override
+    public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+        String[] split = results.getString(ARG_PROPERTY).split("=");
+        if (split.length != 2) {
+            response.addResponse("Syntax error, usage: %s <PropertyName>=<Value>", getName());
+            return;
+        }
+        List<PropertyName> propertyNameList = PropertyName.getValuesLike(split[0]);
+        if (propertyNameList.size() != 1) {
+            response.addResponse("Invalid property: %s", split[0]);
+            return;
+        }
+        PropertyEntity property = propertyService.findFirstByPropertyName(propertyNameList.get(0));
+        if (property == null) {
+            property = new PropertyEntity(propertyNameList.get(0), split[1], "");
+        } else {
+            property.setValue(split[1]);
+        }
+        propertyService.save(property);
+        response.addResponse("System property set: [%d] %s=%s", property.getId(), property.getPropertyName(), property.getValue());
     }
-    List<PropertyName> propertyNameList = PropertyName.getValuesLike(split[0]);
-    if (propertyNameList.size() != 1) {
-      response.addResponse("Invalid property: %s", split[0]);
-      return;
-    }
-    PropertyEntity property = propertyService.findFirstByPropertyName(propertyNameList.get(0));
-    if (property == null) {
-      property = new PropertyEntity(propertyNameList.get(0), split[1], "");
-    } else {
-      property.setValue(split[1]);
-    }
-    propertyService.save(property);
-    response.addResponse("System property set: [%d] %s=%s", property.getId(), property.getPropertyName(), property.getValue());
-  }
 
 }

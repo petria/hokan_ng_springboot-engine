@@ -14,28 +14,27 @@ import java.util.List;
 
 /**
  * Created by Petri Airio (petri.j.airio@gmail.com) on 26.8.2015.
- *
  */
 @Component
 @Scope("prototype")
 @HelpGroups(
-    helpGroups = {HelpGroup.PROPERTIES, HelpGroup.SYSTEM}
+        helpGroups = {HelpGroup.PROPERTIES, HelpGroup.SYSTEM}
 )
 public class SysEnvCmd extends Cmd {
 
-  public SysEnvCmd() {
-    super();
-    setHelp("Shows system properties.");
-    setAdminUserOnly(true);
-  }
-
-  @Override
-  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-
-    List<PropertyEntity> propertyList = propertyService.findAll();
-    for (PropertyEntity p : propertyList) {
-      response.addResponse("%25s = %s\n", p.getPropertyName(), p.getValue());
+    public SysEnvCmd() {
+        super();
+        setHelp("Shows system properties.");
+        setAdminUserOnly(true);
     }
-  }
+
+    @Override
+    public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+
+        List<PropertyEntity> propertyList = propertyService.findAll();
+        for (PropertyEntity p : propertyList) {
+            response.addResponse("%25s = %s\n", p.getPropertyName(), p.getValue());
+        }
+    }
 
 }

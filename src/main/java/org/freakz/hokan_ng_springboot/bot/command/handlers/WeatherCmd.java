@@ -32,85 +32,85 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_PLACE;
 @Component
 @Scope("prototype")
 @HelpGroups(
-    helpGroups = {HelpGroup.DATA_FETCHERS}
+        helpGroups = {HelpGroup.DATA_FETCHERS}
 )
 public class WeatherCmd extends Cmd {
 
-  public WeatherCmd() {
+    public WeatherCmd() {
 
-    setHelp("Queries weather from http://alk.tiehallinto.fi/alk/tiesaa/");
+        setHelp("Queries weather from http://alk.tiehallinto.fi/alk/tiesaa/");
 
-    FlaggedOption flg = new FlaggedOption(ARG_COUNT)
-        .setStringParser(JSAP.INTEGER_PARSER)
-        .setDefault("5")
-        .setShortFlag('c');
-    registerParameter(flg);
+        FlaggedOption flg = new FlaggedOption(ARG_COUNT)
+                .setStringParser(JSAP.INTEGER_PARSER)
+                .setDefault("5")
+                .setShortFlag('c');
+        registerParameter(flg);
 
-    UnflaggedOption opt = new UnflaggedOption(ARG_PLACE)
-        .setDefault("Jyväskylä")
-        .setRequired(true)
-        .setGreedy(false);
-    registerParameter(opt);
+        UnflaggedOption opt = new UnflaggedOption(ARG_PLACE)
+                .setDefault("Jyväskylä")
+                .setRequired(true)
+                .setGreedy(false);
+        registerParameter(opt);
 
-  }
+    }
 
 /*  @Override
   public String getMatchPattern() {
     return "!saa.*|!weather.*";
   }*/
 
-  @Override
+    @Override
 //  @SuppressWarnings("unchecked")
-  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+    public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
 
-    String place = results.getString(ARG_PLACE).toLowerCase();
+        String place = results.getString(ARG_PLACE).toLowerCase();
 
-    ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.WEATHER_REQUEST, request.getIrcEvent(), ".*");
-    List<KelikameratWeatherData> datas = serviceResponse.getWeatherResponse();
-    if (datas.size() == 0) {
-      response.setResponseMessage("Weather data not ready yet!");
-      return;
-    }
-
-    StringBuilder sb = new StringBuilder();
-
-    if (place.equals("minmax")) {
-
-      KelikameratWeatherData max = datas.get(0);
-      KelikameratWeatherData min = datas.get(datas.size() - 1);
-
-      sb.append("Min: ");
-      sb.append(StringStuff.formatWeather(min));
-      sb.append(" Max: ");
-      sb.append(StringStuff.formatWeather(max));
-
-    } else {
-
-      int xx = 0;
-      String regexp = ".*" + place + ".*";
-      for (KelikameratWeatherData wd : datas) {
-        String placeFromUrl = wd.getPlaceFromUrl();
-        String stationFromUrl = wd.getUrl().getStationUrl();
-        if (StringStuff.match(placeFromUrl, regexp) || StringStuff.match(stationFromUrl, regexp)) {
-          if (wd.getAir() == null) {
-            continue;
-          }
-          if (xx != 0) {
-            sb.append(", ");
-          }
-          sb.append(StringStuff.formatWeather(wd));
-          xx++;
-          if (xx > results.getInt(ARG_COUNT)) {
-            break;
-          }
+        ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.WEATHER_REQUEST, request.getIrcEvent(), ".*");
+        List<KelikameratWeatherData> datas = serviceResponse.getWeatherResponse();
+        if (datas.size() == 0) {
+            response.setResponseMessage("Weather data not ready yet!");
+            return;
         }
-      }
-      if (xx == 0) {
-        String hhmmss = StringStuff.formatTime(new Date(), StringStuff.STRING_STUFF_DF_HHMMSS);
-        sb.append(String.format("%s %s 26.7°C, hellettä pukkaa!", hhmmss, place));
-      }
-    }
 
-    response.setResponseMessage(sb.toString());
-  }
+        StringBuilder sb = new StringBuilder();
+
+        if (place.equals("minmax")) {
+
+            KelikameratWeatherData max = datas.get(0);
+            KelikameratWeatherData min = datas.get(datas.size() - 1);
+
+            sb.append("Min: ");
+            sb.append(StringStuff.formatWeather(min));
+            sb.append(" Max: ");
+            sb.append(StringStuff.formatWeather(max));
+
+        } else {
+
+            int xx = 0;
+            String regexp = ".*" + place + ".*";
+            for (KelikameratWeatherData wd : datas) {
+                String placeFromUrl = wd.getPlaceFromUrl();
+                String stationFromUrl = wd.getUrl().getStationUrl();
+                if (StringStuff.match(placeFromUrl, regexp) || StringStuff.match(stationFromUrl, regexp)) {
+                    if (wd.getAir() == null) {
+                        continue;
+                    }
+                    if (xx != 0) {
+                        sb.append(", ");
+                    }
+                    sb.append(StringStuff.formatWeather(wd));
+                    xx++;
+                    if (xx > results.getInt(ARG_COUNT)) {
+                        break;
+                    }
+                }
+            }
+            if (xx == 0) {
+                String hhmmss = StringStuff.formatTime(new Date(), StringStuff.STRING_STUFF_DF_HHMMSS);
+                sb.append(String.format("%s %s 26.7°C, hellettä pukkaa!", hhmmss, place));
+            }
+        }
+
+        response.setResponseMessage(sb.toString());
+    }
 }

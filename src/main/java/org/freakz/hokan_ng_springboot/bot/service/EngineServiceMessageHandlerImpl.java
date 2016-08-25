@@ -24,72 +24,72 @@ import java.util.Date;
 @Slf4j
 public class EngineServiceMessageHandlerImpl implements JmsServiceMessageHandler {
 
-  @Autowired
-  private ApplicationContext context;
+    @Autowired
+    private ApplicationContext context;
 
-  @Autowired
-  private CommandHandlerService commandHandlerService;
+    @Autowired
+    private CommandHandlerService commandHandlerService;
 
-  @Autowired
-  private JmsSender jmsSender;
+    @Autowired
+    private JmsSender jmsSender;
 
-  @Override
-  public void handleJmsEnvelope(JmsEnvelope envelope) throws Exception {
-    IrcMessageEvent event = (IrcMessageEvent) envelope.getMessageIn().getPayLoadObject("EVENT");
-    boolean isEngineRequest = false;
-    if (event == null) {
+    @Override
+    public void handleJmsEnvelope(JmsEnvelope envelope) throws Exception {
+        IrcMessageEvent event = (IrcMessageEvent) envelope.getMessageIn().getPayLoadObject("EVENT");
+        boolean isEngineRequest = false;
+        if (event == null) {
 
-      ServiceRequest serviceRequest = (ServiceRequest) envelope.getMessageIn().getPayLoadObject("ENGINE_REQUEST");
-      if (serviceRequest == null) {
-        log.debug("Nothing to do!");
-        return;
-      }
-      event = serviceRequest.getIrcMessageEvent();
-    }
-
-    CmdHandlerMatches matches = commandHandlerService.getMatchingCommands(event.getMessage());
-    if (matches.getMatches().size() > 0) {
-      if (matches.getMatches().size() == 1) {
-        Cmd handler = matches.getMatches().get(0);
-        executeHandler(event, handler, envelope);
-      } else {
-        EngineResponse response = new EngineResponse(event);
-        String multiple = matches.getFirstWord() + " multiple matches: ";
-        for (Cmd match : matches.getMatches()) {
-          multiple += match.getName() + " ";
+            ServiceRequest serviceRequest = (ServiceRequest) envelope.getMessageIn().getPayLoadObject("ENGINE_REQUEST");
+            if (serviceRequest == null) {
+                log.debug("Nothing to do!");
+                return;
+            }
+            event = serviceRequest.getIrcMessageEvent();
         }
-        response.addResponse(multiple);
-        sendReply(response, envelope);
-      }
-    }
-  }
 
-  private void sendReply(EngineResponse response, JmsEnvelope envelope) {
+        CmdHandlerMatches matches = commandHandlerService.getMatchingCommands(event.getMessage());
+        if (matches.getMatches().size() > 0) {
+            if (matches.getMatches().size() == 1) {
+                Cmd handler = matches.getMatches().get(0);
+                executeHandler(event, handler, envelope);
+            } else {
+                EngineResponse response = new EngineResponse(event);
+                String multiple = matches.getFirstWord() + " multiple matches: ";
+                for (Cmd match : matches.getMatches()) {
+                    multiple += match.getName() + " ";
+                }
+                response.addResponse(multiple);
+                sendReply(response, envelope);
+            }
+        }
+    }
+
+    private void sendReply(EngineResponse response, JmsEnvelope envelope) {
 //    log.debug("Sending response: {}", response);
-    if (response.getIrcMessageEvent().isWebMessage()) {
-      envelope.getMessageOut().addPayLoadObject("SERVICE_RESPONSE", response);
-    } else {
-      jmsSender.send(HokanModule.HokanIo.getQueueName(), "ENGINE_RESPONSE", response, false);
+        if (response.getIrcMessageEvent().isWebMessage()) {
+            envelope.getMessageOut().addPayLoadObject("SERVICE_RESPONSE", response);
+        } else {
+            jmsSender.send(HokanModule.HokanIo.getQueueName(), "ENGINE_RESPONSE", response, false);
+        }
     }
-  }
 
-  private void executeHandler(IrcMessageEvent event, Cmd handler, JmsEnvelope envelope) {
-    EngineResponse response = new EngineResponse(event);
-    response.setIsEngineRequest(event.isWebMessage());
+    private void executeHandler(IrcMessageEvent event, Cmd handler, JmsEnvelope envelope) {
+        EngineResponse response = new EngineResponse(event);
+        response.setIsEngineRequest(event.isWebMessage());
 
 
-    InternalRequest internalRequest;
-    internalRequest = context.getBean(InternalRequest.class);
-    internalRequest.setJmsEnvelope(envelope);
-    try {
-      internalRequest.init(event);
-      internalRequest.getUserChannel().setLastCommand(event.getMessage());
-      internalRequest.getUserChannel().setLastCommandTime(new Date());
-      internalRequest.saveUserChannel();
-      handler.handleLine(internalRequest, response);
-    } catch (Exception e) {
-      log.error("Command handler returned exception {}", e);
+        InternalRequest internalRequest;
+        internalRequest = context.getBean(InternalRequest.class);
+        internalRequest.setJmsEnvelope(envelope);
+        try {
+            internalRequest.init(event);
+            internalRequest.getUserChannel().setLastCommand(event.getMessage());
+            internalRequest.getUserChannel().setLastCommandTime(new Date());
+            internalRequest.saveUserChannel();
+            handler.handleLine(internalRequest, response);
+        } catch (Exception e) {
+            log.error("Command handler returned exception {}", e);
+        }
     }
-  }
 
 }

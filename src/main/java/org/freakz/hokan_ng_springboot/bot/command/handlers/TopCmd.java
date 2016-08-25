@@ -19,43 +19,42 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_CHANNEL;
 
 /**
  * Created by Petri Airio on 26.8.2015.
- *
  */
 @Component
 @HelpGroups(
-    helpGroups = {HelpGroup.SYSTEM}
+        helpGroups = {HelpGroup.SYSTEM}
 )
 @Scope("prototype")
 @Slf4j
 public class TopCmd extends Cmd {
 
-  public TopCmd() {
-    super();
-    setHelp("Calculates top statistics from the logs.");
+    public TopCmd() {
+        super();
+        setHelp("Calculates top statistics from the logs.");
 
-    UnflaggedOption uflg = new UnflaggedOption(ARG_CHANNEL)
-        .setRequired(false)
-        .setGreedy(false);
-    registerParameter(uflg);
+        UnflaggedOption uflg = new UnflaggedOption(ARG_CHANNEL)
+                .setRequired(false)
+                .setGreedy(false);
+        registerParameter(uflg);
 
-  }
-
-  @Override
-  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    String channel = results.getString(ARG_CHANNEL, request.getChannel().getChannelName());
-    StatsMapper statsMapper = statsService.getStatsForChannel(channel);
-    if (!statsMapper.hasError()) {
-      List<StatsData> statsDatas = statsMapper.getStatsData();
-      String res = "Top words for channel " + channel + ": ";
-      int i = 1;
-      for (StatsData statsData : statsDatas) {
-        res += " " + i + ") " + statsData.getNick() + ": " + statsData.getWords();
-        i++;
-      }
-      response.addResponse(res);
-    } else {
-      response.addResponse(statsMapper.getError());
     }
 
-  }
+    @Override
+    public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+        String channel = results.getString(ARG_CHANNEL, request.getChannel().getChannelName());
+        StatsMapper statsMapper = statsService.getStatsForChannel(channel);
+        if (!statsMapper.hasError()) {
+            List<StatsData> statsDatas = statsMapper.getStatsData();
+            String res = "Top words for channel " + channel + ": ";
+            int i = 1;
+            for (StatsData statsData : statsDatas) {
+                res += " " + i + ") " + statsData.getNick() + ": " + statsData.getWords();
+                i++;
+            }
+            response.addResponse(res);
+        } else {
+            response.addResponse(statsMapper.getError());
+        }
+
+    }
 }

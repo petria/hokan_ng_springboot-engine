@@ -30,60 +30,60 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_COMMAND;
 @Scope("prototype")
 @Slf4j
 @HelpGroups(
-    helpGroups = {HelpGroup.ALIAS}
+        helpGroups = {HelpGroup.ALIAS}
 )
 public class AliasCmd extends Cmd {
 
-  public AliasCmd() {
-    super();
-    setHelp("Lists and sets aliases.");
+    public AliasCmd() {
+        super();
+        setHelp("Lists and sets aliases.");
 
-    UnflaggedOption flg = new UnflaggedOption(ARG_ALIAS)
-        .setRequired(false)
-        .setGreedy(false);
-    registerParameter(flg);
+        UnflaggedOption flg = new UnflaggedOption(ARG_ALIAS)
+                .setRequired(false)
+                .setGreedy(false);
+        registerParameter(flg);
 
-    flg = new UnflaggedOption(ARG_COMMAND)
-        .setRequired(false)
-        .setGreedy(false);
-    registerParameter(flg);
+        flg = new UnflaggedOption(ARG_COMMAND)
+                .setRequired(false)
+                .setGreedy(false);
+        registerParameter(flg);
 
-  }
-
-  @Override
-  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    if (null == results.getString(ARG_ALIAS)) {
-      List<Alias> aliases = aliasService.findAll();
-      if (aliases.size() > 0) {
-        for (Alias alias : aliases) {
-          response.addResponse("%3d: %s = %s\n", alias.getAliasId(), alias.getAlias(), alias.getCommand());
-        }
-      } else {
-        response.addResponse("No aliases defined!");
-      }
-    } else {
-      String alias = results.getString(ARG_ALIAS);
-      if (alias == null) {
-        response.addResponse("Alias key can't be null, usage: !alias <key> <command>");
-        return;
-      }
-      String command = results.getString(ARG_COMMAND);
-      if (command == null) {
-        response.addResponse("Alias command can't be null, usage: !alias <key> <command>");
-        return;
-      }
-      Alias a = aliasService.findFirstByAlias(alias);
-      if (a == null) {
-        a = new Alias();
-        a.setCreatedBy(request.getUser().getNick());
-        a.setCreated(new Date());
-        a.setAliasType(AliasType.ALIAS_PUBLIC);
-        a.setAlias(alias);
-      }
-      a.setCommand(command);
-      a = aliasService.save(a);
-      response.addResponse("Alias set, %3d: %s = %s", a.getAliasId(), a.getAlias(), a.getCommand());
     }
-  }
+
+    @Override
+    public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+        if (null == results.getString(ARG_ALIAS)) {
+            List<Alias> aliases = aliasService.findAll();
+            if (aliases.size() > 0) {
+                for (Alias alias : aliases) {
+                    response.addResponse("%3d: %s = %s\n", alias.getAliasId(), alias.getAlias(), alias.getCommand());
+                }
+            } else {
+                response.addResponse("No aliases defined!");
+            }
+        } else {
+            String alias = results.getString(ARG_ALIAS);
+            if (alias == null) {
+                response.addResponse("Alias key can't be null, usage: !alias <key> <command>");
+                return;
+            }
+            String command = results.getString(ARG_COMMAND);
+            if (command == null) {
+                response.addResponse("Alias command can't be null, usage: !alias <key> <command>");
+                return;
+            }
+            Alias a = aliasService.findFirstByAlias(alias);
+            if (a == null) {
+                a = new Alias();
+                a.setCreatedBy(request.getUser().getNick());
+                a.setCreated(new Date());
+                a.setAliasType(AliasType.ALIAS_PUBLIC);
+                a.setAlias(alias);
+            }
+            a.setCommand(command);
+            a = aliasService.save(a);
+            response.addResponse("Alias set, %3d: %s = %s", a.getAliasId(), a.getAlias(), a.getCommand());
+        }
+    }
 
 }

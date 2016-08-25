@@ -12,20 +12,20 @@ import java.util.List;
  */
 public class CmdHandlerMatches implements Serializable {
 
-  private final List<Cmd> matches;
-  private final String firstWord;
+    private final List<Cmd> matches;
+    private final String firstWord;
 
-  public CmdHandlerMatches(String firstWord) {
-    this.firstWord = firstWord;
-    this.matches = new ArrayList<>();
-  }
+    public CmdHandlerMatches(String firstWord) {
+        this.firstWord = firstWord;
+        this.matches = new ArrayList<>();
+    }
 
-  public List<Cmd> getMatches() {
-    return matches;
-  }
+    public List<Cmd> getMatches() {
+        return matches;
+    }
 
-  public String getFirstWord() {
-    return firstWord;
-  }
+    public String getFirstWord() {
+        return firstWord;
+    }
 
 }

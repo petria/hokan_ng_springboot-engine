@@ -29,70 +29,70 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_URL_PATT
 @Scope("prototype")
 @Slf4j
 @HelpGroups(
-    helpGroups = {HelpGroup.URLS}
+        helpGroups = {HelpGroup.URLS}
 )
 public class FindUrlCmd extends Cmd {
 
-  public FindUrlCmd() {
-    super();
-    setHelp("Finds matching urls from URL database.");
+    public FindUrlCmd() {
+        super();
+        setHelp("Finds matching urls from URL database.");
 
-    UnflaggedOption flg = new UnflaggedOption(ARG_URL_PATTERN)
-        .setRequired(true)
-        .setGreedy(false);
-    registerParameter(flg);
+        UnflaggedOption flg = new UnflaggedOption(ARG_URL_PATTERN)
+                .setRequired(true)
+                .setGreedy(false);
+        registerParameter(flg);
 
-    flg = new UnflaggedOption(ARG_NICK)
-        .setRequired(false)
-        .setGreedy(false);
-    registerParameter(flg);
+        flg = new UnflaggedOption(ARG_NICK)
+                .setRequired(false)
+                .setGreedy(false);
+        registerParameter(flg);
 
-  }
-
-  @Override
-  public String getExample() {
-    return "!findurl psytrance dezahn";
-  }
-
-  @Override
-  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    String urlPattern = results.getString(ARG_URL_PATTERN);
-    String nick = results.getString(ARG_NICK);
-    List<Url> urlList;
-    if (nick == null) {
-      urlList = urlLoggerService.findByUrl(urlPattern);
-    } else {
-      urlList = urlLoggerService.findByUrlAndNicks(urlPattern, nick);
     }
 
-    int shown = 0;
-    String ret = null;
-
-    for (Url row : urlList) {
-
-      if (ret == null) {
-        ret = "";
-      }
-
-      if (shown > 0) {
-        ret += " ";
-      }
-
-      shown++;
-
-      if (shown == 5) {
-        break;
-      }
-
-      ret += shown + ") " + row.getSender() + ": ";
-      ret += row.getUrl();
-      if (row.getUrlTitle() != null) {
-        ret += " \"t: " + row.getUrlTitle() + "\"";
-      }
-      ret += " [" + StringStuff.formatNiceDate(row.getCreated(), false) + "]";
-      response.addResponse(ret);
+    @Override
+    public String getExample() {
+        return "!findurl psytrance dezahn";
     }
 
-  }
+    @Override
+    public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+        String urlPattern = results.getString(ARG_URL_PATTERN);
+        String nick = results.getString(ARG_NICK);
+        List<Url> urlList;
+        if (nick == null) {
+            urlList = urlLoggerService.findByUrl(urlPattern);
+        } else {
+            urlList = urlLoggerService.findByUrlAndNicks(urlPattern, nick);
+        }
+
+        int shown = 0;
+        String ret = null;
+
+        for (Url row : urlList) {
+
+            if (ret == null) {
+                ret = "";
+            }
+
+            if (shown > 0) {
+                ret += " ";
+            }
+
+            shown++;
+
+            if (shown == 5) {
+                break;
+            }
+
+            ret += shown + ") " + row.getSender() + ": ";
+            ret += row.getUrl();
+            if (row.getUrlTitle() != null) {
+                ret += " \"t: " + row.getUrlTitle() + "\"";
+            }
+            ret += " [" + StringStuff.formatNiceDate(row.getCreated(), false) + "]";
+            response.addResponse(ret);
+        }
+
+    }
 
 }

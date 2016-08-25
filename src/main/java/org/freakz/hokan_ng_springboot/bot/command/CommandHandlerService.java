@@ -14,12 +14,12 @@ import java.util.List;
  */
 public interface CommandHandlerService {
 
-  Cmd getCommandHandler(String line);
+    Cmd getCommandHandler(String line);
 
-  CmdHandlerMatches getMatchingCommands(String line);
+    CmdHandlerMatches getMatchingCommands(String line);
 
-  List<Cmd> getCommandHandlers();
+    List<Cmd> getCommandHandlers();
 
-  List<Cmd> getCommandHandlersByName(String name);
+    List<Cmd> getCommandHandlersByName(String name);
 
 }

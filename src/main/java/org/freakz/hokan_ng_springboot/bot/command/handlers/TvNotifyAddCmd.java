@@ -25,34 +25,34 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_PROGRAM;
 @Component
 @Scope("prototype")
 @HelpGroups(
-    helpGroups = {HelpGroup.TV}
+        helpGroups = {HelpGroup.TV}
 )
 public class TvNotifyAddCmd extends Cmd {
 
-  @Autowired
-  private TvNotifyService tvNotifyService;
+    @Autowired
+    private TvNotifyService tvNotifyService;
 
-  public TvNotifyAddCmd() {
-    super();
-    setHelp("Adds notify for Telkku programs.");
+    public TvNotifyAddCmd() {
+        super();
+        setHelp("Adds notify for Telkku programs.");
 
-    UnflaggedOption opt = new UnflaggedOption(ARG_PROGRAM)
-        .setRequired(true)
-        .setGreedy(false);
-    registerParameter(opt);
+        UnflaggedOption opt = new UnflaggedOption(ARG_PROGRAM)
+                .setRequired(true)
+                .setGreedy(false);
+        registerParameter(opt);
 
-  }
-
-  @Override
-  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    InternalRequest iRequest = (InternalRequest) request;
-    TvNotify notify = tvNotifyService.getTvNotify(iRequest.getChannel(), results.getString(ARG_PROGRAM));
-    if (notify != null) {
-      response.addResponse("TvNotify: %d: %s already in notify list!", notify.getId(), notify.getNotifyPattern());
-      return;
     }
-    notify = tvNotifyService.addTvNotify(iRequest.getChannel(), results.getString(ARG_PROGRAM), iRequest.getIrcEvent().getSender());
-    response.addResponse("Added TvNotify: %d: %s", notify.getId(), notify.getNotifyPattern());
-  }
+
+    @Override
+    public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+        InternalRequest iRequest = (InternalRequest) request;
+        TvNotify notify = tvNotifyService.getTvNotify(iRequest.getChannel(), results.getString(ARG_PROGRAM));
+        if (notify != null) {
+            response.addResponse("TvNotify: %d: %s already in notify list!", notify.getId(), notify.getNotifyPattern());
+            return;
+        }
+        notify = tvNotifyService.addTvNotify(iRequest.getChannel(), results.getString(ARG_PROGRAM), iRequest.getIrcEvent().getSender());
+        response.addResponse("Added TvNotify: %d: %s", notify.getId(), notify.getNotifyPattern());
+    }
 
 }

@@ -22,26 +22,26 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 @Slf4j
 @HelpGroups(
-    helpGroups = {HelpGroup.UTILITY}
+        helpGroups = {HelpGroup.UTILITY}
 )
 public class CalCmd extends Cmd {
 
-  public CalCmd() {
-    setHelp("Shows the Calendar of current month.");
-  }
-
-  @Override
-  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    SystemScriptResult calendar = scriptRunnerService.runAndGetResult(SystemScript.CAL_SCRIPT);
-    String day = String.format(" %d", DateTime.now().getDayOfMonth());
-    StringBuilder sb = new StringBuilder();
-    for (String line : calendar.getOriginalOutput()) {
-      if (line.trim().length() > 0) {
-        line = line.replaceFirst(day, Colors.BOLD + day + Colors.NORMAL);
-        sb.append(line).append("\n");
-      }
+    public CalCmd() {
+        setHelp("Shows the Calendar of current month.");
     }
-    response.addResponse("%s", sb.toString());
-  }
+
+    @Override
+    public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+        SystemScriptResult calendar = scriptRunnerService.runAndGetResult(SystemScript.CAL_SCRIPT);
+        String day = String.format(" %d", DateTime.now().getDayOfMonth());
+        StringBuilder sb = new StringBuilder();
+        for (String line : calendar.getOriginalOutput()) {
+            if (line.trim().length() > 0) {
+                line = line.replaceFirst(day, Colors.BOLD + day + Colors.NORMAL);
+                sb.append(line).append("\n");
+            }
+        }
+        response.addResponse("%s", sb.toString());
+    }
 
 }

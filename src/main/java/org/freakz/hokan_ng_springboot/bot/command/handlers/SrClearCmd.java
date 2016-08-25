@@ -18,15 +18,15 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class SrClearCmd extends Cmd {
 
-  public SrClearCmd() {
-    super();
-    setHelp("Clears Search/Replaces");
-  }
+    public SrClearCmd() {
+        super();
+        setHelp("Clears Search/Replaces");
+    }
 
-  @Override
-  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    searchReplaceService.deleteAll();
-    response.addResponse("Search/Replaces cleared!");
-  }
+    @Override
+    public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+        searchReplaceService.deleteAll();
+        response.addResponse("Search/Replaces cleared!");
+    }
 
 }

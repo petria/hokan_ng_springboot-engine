@@ -19,20 +19,20 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_TEXT;
 @Scope("prototype")
 @Slf4j
 public class TestCmd extends Cmd {
-  public TestCmd() {
-    super();
-    UnflaggedOption flg = new UnflaggedOption(ARG_TEXT)
-        .setRequired(true)
-        .setGreedy(false);
-    registerParameter(flg);
+    public TestCmd() {
+        super();
+        UnflaggedOption flg = new UnflaggedOption(ARG_TEXT)
+                .setRequired(true)
+                .setGreedy(false);
+        registerParameter(flg);
 
-  }
+    }
 
-  @Override
-  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    String text = results.getString(ARG_TEXT);
-    sendToUi(String.format("<%10s> %s: %s", request.getChannel().getChannelName(), request.getUser().getNick(), text));
-    response.addResponse("Sent: %s", text);
-  }
+    @Override
+    public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+        String text = results.getString(ARG_TEXT);
+        sendToUi(String.format("<%10s> %s: %s", request.getChannel().getChannelName(), request.getUser().getNick(), text));
+        response.addResponse("Sent: %s", text);
+    }
 
 }

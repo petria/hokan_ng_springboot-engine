@@ -20,29 +20,29 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @HelpGroups(
-    helpGroups = {HelpGroup.SYSTEM}
+        helpGroups = {HelpGroup.SYSTEM}
 )
 @Scope("prototype")
 @Slf4j
 public class ScriptCmd extends Cmd {
 
-  public ScriptCmd() {
-    setHelp("Executes JavaScript.");
-    setNoWeb(true);
+    public ScriptCmd() {
+        setHelp("Executes JavaScript.");
+        setNoWeb(true);
 /*    UnflaggedOption opt = new UnflaggedOption(ARG_SCRIPT)
         .setRequired(true)
         .setGreedy(true);
     registerParameter(opt);*/
 
 //    setAdminUserOnly(true);
-  }
+    }
 
-  @Override
-  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    CommandArgs args = new CommandArgs(request.getIrcEvent().getMessage());
-    String script = args.getArgs();
-    ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.SCRIPT_SERVICE_REQUEST, request.getIrcEvent(), script, "JavaScript");
-    ScriptResult scriptResult = serviceResponse.getScriptResult();
-    response.addResponse("%s", scriptResult.getScriptOutput());
-  }
+    @Override
+    public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+        CommandArgs args = new CommandArgs(request.getIrcEvent().getMessage());
+        String script = args.getArgs();
+        ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.SCRIPT_SERVICE_REQUEST, request.getIrcEvent(), script, "JavaScript");
+        ScriptResult scriptResult = serviceResponse.getScriptResult();
+        response.addResponse("%s", scriptResult.getScriptOutput());
+    }
 }

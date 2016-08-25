@@ -24,48 +24,48 @@ import java.util.List;
 @Scope("prototype")
 @Slf4j
 @HelpGroups(
-    helpGroups = {HelpGroup.NETWORK, HelpGroup.SYSTEM}
+        helpGroups = {HelpGroup.NETWORK, HelpGroup.SYSTEM}
 )
 public class NetworksCmd extends Cmd {
 
-  public NetworksCmd() {
-    super();
-    setHelp("Shows configured IRC Networks");
-  }
-
-  @Override
-  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    StringBuilder sb = new StringBuilder();
-    List<Network> nws = networkService.findAll();
-    if (nws.size() > 0) {
-      for (Network nw : nws) {
-        sb.append("Name: ");
-        sb.append(nw.getName());
-        sb.append("\n");
-
-        sb.append("  First connected : ");
-        sb.append(nw.getFirstConnected());
-        sb.append("\n");
-
-        sb.append("  Connect count   : ");
-        sb.append(nw.getConnectCount());
-        sb.append("\n");
-
-        sb.append("  Lines sent      : ");
-        sb.append(nw.getLinesSent());
-        sb.append("\n");
-
-        sb.append("  Lines received  : ");
-        sb.append(nw.getLinesReceived());
-        sb.append("\n");
-
-        sb.append("  Channels joined : ");
-        sb.append(nw.getChannelsJoined());
-        sb.append("\n");
-      }
-
-      response.addResponse(sb);
+    public NetworksCmd() {
+        super();
+        setHelp("Shows configured IRC Networks");
     }
-  }
+
+    @Override
+    public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+        StringBuilder sb = new StringBuilder();
+        List<Network> nws = networkService.findAll();
+        if (nws.size() > 0) {
+            for (Network nw : nws) {
+                sb.append("Name: ");
+                sb.append(nw.getName());
+                sb.append("\n");
+
+                sb.append("  First connected : ");
+                sb.append(nw.getFirstConnected());
+                sb.append("\n");
+
+                sb.append("  Connect count   : ");
+                sb.append(nw.getConnectCount());
+                sb.append("\n");
+
+                sb.append("  Lines sent      : ");
+                sb.append(nw.getLinesSent());
+                sb.append("\n");
+
+                sb.append("  Lines received  : ");
+                sb.append(nw.getLinesReceived());
+                sb.append("\n");
+
+                sb.append("  Channels joined : ");
+                sb.append(nw.getChannelsJoined());
+                sb.append("\n");
+            }
+
+            response.addResponse(sb);
+        }
+    }
 
 }

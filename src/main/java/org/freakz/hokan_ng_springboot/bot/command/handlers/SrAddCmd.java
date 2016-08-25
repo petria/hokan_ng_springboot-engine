@@ -23,35 +23,35 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_SEARCH;
 @Slf4j
 public class SrAddCmd extends Cmd {
 
-  public SrAddCmd() {
-    super();
-    setHelp("Adds Search/Replace.");
+    public SrAddCmd() {
+        super();
+        setHelp("Adds Search/Replace.");
 
-    UnflaggedOption opt = new UnflaggedOption(ARG_SEARCH)
-        .setRequired(true)
-        .setGreedy(false);
-    registerParameter(opt);
+        UnflaggedOption opt = new UnflaggedOption(ARG_SEARCH)
+                .setRequired(true)
+                .setGreedy(false);
+        registerParameter(opt);
 
-    opt = new UnflaggedOption(ARG_REPLACE)
-        .setRequired(true)
-        .setGreedy(false);
-    registerParameter(opt);
+        opt = new UnflaggedOption(ARG_REPLACE)
+                .setRequired(true)
+                .setGreedy(false);
+        registerParameter(opt);
 
-  }
-
-  @Override
-  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    String search = results.getString(ARG_SEARCH);
-    String replace = results.getString(ARG_REPLACE);
-
-    SearchReplace sr = searchReplaceService.addSearchReplace(request.getIrcEvent().getSender(), search, replace);
-    if (sr != null) {
-      response.addResponse("Added Search/Replace: [%2d] s/%s/%s/", sr.getId(), sr.getSearch(), sr.getReplace());
-      response.setNoSearchReplace(true);
-    } else {
-      response.addResponse("Added Search/Replace failed!");
     }
 
-  }
+    @Override
+    public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+        String search = results.getString(ARG_SEARCH);
+        String replace = results.getString(ARG_REPLACE);
+
+        SearchReplace sr = searchReplaceService.addSearchReplace(request.getIrcEvent().getSender(), search, replace);
+        if (sr != null) {
+            response.addResponse("Added Search/Replace: [%2d] s/%s/%s/", sr.getId(), sr.getSearch(), sr.getReplace());
+            response.setNoSearchReplace(true);
+        } else {
+            response.addResponse("Added Search/Replace failed!");
+        }
+
+    }
 
 }

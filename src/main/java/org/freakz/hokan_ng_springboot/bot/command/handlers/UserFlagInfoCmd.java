@@ -21,31 +21,31 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_FLAGS;
 @Slf4j
 @Scope("prototype")
 @HelpGroups(
-    helpGroups = {HelpGroup.ACCESS_CONTROL, HelpGroup.USERS}
+        helpGroups = {HelpGroup.ACCESS_CONTROL, HelpGroup.USERS}
 )
 public class UserFlagInfoCmd extends Cmd {
 
-  public UserFlagInfoCmd() {
+    public UserFlagInfoCmd() {
 
-    setHelp("");
-    setHelpWikiUrl("https://github.com/petria/hokan_ng_springboot/wiki/UserFlags");
+        setHelp("");
+        setHelpWikiUrl("https://github.com/petria/hokan_ng_springboot/wiki/UserFlags");
 //    setAdminUserOnly(true);
 
-    UnflaggedOption unflaggedOption = new UnflaggedOption(ARG_FLAGS)
-        .setRequired(false)
-        .setGreedy(false);
-    registerParameter(unflaggedOption);
+        UnflaggedOption unflaggedOption = new UnflaggedOption(ARG_FLAGS)
+                .setRequired(false)
+                .setGreedy(false);
+        registerParameter(unflaggedOption);
 
-  }
-
-  @Override
-  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    String flagStr = results.getString(ARG_FLAGS, null);
-    if (flagStr == null) {
-      response.addResponse("Available User Flags: ");
-    } else {
-      response.addResponse("User Flag: %s", flagStr);
     }
-  }
+
+    @Override
+    public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+        String flagStr = results.getString(ARG_FLAGS, null);
+        if (flagStr == null) {
+            response.addResponse("Available User Flags: ");
+        } else {
+            response.addResponse("User Flag: %s", flagStr);
+        }
+    }
 
 }

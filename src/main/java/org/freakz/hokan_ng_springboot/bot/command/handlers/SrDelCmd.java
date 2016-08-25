@@ -24,48 +24,48 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_ID_OR_SE
 @Slf4j
 public class SrDelCmd extends Cmd {
 
-  public SrDelCmd() {
-    super();
-    setHelp("Deletes Search/Replace by id or search keyword.");
+    public SrDelCmd() {
+        super();
+        setHelp("Deletes Search/Replace by id or search keyword.");
 
-    UnflaggedOption opt = new UnflaggedOption(ARG_ID_OR_SEARCH)
-        .setRequired(true)
-        .setGreedy(false);
-    registerParameter(opt);
+        UnflaggedOption opt = new UnflaggedOption(ARG_ID_OR_SEARCH)
+                .setRequired(true)
+                .setGreedy(false);
+        registerParameter(opt);
 
-  }
-
-  @Override
-  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    String idORSearch = results.getString(ARG_ID_OR_SEARCH);
-    long id = 0;
-    try {
-      id = Long.parseLong(idORSearch);
-    } catch (NumberFormatException nfe) {
-      id = -1;
     }
-    if (id == -1) {
 
-      List<SearchReplace> srList = searchReplaceService.findByTheSearch(idORSearch);
-
-      if (srList.size() > 0) {
-        for (SearchReplace sr : srList) {
-          searchReplaceService.delete(sr);
-          response.addResponse("Removed Search/Replace: [%2d] s/%s/%s/", sr.getId(), sr.getSearch(), sr.getReplace());
+    @Override
+    public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+        String idORSearch = results.getString(ARG_ID_OR_SEARCH);
+        long id = 0;
+        try {
+            id = Long.parseLong(idORSearch);
+        } catch (NumberFormatException nfe) {
+            id = -1;
         }
-      } else {
-        response.addResponse("No matching Search/Replaces found with: %s", idORSearch);
-      }
+        if (id == -1) {
 
-    } else {
-      SearchReplace sr = searchReplaceService.findOne(id);
-      if (sr != null) {
-        searchReplaceService.delete(sr);
-        response.addResponse("Removed Search/Replace: [%2d] s/%s/%s/", sr.getId(), sr.getSearch(), sr.getReplace());
-      } else {
-        response.addResponse("Search/Replace not found with id: {}", id);
-      }
+            List<SearchReplace> srList = searchReplaceService.findByTheSearch(idORSearch);
+
+            if (srList.size() > 0) {
+                for (SearchReplace sr : srList) {
+                    searchReplaceService.delete(sr);
+                    response.addResponse("Removed Search/Replace: [%2d] s/%s/%s/", sr.getId(), sr.getSearch(), sr.getReplace());
+                }
+            } else {
+                response.addResponse("No matching Search/Replaces found with: %s", idORSearch);
+            }
+
+        } else {
+            SearchReplace sr = searchReplaceService.findOne(id);
+            if (sr != null) {
+                searchReplaceService.delete(sr);
+                response.addResponse("Removed Search/Replace: [%2d] s/%s/%s/", sr.getId(), sr.getSearch(), sr.getReplace());
+            } else {
+                response.addResponse("Search/Replace not found with id: {}", id);
+            }
+        }
     }
-  }
 
 }

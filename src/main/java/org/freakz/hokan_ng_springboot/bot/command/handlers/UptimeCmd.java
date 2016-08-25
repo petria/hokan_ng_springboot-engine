@@ -23,14 +23,14 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("prototype")
 @HelpGroups(
-    helpGroups = {HelpGroup.SYSTEM}
+        helpGroups = {HelpGroup.SYSTEM}
 )
 public class UptimeCmd extends Cmd {
 
-  public UptimeCmd() {
-    super();
-    setHelp("Shows system and each bot module uptime.");
-  }
+    public UptimeCmd() {
+        super();
+        setHelp("Shows system and each bot module uptime.");
+    }
 
 /*  @Override
   public String getMatchPattern() {
@@ -38,25 +38,25 @@ public class UptimeCmd extends Cmd {
   }
 */
 
-  @Override
-  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    String[] sysUptime = scriptRunnerService.runScript(SystemScript.UPTIME_SCRIPT);
-    String sysUt = "<n/a> ";
-    if (sysUptime != null && sysUptime.length > 0) {
-      sysUt = sysUptime[0];
+    @Override
+    public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+        String[] sysUptime = scriptRunnerService.runScript(SystemScript.UPTIME_SCRIPT);
+        String sysUt = "<n/a> ";
+        if (sysUptime != null && sysUptime.length > 0) {
+            sysUt = sysUptime[0];
+        }
+        String uptime1 = String.format("%-13s     :%s\n", "System", sysUt);
+        response.addResponse(uptime1);
+        for (HokanModule module : HokanModule.values()) {
+            HokanStatusModel statusModel = statusService.getHokanStatus(module);
+            String modUt = "<n/a>";
+            if (statusModel.getPingResponse() != null) {
+                Uptime ut = statusModel.getPingResponse().getUptime();
+                modUt = ut.toString();
+            }
+            String moduleUptime = String.format("%-13s     : %s\n", module, modUt);
+            response.addResponse(moduleUptime);
+        }
     }
-    String uptime1 = String.format("%-13s     :%s\n", "System", sysUt);
-    response.addResponse(uptime1);
-    for (HokanModule module : HokanModule.values()) {
-      HokanStatusModel statusModel = statusService.getHokanStatus(module);
-      String modUt = "<n/a>";
-      if (statusModel.getPingResponse() != null) {
-        Uptime ut = statusModel.getPingResponse().getUptime();
-        modUt = ut.toString();
-      }
-      String moduleUptime = String.format("%-13s     : %s\n", module, modUt);
-      response.addResponse(moduleUptime);
-    }
-  }
 
 }

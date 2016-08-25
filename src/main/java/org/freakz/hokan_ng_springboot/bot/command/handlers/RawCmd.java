@@ -24,27 +24,27 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_RAWSTRIN
 @Scope("prototype")
 @Slf4j
 @HelpGroups(
-    helpGroups = {HelpGroup.SYSTEM}
+        helpGroups = {HelpGroup.SYSTEM}
 )
 public class RawCmd extends Cmd {
 
-  public RawCmd() {
-    super();
-    setHelp("Sends raw command to the IRCd where this command was issued.");
+    public RawCmd() {
+        super();
+        setHelp("Sends raw command to the IRCd where this command was issued.");
 
-    UnflaggedOption flg = new UnflaggedOption(ARG_RAWSTRING)
-        .setRequired(true)
-        .setGreedy(false);
-    registerParameter(flg);
+        UnflaggedOption flg = new UnflaggedOption(ARG_RAWSTRING)
+                .setRequired(true)
+                .setGreedy(false);
+        registerParameter(flg);
 
-    setAdminUserOnly(true);
-  }
+        setAdminUserOnly(true);
+    }
 
-  @Override
-  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    String raw = results.getString(ARG_RAWSTRING);
-    response.addEngineMethodCall("sendRawLine", raw);
-    response.addResponse("Sending: %s", raw);
-  }
+    @Override
+    public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+        String raw = results.getString(ARG_RAWSTRING);
+        response.addEngineMethodCall("sendRawLine", raw);
+        response.addResponse("Sending: %s", raw);
+    }
 
 }

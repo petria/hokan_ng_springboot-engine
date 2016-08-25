@@ -18,9 +18,9 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 public class ExampleCmd extends Cmd {
 
-  @Override
-  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    response.addResponse("example: %s", request.getIrcEvent().getMessage());
-  }
+    @Override
+    public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+        response.addResponse("example: %s", request.getIrcEvent().getMessage());
+    }
 
 }

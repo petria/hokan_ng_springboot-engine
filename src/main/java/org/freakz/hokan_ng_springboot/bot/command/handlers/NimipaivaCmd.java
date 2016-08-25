@@ -32,57 +32,57 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_NIMI_OR_
 @Slf4j
 public class NimipaivaCmd extends Cmd {
 
-  private static final String NIMIPAIVAT_TXT = "/Nimipaivat.txt";
-  private static final int PVM_MODE = 0;
-  private static final int NAME_MODE = 1;
+    private static final String NIMIPAIVAT_TXT = "/Nimipaivat.txt";
+    private static final int PVM_MODE = 0;
+    private static final int NAME_MODE = 1;
 
-  private List<String> nimiPvmList = new ArrayList<>();
+    private List<String> nimiPvmList = new ArrayList<>();
 
-  public NimipaivaCmd() {
-    super();
-    setHelp("Nimipäivät");
+    public NimipaivaCmd() {
+        super();
+        setHelp("Nimipäivät");
 
-    UnflaggedOption flg = new UnflaggedOption(ARG_NIMI_OR_PVM)
-        .setRequired(false)
-        .setGreedy(false);
-    registerParameter(flg);
+        UnflaggedOption flg = new UnflaggedOption(ARG_NIMI_OR_PVM)
+                .setRequired(false)
+                .setGreedy(false);
+        registerParameter(flg);
 
-  }
-
-  @Override
-  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-
-    String nimiOrPvm = results.getString(ARG_NIMI_OR_PVM);
-    DateTime dateTime;
-    if (nimiOrPvm == null) {
-      dateTime = DateTime.now();
-    } else {
-      dateTime = TimeUtil.parseDateTime(nimiOrPvm);
-    }
-    if (dateTime != null) {
-      ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.NIMIPAIVA_DAY_REQUEST, request.getIrcEvent(), dateTime);
-      NimipaivaData names = serviceResponse.getNimipaivaDayResponse();
-      if (names.getNames().size() > 0) {
-        StringBuilder sb = new StringBuilder(StringStuff.formatTime(names.getDay().toDate(), StringStuff.STRING_STUFF_DF_DDMMYYYY)+ " ::");
-        for (String name : names.getNames()) {
-          sb.append(" ").append(name);
-        }
-        response.addResponse("%s", sb.toString());
-      }
-    } else {
-      ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.NIMIPAIVA_NAME_REQUEST, request.getIrcEvent(), nimiOrPvm);
-      NimipaivaData names = serviceResponse.getNimipaivaNameResponse();
-      if (names != null) {
-        StringBuilder sb = new StringBuilder(StringStuff.formatTime(names.getDay().toDate(), StringStuff.STRING_STUFF_DF_DDMMYYYY)+ " ::");
-        for (String name : names.getNames()) {
-          sb.append(" ").append(name);
-        }
-        response.addResponse("%s", sb.toString());
-      } else {
-        response.addResponse("n/a");
-      }
     }
 
-  }
+    @Override
+    public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+
+        String nimiOrPvm = results.getString(ARG_NIMI_OR_PVM);
+        DateTime dateTime;
+        if (nimiOrPvm == null) {
+            dateTime = DateTime.now();
+        } else {
+            dateTime = TimeUtil.parseDateTime(nimiOrPvm);
+        }
+        if (dateTime != null) {
+            ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.NIMIPAIVA_DAY_REQUEST, request.getIrcEvent(), dateTime);
+            NimipaivaData names = serviceResponse.getNimipaivaDayResponse();
+            if (names.getNames().size() > 0) {
+                StringBuilder sb = new StringBuilder(StringStuff.formatTime(names.getDay().toDate(), StringStuff.STRING_STUFF_DF_DDMMYYYY) + " ::");
+                for (String name : names.getNames()) {
+                    sb.append(" ").append(name);
+                }
+                response.addResponse("%s", sb.toString());
+            }
+        } else {
+            ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.NIMIPAIVA_NAME_REQUEST, request.getIrcEvent(), nimiOrPvm);
+            NimipaivaData names = serviceResponse.getNimipaivaNameResponse();
+            if (names != null) {
+                StringBuilder sb = new StringBuilder(StringStuff.formatTime(names.getDay().toDate(), StringStuff.STRING_STUFF_DF_DDMMYYYY) + " ::");
+                for (String name : names.getNames()) {
+                    sb.append(" ").append(name);
+                }
+                response.addResponse("%s", sb.toString());
+            } else {
+                response.addResponse("n/a");
+            }
+        }
+
+    }
 
 }

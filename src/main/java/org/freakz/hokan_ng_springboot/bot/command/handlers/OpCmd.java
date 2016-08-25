@@ -27,58 +27,58 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_TARGET;
 @Scope("prototype")
 @Slf4j
 @HelpGroups(
-    helpGroups = {HelpGroup.ACCESS_CONTROL}
+        helpGroups = {HelpGroup.ACCESS_CONTROL}
 )
 public class OpCmd extends Cmd {
 
-  public OpCmd() {
-    super();
-    setHelp("Gives operator rights to target user on channel.");
+    public OpCmd() {
+        super();
+        setHelp("Gives operator rights to target user on channel.");
 
-    UnflaggedOption flg = new UnflaggedOption(ARG_TARGET)
-        .setRequired(false)
-        .setGreedy(false);
-    registerParameter(flg);
+        UnflaggedOption flg = new UnflaggedOption(ARG_TARGET)
+                .setRequired(false)
+                .setGreedy(false);
+        registerParameter(flg);
 
-    setLoggedInOnly(false);
-    setChannelOpOnly(false);
+        setLoggedInOnly(false);
+        setChannelOpOnly(false);
 
-  }
-
-  @Override
-  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-
-    String target = results.getString(ARG_TARGET);
-    if (request.getIrcEvent().isPrivate()) {
-      if (target == null) {
-        target = request.getIrcEvent().getSender();
-      }
-      List<JoinedUser> joinedUsers = joinedUsersService.findJoinedUsersByNetwork(request.getNetwork());
-      boolean didOp = false;
-      for (JoinedUser joinedUser : joinedUsers) {
-        if (joinedUser.getUser().getNick().toLowerCase().matches(".*" + target.toLowerCase() + ".*")) {
-          response.addEngineMethodCall("op", joinedUser.getChannel().getChannelName(), joinedUser.getUser().getNick());
-          response.addResponse("Trying to op %s on channel %s\n", joinedUser.getUser().getNick(), joinedUser.getChannel().getChannelName());
-          didOp = true;
-        }
-      }
-      if (!didOp) {
-        response.addResponse("Didn't find anyone matching %s !", target);
-      }
-
-    } else {
-
-      if (!request.getIrcEvent().isBotOp()) {
-        response.addResponse("I need OPs!");
-        return;
-      }
-
-      if (target == null) {
-        response.addEngineMethodCall("op", request.getChannel().getChannelName(), request.getIrcEvent().getSender());
-      } else {
-        response.addEngineMethodCall("op", request.getChannel().getChannelName(), target);
-      }
     }
-  }
+
+    @Override
+    public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+
+        String target = results.getString(ARG_TARGET);
+        if (request.getIrcEvent().isPrivate()) {
+            if (target == null) {
+                target = request.getIrcEvent().getSender();
+            }
+            List<JoinedUser> joinedUsers = joinedUsersService.findJoinedUsersByNetwork(request.getNetwork());
+            boolean didOp = false;
+            for (JoinedUser joinedUser : joinedUsers) {
+                if (joinedUser.getUser().getNick().toLowerCase().matches(".*" + target.toLowerCase() + ".*")) {
+                    response.addEngineMethodCall("op", joinedUser.getChannel().getChannelName(), joinedUser.getUser().getNick());
+                    response.addResponse("Trying to op %s on channel %s\n", joinedUser.getUser().getNick(), joinedUser.getChannel().getChannelName());
+                    didOp = true;
+                }
+            }
+            if (!didOp) {
+                response.addResponse("Didn't find anyone matching %s !", target);
+            }
+
+        } else {
+
+            if (!request.getIrcEvent().isBotOp()) {
+                response.addResponse("I need OPs!");
+                return;
+            }
+
+            if (target == null) {
+                response.addEngineMethodCall("op", request.getChannel().getChannelName(), request.getIrcEvent().getSender());
+            } else {
+                response.addEngineMethodCall("op", request.getChannel().getChannelName(), target);
+            }
+        }
+    }
 
 }

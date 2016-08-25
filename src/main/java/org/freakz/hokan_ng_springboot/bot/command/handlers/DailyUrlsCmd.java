@@ -18,60 +18,59 @@ import java.util.List;
 
 /**
  * Created by Petri Airio on 22.9.2015.
- *
  */
 @Component
 @Scope("prototype")
 @Slf4j
 @HelpGroups(
-    helpGroups = {HelpGroup.DATA_COLLECTION}
+        helpGroups = {HelpGroup.DATA_COLLECTION}
 )
 public class DailyUrlsCmd extends Cmd {
 
-  public DailyUrlsCmd() {
-    super();
-    setHelp("Find urls pasted to channel in certain day. If no day is supplied today is used.");
+    public DailyUrlsCmd() {
+        super();
+        setHelp("Find urls pasted to channel in certain day. If no day is supplied today is used.");
 
-    // TODO add DAY parameter
+        // TODO add DAY parameter
 
-  }
+    }
 
-  @Override
-  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    DateTime time = DateTime.now();
-    List<Url> urlList = urlLoggerService.findByCreatedBetweenAndChannel(TimeUtil.getStartAndEndTimeForDay(time), request.getChannel().getChannelName());
-    if (urlList.size() > 0) {
-      int shown = 0;
-      String ret = null;
+    @Override
+    public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+        DateTime time = DateTime.now();
+        List<Url> urlList = urlLoggerService.findByCreatedBetweenAndChannel(TimeUtil.getStartAndEndTimeForDay(time), request.getChannel().getChannelName());
+        if (urlList.size() > 0) {
+            int shown = 0;
+            String ret = null;
 
-      for (Url row : urlList) {
+            for (Url row : urlList) {
 
-        if (ret == null) {
-          ret = String.format("Daily URLs for date: %s\n", StringStuff.formatTime(time.toDate(), StringStuff.STRING_STUFF_DF_DDMMYYYY));
-        }
+                if (ret == null) {
+                    ret = String.format("Daily URLs for date: %s\n", StringStuff.formatTime(time.toDate(), StringStuff.STRING_STUFF_DF_DDMMYYYY));
+                }
 
-        if (shown > 0) {
-          ret += " ";
-        }
+                if (shown > 0) {
+                    ret += " ";
+                }
 
-        shown++;
+                shown++;
 
 /*        if (shown == 5) {
           break;
         }*/
 
-        ret += shown + ") " + row.getSender() + ": ";
-        ret += row.getUrl();
+                ret += shown + ") " + row.getSender() + ": ";
+                ret += row.getUrl();
 /*        if (row.getUrlTitle() != null) {
           ret += " \"t: " + row.getUrlTitle() + "\"";
         }
         ret += " [" + StringStuff.formatNiceDate(row.getCreated(), false) + "]";*/
-        response.addResponse(ret);
-      }
+                response.addResponse(ret);
+            }
 
-    } else {
-      response.addResponse("No urls found for date: %s", time.toString());
+        } else {
+            response.addResponse("No urls found for date: %s", time.toString());
+        }
     }
-  }
 
 }

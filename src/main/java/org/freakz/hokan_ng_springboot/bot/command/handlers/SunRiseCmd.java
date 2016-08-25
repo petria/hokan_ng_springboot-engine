@@ -16,41 +16,40 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_CITY;
 
 /**
  * Created by Petri Airio on 24.9.2015.
- *
  */
 @Component
 @Scope("prototype")
 @HelpGroups(
-    helpGroups = {HelpGroup.DATA_FETCHERS}
+        helpGroups = {HelpGroup.DATA_FETCHERS}
 )
 public class SunRiseCmd extends Cmd {
 
-  public SunRiseCmd() {
-    super();
-    setHelp("Queries Sun rise / set times from Ilmatieteenlaitos web pages.");
+    public SunRiseCmd() {
+        super();
+        setHelp("Queries Sun rise / set times from Ilmatieteenlaitos web pages.");
 
-    UnflaggedOption unflaggedOption = new UnflaggedOption(ARG_CITY)
-        .setRequired(true)
-        .setGreedy(false);
-    registerParameter(unflaggedOption);
+        UnflaggedOption unflaggedOption = new UnflaggedOption(ARG_CITY)
+                .setRequired(true)
+                .setGreedy(false);
+        registerParameter(unflaggedOption);
 
-  }
-
-  @Override
-  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    String city = results.getString(ARG_CITY);
-
-    ServiceResponse serviceResponse
-        = doServicesRequest(ServiceRequestType.SUNRISE_SERVICE_REQUEST, request.getIrcEvent(), city);
-
-    String sunrise = serviceResponse.getSunRiseResponse();
-
-    if (sunrise == null) {
-      response.addResponse("No Sunrise data found with: %s", city);
-    } else {
-      response.addResponse(sunrise);
     }
 
-  }
+    @Override
+    public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+        String city = results.getString(ARG_CITY);
+
+        ServiceResponse serviceResponse
+                = doServicesRequest(ServiceRequestType.SUNRISE_SERVICE_REQUEST, request.getIrcEvent(), city);
+
+        String sunrise = serviceResponse.getSunRiseResponse();
+
+        if (sunrise == null) {
+            response.addResponse("No Sunrise data found with: %s", city);
+        } else {
+            response.addResponse(sunrise);
+        }
+
+    }
 
 }

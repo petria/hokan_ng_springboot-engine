@@ -9,12 +9,11 @@ import java.lang.annotation.Target;
 
 /**
  * Created by Petri Airio on 15.9.2015.
- *
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface HelpGroups {
 
-  HelpGroup[] helpGroups();
+    HelpGroup[] helpGroups();
 
 }

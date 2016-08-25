@@ -26,49 +26,49 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_EXPRESSI
 @Scope("prototype")
 public class CalcCmd extends Cmd {
 
-  private final JEP jep;
-  private static int resultCounter = 0;
-  private static Map<String, String> resultMap = new HashMap<>();
+    private final JEP jep;
+    private static int resultCounter = 0;
+    private static Map<String, String> resultMap = new HashMap<>();
 
-  public CalcCmd() {
-    super();
-    setHelp("I am your pocket calculator.");
+    public CalcCmd() {
+        super();
+        setHelp("I am your pocket calculator.");
 
-    jep = new JEP();
-    jep.addStandardConstants();
-    jep.addStandardFunctions();
+        jep = new JEP();
+        jep.addStandardConstants();
+        jep.addStandardFunctions();
 
-    UnflaggedOption flg = new UnflaggedOption(ARG_EXPRESSION)
-        .setRequired(true)
-        .setGreedy(false);
-    registerParameter(flg);
+        UnflaggedOption flg = new UnflaggedOption(ARG_EXPRESSION)
+                .setRequired(true)
+                .setGreedy(false);
+        registerParameter(flg);
 
-  }
-
-
-  @Override
-  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    String result;
-    String expression = results.getString(ARG_EXPRESSION);
-    for (String key : resultMap.keySet()) {
-      expression = expression.replaceAll(key, resultMap.get(key));
     }
-    jep.parseExpression(expression);
 
-    String error = jep.getErrorInfo();
 
-    if (error != null) {
-      response.addResponse("Expression parse error: " + error.replaceAll("\"", ""));
-    } else {
-      try {
-        resultCounter++;
-        String resultKey = "RES" + resultCounter;
-        result = expression + " = " + jep.getValue();
-        resultMap.put(resultKey, jep.getValue() + "");
-        response.addResponse(String.format("%s: %s", resultKey, result));
-      } catch (ParseException e) {
-        throw new HokanException(e);
-      }
+    @Override
+    public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+        String result;
+        String expression = results.getString(ARG_EXPRESSION);
+        for (String key : resultMap.keySet()) {
+            expression = expression.replaceAll(key, resultMap.get(key));
+        }
+        jep.parseExpression(expression);
+
+        String error = jep.getErrorInfo();
+
+        if (error != null) {
+            response.addResponse("Expression parse error: " + error.replaceAll("\"", ""));
+        } else {
+            try {
+                resultCounter++;
+                String resultKey = "RES" + resultCounter;
+                result = expression + " = " + jep.getValue();
+                resultMap.put(resultKey, jep.getValue() + "");
+                response.addResponse(String.format("%s: %s", resultKey, result));
+            } catch (ParseException e) {
+                throw new HokanException(e);
+            }
+        }
     }
-  }
 }

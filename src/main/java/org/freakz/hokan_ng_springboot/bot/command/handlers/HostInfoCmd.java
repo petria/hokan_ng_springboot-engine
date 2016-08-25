@@ -23,19 +23,19 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 @Slf4j
 @HelpGroups(
-    helpGroups = {HelpGroup.SYSTEM}
+        helpGroups = {HelpGroup.SYSTEM}
 )
 public class HostInfoCmd extends Cmd {
 
-  public HostInfoCmd() {
-    super();
-    setHelp("Shows information about the host machine where the Bot is running on.");
-  }
+    public HostInfoCmd() {
+        super();
+        setHelp("Shows information about the host machine where the Bot is running on.");
+    }
 
-  @Override
-  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    SystemScriptResult hostInfo =  scriptRunnerService.runAndGetResult(SystemScript.HOST_INFO_SCRIPT);
-    response.addResponse("I am running on: %s", hostInfo.getFormattedOutput());
-  }
+    @Override
+    public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+        SystemScriptResult hostInfo = scriptRunnerService.runAndGetResult(SystemScript.HOST_INFO_SCRIPT);
+        response.addResponse("I am running on: %s", hostInfo.getFormattedOutput());
+    }
 
 }
