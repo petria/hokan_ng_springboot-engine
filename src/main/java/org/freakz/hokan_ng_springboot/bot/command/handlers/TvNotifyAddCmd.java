@@ -29,11 +29,8 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_PROGRAM;
 )
 public class TvNotifyAddCmd extends Cmd {
 
-    @Autowired
-    private TvNotifyService tvNotifyService;
-
     public TvNotifyAddCmd() {
-        super();
+
         setHelp("Adds notify for Telkku programs.");
 
         UnflaggedOption opt = new UnflaggedOption(ARG_PROGRAM)
@@ -44,8 +41,8 @@ public class TvNotifyAddCmd extends Cmd {
     }
 
     @Override
-    public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-        InternalRequest iRequest = (InternalRequest) request;
+    public void handleRequest(InternalRequest iRequest, EngineResponse response, JSAPResult results) throws HokanException {
+
         TvNotify notify = tvNotifyService.getTvNotify(iRequest.getChannel(), results.getString(ARG_PROGRAM));
         if (notify != null) {
             response.addResponse("TvNotify: %d: %s already in notify list!", notify.getId(), notify.getNotifyPattern());
