@@ -29,15 +29,8 @@ import org.springframework.stereotype.Component;
 public class TvNowCmd extends Cmd {
 
     public TvNowCmd() {
-        super();
         setHelp("Shows what's going on in TV. Needs package xmltv to be installed on the host where the Bot is running.");
     }
-
-/*  @Override
-  public String getMatchPattern() {
-    return "!tvnow.*";
-  }
-*/
 
     @Override
     public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {

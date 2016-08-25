@@ -33,7 +33,7 @@ public class TvNotifyDelCmd extends Cmd {
     private TvNotifyService tvNotifyService;
 
     public TvNotifyDelCmd() {
-        super();
+
         setHelp("Removes TvNotify either by Id or by keyword");
 
         UnflaggedOption opt = new UnflaggedOption(ARG_PROGRAM)
@@ -48,7 +48,9 @@ public class TvNotifyDelCmd extends Cmd {
 
         String program = results.getString(ARG_PROGRAM);
         if (program.equals("all")) {
-            int removed = tvNotifyService.delTvNotifies(request.getChannel());
+            int before = tvNotifyService.getTvNotifies(request.getChannel()).size();
+            tvNotifyService.delTvNotifies(request.getChannel());
+            int removed = before - tvNotifyService.getTvNotifies(request.getChannel()).size();
             response.addResponse("Removed %d TvNotifies.", removed);
         } else {
             TvNotify notify;
