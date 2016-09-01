@@ -110,7 +110,7 @@ public class HelpCmd extends Cmd {
             for (Cmd cmd : commands) {
                 String usage = "!" + cmd.getName().toLowerCase() + " " + cmd.jsap.getUsage();
                 String help = cmd.jsap.getHelp();
-                sb.append("Usage    : ");
+                sb.append("\nUsage    : ");
                 sb.append(usage);
                 sb.append("\n");
                 String example = cmd.getExample();

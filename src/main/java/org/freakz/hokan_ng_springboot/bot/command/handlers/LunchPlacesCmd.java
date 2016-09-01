@@ -39,9 +39,9 @@ public class LunchPlacesCmd extends Cmd {
         if (lunchPlaces.size() == 0) {
             response.addResponse("No lunch places!!");
         } else {
-            String places = "I know following lunch places: ";
+            String places = "I know following lunch places:";
             for (LunchPlace lunchPlace : lunchPlaces) {
-                places += "  " + lunchPlace.getName();
+                places += "  '" + lunchPlace.getName() + "'";
             }
             response.addResponse("%s", places);
         }
