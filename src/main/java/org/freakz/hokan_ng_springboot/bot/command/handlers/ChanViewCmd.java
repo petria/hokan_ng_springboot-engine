@@ -67,12 +67,14 @@ public class ChanViewCmd extends Cmd {
         ChannelStats cs = channelStatsService.findFirstByChannel(theChannel);
         if (cs != null) {
             ret += String.format("  First joined   : %10s\n", StringStuff.formatNiceDate(cs.getFirstJoined(), false));
-            String lastMsg = cs.getLastMessage();
+/*            String lastMsg = cs.getLastMessage();
             if (lastMsg.length() > 6) {
                 lastMsg = lastMsg.substring(0, 5);
             }
             lastMsg += "...";
-            ret += String.format("  Last active    : %s (%s) \n", StringStuff.formatNiceDate(cs.getLastActive(), false), lastMsg);
+            TODO
+            */
+            ret += String.format("  Last active    : %s\n", StringStuff.formatNiceDate(cs.getLastActive(), false));
             ret += String.format("  Max user count : %d (on %s)\n", cs.getMaxUserCount(), StringStuff.formatNiceDate(cs.getMaxUserCountDate(), false));
             ret += String.format("  Write spree    : %s with %d lines\n", cs.getWriterSpreeOwner(), cs.getWriterSpreeRecord());
             ret += String.format("  Lines sent %3d  Lines Received %3d  Commands handled %3d", cs.getLinesSent(), cs.getLinesReceived(), cs.getCommandsHandled());

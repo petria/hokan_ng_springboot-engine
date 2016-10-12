@@ -18,6 +18,7 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_STARTUP_
 
 /**
  * Created by Petri Airio on 16.10.2015.
+ * -
  */
 @Component
 @Scope("prototype")

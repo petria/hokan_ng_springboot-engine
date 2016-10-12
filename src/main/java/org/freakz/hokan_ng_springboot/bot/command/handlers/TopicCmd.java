@@ -8,17 +8,15 @@ import org.freakz.hokan_ng_springboot.bot.command.annotation.HelpGroups;
 import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
-import org.freakz.hokan_ng_springboot.bot.jpa.entity.ChannelStats;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_TOPIC;
 
 /**
  * Created by Petri Airio on 21.9.2015.
+ * -
  */
-@Component
-@Scope("prototype")
+//@Component
+//@Scope("prototype")
 @Slf4j
 @HelpGroups(
         helpGroups = {HelpGroup.CHANNELS}
@@ -38,7 +36,7 @@ public class TopicCmd extends Cmd {
 
     @Override
     public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-        ChannelStats channelStats = request.getChannelStats();
+/*        ChannelStats channelStats = request.getChannelStats();
         String topic = results.getString(ARG_TOPIC);
         if (topic == null) {
             response.addResponse("'%s' set by %s on %s", channelStats.getTopicSet(), channelStats.getTopicSetBy(), channelStats.getTopicSetDate());
@@ -51,6 +49,8 @@ public class TopicCmd extends Cmd {
             }
             response.addEngineMethodCall("setTopic", request.getChannel().getChannelName(), newTopic);
         }
+        TODO
+        */
     }
 
 }
