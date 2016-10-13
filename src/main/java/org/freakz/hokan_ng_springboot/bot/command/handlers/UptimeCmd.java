@@ -32,12 +32,6 @@ public class UptimeCmd extends Cmd {
         setHelp("Shows system and each bot module uptime.");
     }
 
-/*  @Override
-  public String getMatchPattern() {
-    return "!uptime.*";
-  }
-*/
-
     @Override
     public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
         String[] sysUptime = scriptRunnerService.runScript(SystemScript.UPTIME_SCRIPT);
@@ -48,6 +42,9 @@ public class UptimeCmd extends Cmd {
         String uptime1 = String.format("%-13s     :%s\n", "System", sysUt);
         response.addResponse(uptime1);
         for (HokanModule module : HokanModule.values()) {
+            if (module.isHidden()) {
+                continue;
+            }
             HokanStatusModel statusModel = statusService.getHokanStatus(module);
             String modUt = "<n/a>";
             if (statusModel.getPingResponse() != null) {
