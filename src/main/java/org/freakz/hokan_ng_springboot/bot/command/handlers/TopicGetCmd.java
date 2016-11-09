@@ -1,44 +1,49 @@
 package org.freakz.hokan_ng_springboot.bot.command.handlers;
 
 import com.martiansoftware.jsap.JSAPResult;
-import com.martiansoftware.jsap.UnflaggedOption;
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.command.HelpGroup;
 import org.freakz.hokan_ng_springboot.bot.command.annotation.HelpGroups;
 import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
+import org.freakz.hokan_ng_springboot.bot.events.ServiceRequestType;
+import org.freakz.hokan_ng_springboot.bot.events.ServiceResponse;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
-
-import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_TOPIC;
+import org.freakz.hokan_ng_springboot.bot.models.ChannelSetTopic;
+import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  * Created by Petri Airio on 21.9.2015.
  * -
  */
-//@Component
-//@Scope("prototype")
+@Component
+@Scope("prototype")
 @Slf4j
 @HelpGroups(
         helpGroups = {HelpGroup.CHANNELS}
 )
-public class TopicCmd extends Cmd {
+public class TopicGetCmd extends Cmd {
 
-    public TopicCmd() {
-        super();
-        setHelp("Shows or sets channel topic.");
-
-        UnflaggedOption flg = new UnflaggedOption(ARG_TOPIC)
+    public TopicGetCmd() {
+        setHelp("Shows channel topic.");
+/*        UnflaggedOption flg = new UnflaggedOption(ARG_TOPIC)
                 .setRequired(false)
                 .setGreedy(false);
-        registerParameter(flg);
-
+        registerParameter(flg);*/
     }
 
     @Override
     public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-/*        ChannelStats channelStats = request.getChannelStats();
-        String topic = results.getString(ARG_TOPIC);
-        if (topic == null) {
+        ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.CHANNEL_TOPIC_GET_REQUEST, request.getIrcEvent(), "");
+        ChannelSetTopic setTopic = serviceResponse.getChannelSetTopic();
+        if (setTopic != null) {
+            response.addResponse("Topic '%s' set by %s at %s.", setTopic.getTopic(), setTopic.getSender(), StringStuff.formatNiceDate(setTopic.getTimestamp(), true, false));
+        } else {
+            response.addResponse("n/a");
+        }
+/*        if (topic == null) {
             response.addResponse("'%s' set by %s on %s", channelStats.getTopicSet(), channelStats.getTopicSetBy(), channelStats.getTopicSetDate());
         } else {
             String newTopic;
@@ -48,9 +53,9 @@ public class TopicCmd extends Cmd {
                 newTopic = topic;
             }
             response.addEngineMethodCall("setTopic", request.getChannel().getChannelName(), newTopic);
-        }
-        TODO
-        */
+        }*/
+
+
     }
 
 }
