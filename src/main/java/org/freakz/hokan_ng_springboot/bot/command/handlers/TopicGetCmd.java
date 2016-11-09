@@ -28,10 +28,6 @@ public class TopicGetCmd extends Cmd {
 
     public TopicGetCmd() {
         setHelp("Shows channel topic.");
-/*        UnflaggedOption flg = new UnflaggedOption(ARG_TOPIC)
-                .setRequired(false)
-                .setGreedy(false);
-        registerParameter(flg);*/
     }
 
     @Override
@@ -43,19 +39,6 @@ public class TopicGetCmd extends Cmd {
         } else {
             response.addResponse("n/a");
         }
-/*        if (topic == null) {
-            response.addResponse("'%s' set by %s on %s", channelStats.getTopicSet(), channelStats.getTopicSetBy(), channelStats.getTopicSetDate());
-        } else {
-            String newTopic;
-            if (topic.startsWith("+")) {
-                newTopic = channelStats.getTopicSet() + " | " + topic.substring(1);
-            } else {
-                newTopic = topic;
-            }
-            response.addEngineMethodCall("setTopic", request.getChannel().getChannelName(), newTopic);
-        }*/
-
-
     }
 
 }
