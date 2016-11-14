@@ -62,9 +62,10 @@ public class WeatherHourlyCmd extends Cmd {
                 sb.append("\n");
                 String hours = "";
                 String temps = "";
+                String format = getFormat(hourlyWeatherData.getLongestTemp());
                 for (int i = 0; i < hourlyWeatherData.getTimes().length; i++) {
-                    hours += String.format("%4s", hourlyWeatherData.getTimes()[i]);
-                    temps += String.format("%4s", hourlyWeatherData.getTemperatures()[i]);
+                    hours += String.format(format, hourlyWeatherData.getTimes()[i]);
+                    temps += String.format(format, hourlyWeatherData.getTemperatures()[i]);
                 }
                 sb.append(hours);
                 sb.append("\n");
@@ -80,5 +81,11 @@ public class WeatherHourlyCmd extends Cmd {
         }
 
     }
+
+    private String getFormat(int longestTemp) {
+        String format = "%" + (longestTemp + 1) + "s";
+        return format;
+    }
+
 
 }
