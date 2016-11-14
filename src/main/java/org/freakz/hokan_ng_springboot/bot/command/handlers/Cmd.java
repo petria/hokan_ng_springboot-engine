@@ -37,6 +37,7 @@ import java.util.*;
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @Slf4j
+@SuppressWarnings("unchecked")
 public abstract class Cmd implements HokanCommand, CommandRunnable {
 
     @Autowired
