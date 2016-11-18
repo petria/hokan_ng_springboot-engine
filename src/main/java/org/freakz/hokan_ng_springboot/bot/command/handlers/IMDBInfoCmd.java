@@ -38,6 +38,8 @@ public class IMDBInfoCmd extends Cmd {
                 .setGreedy(false);
         registerParameter(flg);
 
+        setBroken(true); // TODO FIX
+
     }
 
     @Override

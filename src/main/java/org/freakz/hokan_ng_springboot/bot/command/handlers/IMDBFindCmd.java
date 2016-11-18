@@ -37,7 +37,10 @@ public class IMDBFindCmd extends Cmd {
                 .setGreedy(false);
         registerParameter(flg);
 
+        setBroken(true); // TODO FIX
+
     }
+
 
     @Override
     public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {

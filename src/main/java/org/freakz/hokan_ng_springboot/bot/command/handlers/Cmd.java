@@ -106,6 +106,7 @@ public abstract class Cmd implements HokanCommand, CommandRunnable {
 
     protected JSAP jsap = new JSAP();
 
+    protected boolean broken;
     protected boolean channelOpOnly;
     protected boolean loggedInOnly;
     protected boolean channelOnly;
@@ -172,36 +173,10 @@ public abstract class Cmd implements HokanCommand, CommandRunnable {
         return null;
     }
 
-    private String getChannelIdOrFail(String channelId, InternalRequest request, EngineResponse response) {
-        if (request.getIrcEvent().isPrivate() && channelId == null) {
-            response.addResponse("ChannelID parameter is needed when using private message, try: !chanlist to get ID.");
-            return null;
-        }
-        channelId = "<current>";
-        return channelId;
+    protected void setBroken(boolean b) {
+        this.broken = b;
     }
 
-    private Channel getChannelOrFail(String channelId, InternalRequest request, EngineResponse response) {
-        if (channelId.equals("<current>")) {
-            return request.getChannel();
-        }
-        Channel theChannel;
-
-        long id;
-        try {
-            id = Long.parseLong(channelId);
-        } catch (NumberFormatException ex) {
-            response.addResponse("Valid ChannelID parameter is needed, try: !chanlist");
-            return null;
-        }
-        theChannel = channelService.findOne(id);
-        if (theChannel == null) {
-            response.addResponse("No valid Channel found with id: %d, try: !chanlist to get ID.", id);
-            return null;
-        }
-
-        return theChannel;
-    }
 
 
     protected String buildSeeAlso(Cmd cmd) {
@@ -271,7 +246,12 @@ public abstract class Cmd implements HokanCommand, CommandRunnable {
             sendReply(response, request.getJmsEnvelope());
             return;
         }
-
+        if (broken) {
+            log.debug("{} marked broken, not executing!", this.getName());
+            response.setResponseMessage("Command currently broken / does not work!");
+            sendReply(response, request.getJmsEnvelope());
+            return;
+        }
         if (args.hasArgs() && args.getArgs().equals("?")) {
             StringBuilder sb = new StringBuilder();
             String usage = "!" + this.getName().toLowerCase() + " " + this.jsap.getUsage();
