@@ -2,7 +2,6 @@ package org.freakz.hokan_ng_springboot.bot.command.handlers;
 
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.UnflaggedOption;
-import com.omertron.omdbapi.model.OmdbVideoFull;
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.command.HelpGroup;
 import org.freakz.hokan_ng_springboot.bot.command.annotation.HelpGroups;
@@ -46,7 +45,7 @@ public class IMDBInfoCmd extends Cmd {
         String text = results.getString(ARG_TEXT);
         ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.IMDB_DETAILED_INFO_REQUEST, request.getIrcEvent(), text);
         IMDBDetails details = serviceResponse.getIMDBDetails();
-        if (details.getDetails() != null) {
+/*        if (details.getDetails() != null) {
             OmdbVideoFull omdb = details.getDetails();
             String runtime = omdb.getRuntime();
             String rate = omdb.getImdbRating();
@@ -58,5 +57,7 @@ public class IMDBInfoCmd extends Cmd {
         } else {
             response.addResponse("Nothing found with: %s", text);
         }
+        TODO
+        */
     }
 }
