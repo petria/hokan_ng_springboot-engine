@@ -29,7 +29,7 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_TOPIC;
 public class TopicSetCmd extends Cmd {
 
   public TopicSetCmd() {
-    setHelp("Shets channel topic.");
+    setHelp("Sets channel topic.");
     UnflaggedOption flg = new UnflaggedOption(ARG_TOPIC)
         .setRequired(false)
         .setGreedy(false);
