@@ -10,15 +10,14 @@ import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.events.ServiceRequestType;
 import org.freakz.hokan_ng_springboot.bot.events.ServiceResponse;
 import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
-import org.freakz.hokan_ng_springboot.bot.models.IMDBSearchResults;
+import org.freakz.hokan_ng_springboot.bot.models.AlkoSearchResults;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_TEXT;
+import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_SEARCH;
 
 /**
- * Created by Petri Airio on 18.11.2015.
- * -
+ * Created by Petri Airio (petri.airio@gmail.com) 22/11/2016 / 9.03
  */
 @Component
 @Scope("prototype")
@@ -26,36 +25,32 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_TEXT;
 @HelpGroups(
         helpGroups = {HelpGroup.DATA_FETCHERS}
 )
-public class IMDBFindCmd extends Cmd {
+public class AlkoSearchCmd extends Cmd {
 
-    public IMDBFindCmd() {
+    public AlkoSearchCmd() {
+        setHelp("Search booze from alko.fi");
 
-        setHelp("Queries IMDB database using title search.");
-
-        UnflaggedOption flg = new UnflaggedOption(ARG_TEXT)
+        UnflaggedOption flg = new UnflaggedOption(ARG_SEARCH)
                 .setRequired(true)
                 .setGreedy(false);
         registerParameter(flg);
 
-        setBroken(true); // TODO FIX
-
     }
-
 
     @Override
     public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-        String text = results.getString(ARG_TEXT);
-        ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.IMDB_TITLE_REQUEST, request.getIrcEvent(), text);
-        IMDBSearchResults imdbSearchResults = serviceResponse.getIMDBTitleData();
-/*        if (imdbSearchResults.getSearchResults() != null) {
-            for (OmdbVideoBasic omdb : imdbSearchResults.getSearchResults()) {
-                String imdbURL = String.format("http://www.imdb.com/title/%s/", omdb.getImdbID());
-                response.addResponse("[%7s] %25s :: \"%s\" (%s)\n", omdb.getType(), imdbURL, omdb.getTitle(), omdb.getYear());
+        String text = results.getString(ARG_SEARCH);
+        ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.ALKO_SEARCH_REQUEST, request.getIrcEvent(), text);
+        AlkoSearchResults alkoSearchResults = serviceResponse.getAlkoSearchResults();
+        if (alkoSearchResults.getResults().size() > 0) {
+            String resp = "";
+            for (int i = 0; i < alkoSearchResults.getResults().size(); i++) {
+                resp += (i + 1) + ") " + alkoSearchResults.getResults().get(i) + " ";
             }
+            response.addResponse(resp);
         } else {
-            response.addResponse("Nothing found with: %s", text);
+            response.addResponse("No booze found with: %s", text);
         }
-        TODO
-        */
     }
+
 }
