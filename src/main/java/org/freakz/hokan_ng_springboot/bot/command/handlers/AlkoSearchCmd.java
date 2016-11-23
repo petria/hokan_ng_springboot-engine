@@ -28,7 +28,7 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_SEARCH;
 public class AlkoSearchCmd extends Cmd {
 
     public AlkoSearchCmd() {
-        setHelp("Search booze from alko.fi");
+        setHelp("Search booze from alko.fi ");
 
         UnflaggedOption flg = new UnflaggedOption(ARG_SEARCH)
                 .setRequired(true)
