@@ -30,9 +30,9 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_COUNT;
 @HelpGroups(
         helpGroups = {HelpGroup.PROCESS}
 )
-public class LastcommCmd extends Cmd {
+public class LastCommCmd extends Cmd {
 
-    public LastcommCmd() {
+    public LastCommCmd() {
         super();
         setHelp("Shows executed processes in Bot.");
 
