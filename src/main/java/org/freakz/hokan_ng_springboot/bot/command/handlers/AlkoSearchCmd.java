@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_SEARCH;
 
 /**
- * Created by Petri Airio (petri.airio@gmail.com) 22/11/2016 / 9.03
+ * Created by Petri Airio (petri.j.airio@gmail.com) 22/11/2016 / 9.03
  */
 @Component
 @Scope("prototype")
