@@ -19,24 +19,28 @@ import java.util.Date;
 
 /**
  * Created by Petri Airio on 10.2.2015.
+ * -
  */
 @Controller
 @Slf4j
 public class EngineServiceMessageHandlerImpl implements JmsServiceMessageHandler {
 
-    @Autowired
-    private ApplicationContext context;
+    private final ApplicationContext context;
+
+    private final CommandHandlerService commandHandlerService;
+
+    private final JmsSender jmsSender;
 
     @Autowired
-    private CommandHandlerService commandHandlerService;
-
-    @Autowired
-    private JmsSender jmsSender;
+    public EngineServiceMessageHandlerImpl(ApplicationContext context, CommandHandlerService commandHandlerService, JmsSender jmsSender) {
+        this.context = context;
+        this.commandHandlerService = commandHandlerService;
+        this.jmsSender = jmsSender;
+    }
 
     @Override
     public void handleJmsEnvelope(JmsEnvelope envelope) throws Exception {
         IrcMessageEvent event = (IrcMessageEvent) envelope.getMessageIn().getPayLoadObject("EVENT");
-        boolean isEngineRequest = false;
         if (event == null) {
 
             ServiceRequest serviceRequest = (ServiceRequest) envelope.getMessageIn().getPayLoadObject("ENGINE_REQUEST");
@@ -76,7 +80,6 @@ public class EngineServiceMessageHandlerImpl implements JmsServiceMessageHandler
     private void executeHandler(IrcMessageEvent event, Cmd handler, JmsEnvelope envelope) {
         EngineResponse response = new EngineResponse(event);
         response.setIsEngineRequest(event.isWebMessage());
-
 
         InternalRequest internalRequest;
         internalRequest = context.getBean(InternalRequest.class);

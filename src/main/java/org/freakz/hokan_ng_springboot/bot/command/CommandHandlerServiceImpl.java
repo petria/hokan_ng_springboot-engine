@@ -19,10 +19,11 @@ import java.util.List;
 @Service
 public class CommandHandlerServiceImpl implements CommandHandlerService {
 
-    @Autowired
-    private ApplicationContext context;
+    private final ApplicationContext context;
 
-    public CommandHandlerServiceImpl() {
+    @Autowired
+    public CommandHandlerServiceImpl(ApplicationContext context) {
+        this.context = context;
     }
 
     @Override

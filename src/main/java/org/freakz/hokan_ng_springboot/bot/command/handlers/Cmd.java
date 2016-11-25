@@ -14,7 +14,6 @@ import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
 import org.freakz.hokan_ng_springboot.bot.jms.JmsEnvelope;
 import org.freakz.hokan_ng_springboot.bot.jms.JmsMessage;
 import org.freakz.hokan_ng_springboot.bot.jms.api.JmsSender;
-import org.freakz.hokan_ng_springboot.bot.jpa.entity.Channel;
 import org.freakz.hokan_ng_springboot.bot.jpa.service.*;
 import org.freakz.hokan_ng_springboot.bot.service.AccessControlService;
 import org.freakz.hokan_ng_springboot.bot.service.HokanStatusService;
@@ -149,35 +148,14 @@ public abstract class Cmd implements HokanCommand, CommandRunnable {
         return name;
     }
 
-
     @Override
     public String getExample() {
-        return null;
-    }
-
-    private Channel getRequiredChannel(String channelId) {
-        long id;
-        try {
-            id = Long.parseLong(channelId);
-        } catch (NumberFormatException ex) {
-            return null;
-        }
-/*    theChannel = channelService.findOne(id);
-    if (theChannel == null) {
-      response.addResponse("No valid Channel found with id: %d, try: !chanlist to get ID.", id);
-      return null;
-    }
-    TODO: fix
-    */
-
         return null;
     }
 
     protected void setBroken(boolean b) {
         this.broken = b;
     }
-
-
 
     protected String buildSeeAlso(Cmd cmd) {
 
@@ -483,10 +461,6 @@ public abstract class Cmd implements HokanCommand, CommandRunnable {
         }
         return new ServiceResponse(requestType);
 
-    }
-
-    public void sendToUi(String text) {
-        ObjectMessage objectMessage = jmsSender.sendAndGetReply(HokanModule.HokanUi.getQueueName(), "TEXT", text, false);
     }
 
 }
