@@ -2,16 +2,16 @@ package org.freakz.hokan_ng_springboot.bot.command.handlers;
 
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.UnflaggedOption;
-import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
-import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
-import org.freakz.hokan_ng_springboot.bot.events.ServiceRequestType;
-import org.freakz.hokan_ng_springboot.bot.events.ServiceResponse;
-import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
-import org.freakz.hokan_ng_springboot.bot.models.HoroHolder;
+import org.freakz.hokan_ng_springboot.bot.common.events.EngineResponse;
+import org.freakz.hokan_ng_springboot.bot.common.events.InternalRequest;
+import org.freakz.hokan_ng_springboot.bot.common.events.ServiceRequestType;
+import org.freakz.hokan_ng_springboot.bot.common.events.ServiceResponse;
+import org.freakz.hokan_ng_springboot.bot.common.exception.HokanException;
+import org.freakz.hokan_ng_springboot.bot.common.models.HoroHolder;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_HORO;
+import static org.freakz.hokan_ng_springboot.bot.common.util.StaticStrings.ARG_HORO;
 
 /**
  * Created by Petri Airio (petri.j.airio@gmail.com) on 26.4.2015.

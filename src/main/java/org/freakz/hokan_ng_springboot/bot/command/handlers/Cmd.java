@@ -1,32 +1,58 @@
 package org.freakz.hokan_ng_springboot.bot.command.handlers;
 
 
-import com.martiansoftware.jsap.*;
+import com.martiansoftware.jsap.IDMap;
+import com.martiansoftware.jsap.JSAP;
+import com.martiansoftware.jsap.JSAPException;
+import com.martiansoftware.jsap.JSAPResult;
+import com.martiansoftware.jsap.Parameter;
 import lombok.extern.slf4j.Slf4j;
-import org.freakz.hokan_ng_springboot.bot.cmdpool.CommandPool;
-import org.freakz.hokan_ng_springboot.bot.cmdpool.CommandRunnable;
 import org.freakz.hokan_ng_springboot.bot.command.HelpGroup;
 import org.freakz.hokan_ng_springboot.bot.command.annotation.HelpGroups;
-import org.freakz.hokan_ng_springboot.bot.enums.HokanModule;
-import org.freakz.hokan_ng_springboot.bot.events.*;
-import org.freakz.hokan_ng_springboot.bot.exception.HokanEngineException;
-import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
-import org.freakz.hokan_ng_springboot.bot.jms.JmsEnvelope;
-import org.freakz.hokan_ng_springboot.bot.jms.JmsMessage;
-import org.freakz.hokan_ng_springboot.bot.jms.api.JmsSender;
-import org.freakz.hokan_ng_springboot.bot.jpa.service.*;
-import org.freakz.hokan_ng_springboot.bot.service.AccessControlService;
-import org.freakz.hokan_ng_springboot.bot.service.HokanStatusService;
-import org.freakz.hokan_ng_springboot.bot.service.StatsService;
-import org.freakz.hokan_ng_springboot.bot.service.SystemScriptRunnerService;
-import org.freakz.hokan_ng_springboot.bot.util.CommandArgs;
+import org.freakz.hokan_ng_springboot.bot.common.cmdpool.CommandPool;
+import org.freakz.hokan_ng_springboot.bot.common.cmdpool.CommandRunnable;
+import org.freakz.hokan_ng_springboot.bot.common.enums.HokanModule;
+import org.freakz.hokan_ng_springboot.bot.common.events.EngineResponse;
+import org.freakz.hokan_ng_springboot.bot.common.events.InternalRequest;
+import org.freakz.hokan_ng_springboot.bot.common.events.IrcMessageEvent;
+import org.freakz.hokan_ng_springboot.bot.common.events.ServiceRequest;
+import org.freakz.hokan_ng_springboot.bot.common.events.ServiceRequestType;
+import org.freakz.hokan_ng_springboot.bot.common.events.ServiceResponse;
+import org.freakz.hokan_ng_springboot.bot.common.exception.HokanEngineException;
+import org.freakz.hokan_ng_springboot.bot.common.exception.HokanException;
+import org.freakz.hokan_ng_springboot.bot.common.jms.JmsEnvelope;
+import org.freakz.hokan_ng_springboot.bot.common.jms.JmsMessage;
+import org.freakz.hokan_ng_springboot.bot.common.jms.api.JmsSender;
+import org.freakz.hokan_ng_springboot.bot.common.jpa.service.AliasService;
+import org.freakz.hokan_ng_springboot.bot.common.jpa.service.ChannelPropertyService;
+import org.freakz.hokan_ng_springboot.bot.common.jpa.service.ChannelService;
+import org.freakz.hokan_ng_springboot.bot.common.jpa.service.ChannelStatsService;
+import org.freakz.hokan_ng_springboot.bot.common.jpa.service.CommandHistoryService;
+import org.freakz.hokan_ng_springboot.bot.common.jpa.service.IrcLogService;
+import org.freakz.hokan_ng_springboot.bot.common.jpa.service.JoinedUserService;
+import org.freakz.hokan_ng_springboot.bot.common.jpa.service.NetworkService;
+import org.freakz.hokan_ng_springboot.bot.common.jpa.service.PropertyService;
+import org.freakz.hokan_ng_springboot.bot.common.jpa.service.SearchReplaceService;
+import org.freakz.hokan_ng_springboot.bot.common.jpa.service.TvNotifyService;
+import org.freakz.hokan_ng_springboot.bot.common.jpa.service.UrlLoggerService;
+import org.freakz.hokan_ng_springboot.bot.common.jpa.service.UserChannelService;
+import org.freakz.hokan_ng_springboot.bot.common.jpa.service.UserService;
+import org.freakz.hokan_ng_springboot.bot.common.service.AccessControlService;
+import org.freakz.hokan_ng_springboot.bot.common.service.HokanStatusService;
+import org.freakz.hokan_ng_springboot.bot.common.service.StatsService;
+import org.freakz.hokan_ng_springboot.bot.common.service.SystemScriptRunnerService;
+import org.freakz.hokan_ng_springboot.bot.common.util.CommandArgs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
 import javax.jms.JMSException;
 import javax.jms.ObjectMessage;
 import java.lang.annotation.Annotation;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * User: petria

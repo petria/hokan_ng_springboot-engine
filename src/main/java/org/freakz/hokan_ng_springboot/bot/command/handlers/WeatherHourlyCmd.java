@@ -4,23 +4,23 @@ import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.UnflaggedOption;
 import org.freakz.hokan_ng_springboot.bot.command.HelpGroup;
 import org.freakz.hokan_ng_springboot.bot.command.annotation.HelpGroups;
-import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
-import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
-import org.freakz.hokan_ng_springboot.bot.events.ServiceRequestType;
-import org.freakz.hokan_ng_springboot.bot.events.ServiceResponse;
-import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
-import org.freakz.hokan_ng_springboot.bot.models.CityData;
-import org.freakz.hokan_ng_springboot.bot.models.HourlyWeatherData;
-import org.freakz.hokan_ng_springboot.bot.service.cityresolver.CityResolver;
+import org.freakz.hokan_ng_springboot.bot.common.events.EngineResponse;
+import org.freakz.hokan_ng_springboot.bot.common.events.InternalRequest;
+import org.freakz.hokan_ng_springboot.bot.common.events.ServiceRequestType;
+import org.freakz.hokan_ng_springboot.bot.common.events.ServiceResponse;
+import org.freakz.hokan_ng_springboot.bot.common.exception.HokanException;
+import org.freakz.hokan_ng_springboot.bot.common.models.CityData;
+import org.freakz.hokan_ng_springboot.bot.common.models.HourlyWeatherData;
+import org.freakz.hokan_ng_springboot.bot.common.service.cityresolver.CityResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_PLACE;
+import static org.freakz.hokan_ng_springboot.bot.common.util.StaticStrings.ARG_PLACE;
 
 /**
  * Created by Petri Airio on 11.8.2016.
- * -
+ *
  */
 @Component
 @Scope("prototype")

@@ -5,18 +5,18 @@ import com.martiansoftware.jsap.UnflaggedOption;
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.command.HelpGroup;
 import org.freakz.hokan_ng_springboot.bot.command.annotation.HelpGroups;
-import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
-import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
-import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
-import org.freakz.hokan_ng_springboot.bot.jpa.entity.Url;
-import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
+import org.freakz.hokan_ng_springboot.bot.common.events.EngineResponse;
+import org.freakz.hokan_ng_springboot.bot.common.events.InternalRequest;
+import org.freakz.hokan_ng_springboot.bot.common.exception.HokanException;
+import org.freakz.hokan_ng_springboot.bot.common.jpa.entity.Url;
+import org.freakz.hokan_ng_springboot.bot.common.util.StringStuff;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_NICK;
-import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_URL_PATTERN;
+import static org.freakz.hokan_ng_springboot.bot.common.util.StaticStrings.ARG_NICK;
+import static org.freakz.hokan_ng_springboot.bot.common.util.StaticStrings.ARG_URL_PATTERN;
 
 /**
  * User: petria

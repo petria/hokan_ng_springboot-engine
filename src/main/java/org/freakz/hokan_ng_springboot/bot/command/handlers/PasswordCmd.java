@@ -6,15 +6,18 @@ import com.martiansoftware.jsap.UnflaggedOption;
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.command.HelpGroup;
 import org.freakz.hokan_ng_springboot.bot.command.annotation.HelpGroups;
-import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
-import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
-import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
-import org.freakz.hokan_ng_springboot.bot.jpa.entity.User;
-import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
+import org.freakz.hokan_ng_springboot.bot.common.events.EngineResponse;
+import org.freakz.hokan_ng_springboot.bot.common.events.InternalRequest;
+import org.freakz.hokan_ng_springboot.bot.common.exception.HokanException;
+import org.freakz.hokan_ng_springboot.bot.common.jpa.entity.User;
+import org.freakz.hokan_ng_springboot.bot.common.util.StringStuff;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.*;
+import static org.freakz.hokan_ng_springboot.bot.common.util.StaticStrings.ARG_NEW_PASSWORD1;
+import static org.freakz.hokan_ng_springboot.bot.common.util.StaticStrings.ARG_NEW_PASSWORD2;
+import static org.freakz.hokan_ng_springboot.bot.common.util.StaticStrings.ARG_NICK;
+import static org.freakz.hokan_ng_springboot.bot.common.util.StaticStrings.ARG_OLD_PASSWORD;
 
 /**
  * User: petria

@@ -5,19 +5,19 @@ import com.martiansoftware.jsap.UnflaggedOption;
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.command.HelpGroup;
 import org.freakz.hokan_ng_springboot.bot.command.annotation.HelpGroups;
-import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
-import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
-import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
-import org.freakz.hokan_ng_springboot.bot.jpa.entity.Channel;
+import org.freakz.hokan_ng_springboot.bot.common.events.EngineResponse;
+import org.freakz.hokan_ng_springboot.bot.common.events.InternalRequest;
+import org.freakz.hokan_ng_springboot.bot.common.exception.HokanException;
+import org.freakz.hokan_ng_springboot.bot.common.jpa.entity.Channel;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_CHANNEL_ID;
-import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_MESSAGE;
+import static org.freakz.hokan_ng_springboot.bot.common.util.StaticStrings.ARG_CHANNEL_ID;
+import static org.freakz.hokan_ng_springboot.bot.common.util.StaticStrings.ARG_MESSAGE;
 
 /**
  * Created by Petri Airio on 6.11.2015.
- * -
+ *
  */
 @Component
 @Scope("prototype")
@@ -28,7 +28,7 @@ import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_MESSAGE;
 public class ChanSendCmd extends Cmd {
 
     public ChanSendCmd() {
-        super();
+
         setHelp("Sends message to specified channel.");
         setChannelOpOnly(true);
 

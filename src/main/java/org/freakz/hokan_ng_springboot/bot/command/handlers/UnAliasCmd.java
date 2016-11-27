@@ -5,14 +5,14 @@ import com.martiansoftware.jsap.UnflaggedOption;
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.command.HelpGroup;
 import org.freakz.hokan_ng_springboot.bot.command.annotation.HelpGroups;
-import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
-import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
-import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
-import org.freakz.hokan_ng_springboot.bot.jpa.entity.Alias;
+import org.freakz.hokan_ng_springboot.bot.common.events.EngineResponse;
+import org.freakz.hokan_ng_springboot.bot.common.events.InternalRequest;
+import org.freakz.hokan_ng_springboot.bot.common.exception.HokanException;
+import org.freakz.hokan_ng_springboot.bot.common.jpa.entity.Alias;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_ALIAS;
+import static org.freakz.hokan_ng_springboot.bot.common.util.StaticStrings.ARG_ALIAS;
 
 /**
  * User: petria
@@ -31,7 +31,7 @@ public class UnAliasCmd extends Cmd {
 
 
     public UnAliasCmd() {
-        super();
+
         setHelp("Removes an alias.");
 
         UnflaggedOption flg = new UnflaggedOption(ARG_ALIAS)

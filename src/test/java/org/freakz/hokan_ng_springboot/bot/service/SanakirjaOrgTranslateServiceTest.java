@@ -1,9 +1,9 @@
 package org.freakz.hokan_ng_springboot.bot.service;
 
-import org.freakz.hokan_ng_springboot.bot.models.TranslateData;
-import org.freakz.hokan_ng_springboot.bot.models.TranslateResponse;
-import org.freakz.hokan_ng_springboot.bot.service.translate.SanakirjaOrgTranslateService;
-import org.freakz.hokan_ng_springboot.bot.service.translate.SanakirjaOrgTranslateServiceImpl;
+import org.freakz.hokan_ng_springboot.bot.common.models.TranslateData;
+import org.freakz.hokan_ng_springboot.bot.common.models.TranslateResponse;
+import org.freakz.hokan_ng_springboot.bot.common.service.translate.SanakirjaOrgTranslateService;
+import org.freakz.hokan_ng_springboot.bot.common.service.translate.SanakirjaOrgTranslateServiceImpl;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

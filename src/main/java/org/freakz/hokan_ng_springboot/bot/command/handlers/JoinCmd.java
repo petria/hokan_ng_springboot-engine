@@ -4,13 +4,13 @@ import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.UnflaggedOption;
 import org.freakz.hokan_ng_springboot.bot.command.HelpGroup;
 import org.freakz.hokan_ng_springboot.bot.command.annotation.HelpGroups;
-import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
-import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
+import org.freakz.hokan_ng_springboot.bot.common.events.EngineResponse;
+import org.freakz.hokan_ng_springboot.bot.common.events.InternalRequest;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_CHANNEL;
-import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_PASSWORD;
+import static org.freakz.hokan_ng_springboot.bot.common.util.StaticStrings.ARG_CHANNEL;
+import static org.freakz.hokan_ng_springboot.bot.common.util.StaticStrings.ARG_PASSWORD;
 
 /**
  * User: petria

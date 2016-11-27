@@ -3,13 +3,13 @@ package org.freakz.hokan_ng_springboot.bot.command.handlers;
 import com.martiansoftware.jsap.JSAPResult;
 import org.freakz.hokan_ng_springboot.bot.command.HelpGroup;
 import org.freakz.hokan_ng_springboot.bot.command.annotation.HelpGroups;
-import org.freakz.hokan_ng_springboot.bot.enums.HokanModule;
-import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
-import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
-import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
-import org.freakz.hokan_ng_springboot.bot.models.HokanStatusModel;
-import org.freakz.hokan_ng_springboot.bot.service.SystemScript;
-import org.freakz.hokan_ng_springboot.bot.util.Uptime;
+import org.freakz.hokan_ng_springboot.bot.common.enums.HokanModule;
+import org.freakz.hokan_ng_springboot.bot.common.events.EngineResponse;
+import org.freakz.hokan_ng_springboot.bot.common.events.InternalRequest;
+import org.freakz.hokan_ng_springboot.bot.common.exception.HokanException;
+import org.freakz.hokan_ng_springboot.bot.common.models.HokanStatusModel;
+import org.freakz.hokan_ng_springboot.bot.common.service.SystemScript;
+import org.freakz.hokan_ng_springboot.bot.common.util.Uptime;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -28,7 +28,6 @@ import org.springframework.stereotype.Component;
 public class UptimeCmd extends Cmd {
 
     public UptimeCmd() {
-        super();
         setHelp("Shows system and each bot module uptime.");
     }
 

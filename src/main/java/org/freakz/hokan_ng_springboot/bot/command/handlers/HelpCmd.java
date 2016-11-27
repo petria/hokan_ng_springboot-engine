@@ -5,9 +5,9 @@ import com.martiansoftware.jsap.UnflaggedOption;
 import org.freakz.hokan_ng_springboot.bot.command.CommandHandlerService;
 import org.freakz.hokan_ng_springboot.bot.command.HelpGroup;
 import org.freakz.hokan_ng_springboot.bot.command.annotation.HelpGroups;
-import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
-import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
-import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
+import org.freakz.hokan_ng_springboot.bot.common.events.EngineResponse;
+import org.freakz.hokan_ng_springboot.bot.common.events.InternalRequest;
+import org.freakz.hokan_ng_springboot.bot.common.exception.HokanException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_COMMAND;
+import static org.freakz.hokan_ng_springboot.bot.common.util.StaticStrings.ARG_COMMAND;
 
 /**
  * User: petria

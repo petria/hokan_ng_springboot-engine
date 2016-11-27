@@ -4,19 +4,19 @@ package org.freakz.hokan_ng_springboot.bot.command.handlers;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.UnflaggedOption;
 import lombok.extern.slf4j.Slf4j;
-import org.freakz.hokan_ng_springboot.bot.events.EngineResponse;
-import org.freakz.hokan_ng_springboot.bot.events.InternalRequest;
-import org.freakz.hokan_ng_springboot.bot.exception.HokanException;
-import org.freakz.hokan_ng_springboot.bot.util.HttpPostFetcher;
-import org.freakz.hokan_ng_springboot.bot.util.StringStuff;
+import org.freakz.hokan_ng_springboot.bot.common.events.EngineResponse;
+import org.freakz.hokan_ng_springboot.bot.common.events.InternalRequest;
+import org.freakz.hokan_ng_springboot.bot.common.exception.HokanException;
+import org.freakz.hokan_ng_springboot.bot.common.util.HttpPostFetcher;
+import org.freakz.hokan_ng_springboot.bot.common.util.StringStuff;
 import org.springframework.context.annotation.Scope;
 
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_CITY_1;
-import static org.freakz.hokan_ng_springboot.bot.util.StaticStrings.ARG_CITY_2;
+import static org.freakz.hokan_ng_springboot.bot.common.util.StaticStrings.ARG_CITY_1;
+import static org.freakz.hokan_ng_springboot.bot.common.util.StaticStrings.ARG_CITY_2;
 
 /**
  * User: petria
