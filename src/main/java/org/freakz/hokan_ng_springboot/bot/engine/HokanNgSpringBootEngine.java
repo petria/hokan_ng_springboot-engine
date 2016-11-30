@@ -23,6 +23,7 @@ public class HokanNgSpringBootEngine {
 
     private static String JMS_BROKER_URL = "tcp://localhost:61616";
 
+
     @Bean
     public ConnectionFactory connectionFactory() {
         ActiveMQConnectionFactory activeMQConnectionFactory = new ActiveMQConnectionFactory(JMS_BROKER_URL);
