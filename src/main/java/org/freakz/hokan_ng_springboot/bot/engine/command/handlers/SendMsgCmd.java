@@ -12,7 +12,7 @@ import org.freakz.hokan_ng_springboot.bot.engine.command.annotation.HelpGroups;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import static org.freakz.hokan_ng_springboot.bot.common.util.StaticStrings.ARG_CHANNEL_ID;
+import static org.freakz.hokan_ng_springboot.bot.common.util.StaticStrings.ARG_TARGET;
 import static org.freakz.hokan_ng_springboot.bot.common.util.StaticStrings.ARG_MESSAGE;
 
 /**
@@ -23,16 +23,15 @@ import static org.freakz.hokan_ng_springboot.bot.common.util.StaticStrings.ARG_M
 @Scope("prototype")
 @Slf4j
 @HelpGroups(
-        helpGroups = {HelpGroup.CHANNELS}
+        helpGroups = {HelpGroup.ADMIN}
 )
-public class ChanSendCmd extends Cmd {
+public class SendMsgCmd extends Cmd {
 
-    public ChanSendCmd() {
+    public SendMsgCmd() {
 
-        setHelp("Sends message to specified channel.");
-        setChannelOpOnly(true);
+        setHelp("Try to send message to target user or channel.");
 
-        UnflaggedOption unflaggedOption = new UnflaggedOption(ARG_CHANNEL_ID)
+        UnflaggedOption unflaggedOption = new UnflaggedOption(ARG_TARGET)
                 .setRequired(true)
                 .setGreedy(false);
         registerParameter(unflaggedOption);
@@ -42,31 +41,17 @@ public class ChanSendCmd extends Cmd {
                 .setGreedy(false);
         registerParameter(unflaggedOption);
 
+        setAdminUserOnly(true);
+
     }
 
     @Override
     public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
 
-        String channelId = results.getString(ARG_CHANNEL_ID, null);
-        if (request.getIrcEvent().isPrivate() && channelId == null) {
-            response.addResponse("ChannelID parameter is needed when using private message, try: !chanlist to get ID.");
-            return;
-        }
-        Channel theChannel = request.getChannel();
-        if (channelId != null) {
-            long id;
-            try {
-                id = Long.parseLong(channelId);
-            } catch (NumberFormatException ex) {
-                response.addResponse("Valid ChannelID parameter is needed, try: !chanlist");
-                return;
-            }
-            theChannel = channelService.findOne(id);
-            if (theChannel == null) {
-                response.addResponse("No valid Channel found with id: %d, try: !chanlist to get ID.", id);
-                return;
-            }
-        }
+        String target = results.getString(ARG_TARGET);
+        String message = results.getString(ARG_MESSAGE);
+        response.setReplyTo(target);
+        response.addResponse("%s", message);
 
     }
 }

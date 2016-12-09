@@ -244,7 +244,7 @@ public abstract class Cmd implements HokanCommand, CommandRunnable {
         IrcMessageEvent ircEvent = request.getIrcEvent();
         CommandArgs args = new CommandArgs(ircEvent.getMessage());
 
-        response.setCommandClass(this.getClass().toString());
+//        response.setCommandClass(this.getClass().toString());
         if (!checkAccess(request, response)) {
             log.debug("Access denied user: {} - command {}", request.getUser(), this);
             sendReply(response, request.getJmsEnvelope());
@@ -334,7 +334,6 @@ public abstract class Cmd implements HokanCommand, CommandRunnable {
     private void sendReply(EngineResponse response, JmsEnvelope envelope) {
 //    log.debug("Sending response: {}", response);
         if (response.isEngineRequest()) {
-
             envelope.getMessageOut().addPayLoadObject("ENGINE_RESPONSE", response.getResponseMessage());
         } else {
             jmsSender.send(HokanModule.HokanIo.getQueueName(), "ENGINE_RESPONSE", response, false);

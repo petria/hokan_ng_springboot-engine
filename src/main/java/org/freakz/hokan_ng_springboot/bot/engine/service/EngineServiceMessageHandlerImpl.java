@@ -3,6 +3,7 @@ package org.freakz.hokan_ng_springboot.bot.engine.service;
 import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.common.enums.HokanModule;
 import org.freakz.hokan_ng_springboot.bot.common.events.EngineResponse;
+import org.freakz.hokan_ng_springboot.bot.common.events.EngineResponseNew;
 import org.freakz.hokan_ng_springboot.bot.common.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.common.events.IrcMessageEvent;
 import org.freakz.hokan_ng_springboot.bot.common.events.ServiceRequest;
@@ -57,7 +58,7 @@ public class EngineServiceMessageHandlerImpl implements JmsServiceMessageHandler
                 Cmd handler = matches.getMatches().get(0);
                 executeHandler(event, handler, envelope);
             } else {
-                EngineResponse response = new EngineResponse(event);
+                EngineResponse response = new EngineResponseNew(event);
                 String multiple = matches.getFirstWord() + " multiple matches: ";
                 for (Cmd match : matches.getMatches()) {
                     multiple += match.getName() + " ";
@@ -73,12 +74,12 @@ public class EngineServiceMessageHandlerImpl implements JmsServiceMessageHandler
         if (response.getIrcMessageEvent().isWebMessage()) {
             envelope.getMessageOut().addPayLoadObject("SERVICE_RESPONSE", response);
         } else {
-            jmsSender.send(HokanModule.HokanIo.getQueueName(), "ENGINE_RESPONSE", response, false);
+            jmsSender.send(HokanModule.HokanIo.getQueueName(), "SERVICE_RESPONSE", response, false);
         }
     }
 
     private void executeHandler(IrcMessageEvent event, Cmd handler, JmsEnvelope envelope) {
-        EngineResponse response = new EngineResponse(event);
+        EngineResponse response = new EngineResponseNew(event);
         response.setIsEngineRequest(event.isWebMessage());
 
         InternalRequest internalRequest;
