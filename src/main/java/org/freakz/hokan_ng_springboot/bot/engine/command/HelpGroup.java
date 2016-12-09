@@ -9,6 +9,7 @@ package org.freakz.hokan_ng_springboot.bot.engine.command;
  */
 public enum HelpGroup {
 
+    ADMIN("Admin", "Admin user commands"),
     ALIAS("Aliases", ""),
     ACCESS_CONTROL("Access control", ""),
     CHANNELS("Channels", ""),
