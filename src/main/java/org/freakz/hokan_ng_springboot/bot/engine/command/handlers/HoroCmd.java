@@ -21,18 +21,13 @@ import static org.freakz.hokan_ng_springboot.bot.common.util.StaticStrings.ARG_H
 public class HoroCmd extends Cmd {
 
     public HoroCmd() {
-        super();
+
         UnflaggedOption opt = new UnflaggedOption(ARG_HORO)
                 .setRequired(true)
                 .setGreedy(false);
         registerParameter(opt);
 
     }
-
-/*  @Override
-  public String getMatchPattern() {
-    return "!horo.*";
-  }*/
 
 
     @Override
