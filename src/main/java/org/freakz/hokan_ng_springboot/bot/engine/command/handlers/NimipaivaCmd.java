@@ -11,10 +11,10 @@ import org.freakz.hokan_ng_springboot.bot.common.exception.HokanException;
 import org.freakz.hokan_ng_springboot.bot.common.models.NimipaivaData;
 import org.freakz.hokan_ng_springboot.bot.common.util.StringStuff;
 import org.freakz.hokan_ng_springboot.bot.common.util.TimeUtil;
-import org.joda.time.DateTime;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,9 +53,9 @@ public class NimipaivaCmd extends Cmd {
     public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
 
         String nimiOrPvm = results.getString(ARG_NIMI_OR_PVM);
-        DateTime dateTime;
+        LocalDateTime dateTime;
         if (nimiOrPvm == null) {
-            dateTime = DateTime.now();
+            dateTime = LocalDateTime.now();
         } else {
             dateTime = TimeUtil.parseDateTime(nimiOrPvm);
         }
@@ -63,7 +63,7 @@ public class NimipaivaCmd extends Cmd {
             ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.NIMIPAIVA_DAY_REQUEST, request.getIrcEvent(), dateTime);
             NimipaivaData names = serviceResponse.getNimipaivaDayResponse();
             if (names.getNames().size() > 0) {
-                StringBuilder sb = new StringBuilder(StringStuff.formatTime(names.getDay().toDate(), StringStuff.STRING_STUFF_DF_DDMMYYYY) + " ::");
+                StringBuilder sb = new StringBuilder(StringStuff.formatTime(TimeUtil.localDateTimeToDate(names.getDay()), StringStuff.STRING_STUFF_DF_DDMMYYYY) + " ::");
                 for (String name : names.getNames()) {
                     sb.append(" ").append(name);
                 }
@@ -73,7 +73,8 @@ public class NimipaivaCmd extends Cmd {
             ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.NIMIPAIVA_NAME_REQUEST, request.getIrcEvent(), nimiOrPvm);
             NimipaivaData names = serviceResponse.getNimipaivaNameResponse();
             if (names != null) {
-                StringBuilder sb = new StringBuilder(StringStuff.formatTime(names.getDay().toDate(), StringStuff.STRING_STUFF_DF_DDMMYYYY) + " ::");
+
+                StringBuilder sb = new StringBuilder(StringStuff.formatTime(TimeUtil.localDateTimeToDate(names.getDay()), StringStuff.STRING_STUFF_DF_DDMMYYYY) + " ::");
                 for (String name : names.getNames()) {
                     sb.append(" ").append(name);
                 }

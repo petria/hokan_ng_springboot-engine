@@ -10,9 +10,10 @@ import org.freakz.hokan_ng_springboot.bot.common.service.SystemScript;
 import org.freakz.hokan_ng_springboot.bot.engine.command.HelpGroup;
 import org.freakz.hokan_ng_springboot.bot.engine.command.annotation.HelpGroups;
 import org.jibble.pircbot.Colors;
-import org.joda.time.DateTime;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
 
 /**
  * Created by Petri Airio on 10.5.2016.
@@ -33,7 +34,7 @@ public class CalCmd extends Cmd {
     @Override
     public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
         SystemScriptResult calendar = scriptRunnerService.runAndGetResult(SystemScript.CAL_SCRIPT);
-        String day = String.format(" %d", DateTime.now().getDayOfMonth());
+        String day = String.format(" %d", LocalDateTime.now().getDayOfMonth());
         StringBuilder sb = new StringBuilder();
         for (String line : calendar.getOriginalOutput()) {
             if (line.trim().length() > 0) {

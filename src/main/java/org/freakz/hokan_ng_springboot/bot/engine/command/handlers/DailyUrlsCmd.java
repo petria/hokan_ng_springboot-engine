@@ -10,10 +10,10 @@ import org.freakz.hokan_ng_springboot.bot.common.util.StringStuff;
 import org.freakz.hokan_ng_springboot.bot.common.util.TimeUtil;
 import org.freakz.hokan_ng_springboot.bot.engine.command.HelpGroup;
 import org.freakz.hokan_ng_springboot.bot.engine.command.annotation.HelpGroups;
-import org.joda.time.DateTime;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -37,7 +37,7 @@ public class DailyUrlsCmd extends Cmd {
 
     @Override
     public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-        DateTime time = DateTime.now();
+        LocalDateTime time = LocalDateTime.now();
         List<Url> urlList = urlLoggerService.findByCreatedBetweenAndChannel(TimeUtil.getStartAndEndTimeForDay(time), request.getChannel().getChannelName());
         if (urlList.size() > 0) {
             int shown = 0;
@@ -46,7 +46,7 @@ public class DailyUrlsCmd extends Cmd {
             for (Url row : urlList) {
 
                 if (ret == null) {
-                    ret = String.format("Daily URLs for date: %s\n", StringStuff.formatTime(time.toDate(), StringStuff.STRING_STUFF_DF_DDMMYYYY));
+                    ret = String.format("Daily URLs for date: %s\n", StringStuff.formatTime(TimeUtil.localDateTimeToDate(time), StringStuff.STRING_STUFF_DF_DDMMYYYY));
                 }
 
                 if (shown > 0) {

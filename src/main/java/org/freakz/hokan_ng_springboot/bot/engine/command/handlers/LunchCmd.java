@@ -13,11 +13,13 @@ import org.freakz.hokan_ng_springboot.bot.common.exception.HokanException;
 import org.freakz.hokan_ng_springboot.bot.common.models.LunchData;
 import org.freakz.hokan_ng_springboot.bot.common.models.LunchMenu;
 import org.freakz.hokan_ng_springboot.bot.common.util.StringStuff;
+import org.freakz.hokan_ng_springboot.bot.common.util.TimeUtil;
 import org.freakz.hokan_ng_springboot.bot.engine.command.HelpGroup;
 import org.freakz.hokan_ng_springboot.bot.engine.command.annotation.HelpGroups;
-import org.joda.time.DateTime;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
 
 import static org.freakz.hokan_ng_springboot.bot.common.util.StaticStrings.ARG_LUNCH_PLACE;
 
@@ -58,7 +60,7 @@ public class LunchCmd extends Cmd {
             response.addResponse("Unknown lunch place: %s\n%s", argLunchPlace, places);
             return;
         }
-        DateTime day = DateTime.now();
+        LocalDateTime day = LocalDateTime.now();
         ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.LUNCH_REQUEST, request.getIrcEvent(), place, day);
         LunchData lunchData = serviceResponse.getLunchResponse();
         if (lunchData == null) {
@@ -73,7 +75,7 @@ public class LunchCmd extends Cmd {
         } else {
             menuText = lunchMenu.getMenu();
         }
-        String dayStr = StringStuff.formatTime(day.toDate(), StringStuff.STRING_STUFF_DF_DM);
+        String dayStr = StringStuff.formatTime(TimeUtil.localDateTimeToDate(day), StringStuff.STRING_STUFF_DF_DM);
         response.addResponse("%s %s - %s", dayStr, lunchData.getLunchPlace().getName(), menuText);
     }
 
