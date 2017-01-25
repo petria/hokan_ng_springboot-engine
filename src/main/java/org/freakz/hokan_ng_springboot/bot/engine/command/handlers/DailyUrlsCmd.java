@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -46,7 +47,7 @@ public class DailyUrlsCmd extends Cmd {
             for (Url row : urlList) {
 
                 if (ret == null) {
-                    ret = String.format("Daily URLs for date: %s\n", StringStuff.formatTime(TimeUtil.localDateTimeToDate(time), StringStuff.STRING_STUFF_DF_DDMMYYYY));
+                    ret = String.format("Daily URLs for date: %s\n", StringStuff.formatTime(new Date(), StringStuff.STRING_STUFF_DF_DDMMYYYY));
                 }
 
                 if (shown > 0) {
