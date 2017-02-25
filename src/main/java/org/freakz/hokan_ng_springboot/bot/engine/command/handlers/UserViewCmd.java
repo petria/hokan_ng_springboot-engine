@@ -13,6 +13,7 @@ import org.freakz.hokan_ng_springboot.bot.engine.command.annotation.HelpGroups;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.util.Comparator;
 import java.util.List;
 
 import static org.freakz.hokan_ng_springboot.bot.common.util.StaticStrings.ARG_NICK;
@@ -74,6 +75,12 @@ public class UserViewCmd extends Cmd {
         ret += "Channels :\n";
 
         List<UserChannel> userChannels = userChannelService.findByUser(hUser);
+        userChannels.sort(new Comparator<UserChannel>() {
+            @Override
+            public int compare(UserChannel o1, UserChannel o2) {
+                return o1.getLastMessageTime().compareTo(o2.getLastMessageTime());
+            }
+        });
         for (UserChannel channel : userChannels) {
             ret += "  " + channel.getChannel().getChannelName() + "\n";
         }
