@@ -1,2 +1,3 @@
 # hokan_ng_springboot-engine
-# testing!!!"112 again
+
+https://github.com/petria/hokan_ng_springboot-io/blob/master/README.md
