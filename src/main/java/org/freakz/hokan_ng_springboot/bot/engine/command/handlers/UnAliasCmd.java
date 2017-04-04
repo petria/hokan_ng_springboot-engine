@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.common.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.common.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.common.exception.HokanException;
-import org.freakz.hokan_ng_springboot.bot.common.jpa.entity.Alias;
+import org.freakz.hokan_ng_springboot.bot.common.models.dto.Alias;
 import org.freakz.hokan_ng_springboot.bot.engine.command.HelpGroup;
 import org.freakz.hokan_ng_springboot.bot.engine.command.annotation.HelpGroups;
 import org.springframework.context.annotation.Scope;
@@ -46,7 +46,7 @@ public class UnAliasCmd extends Cmd {
         if (a != null) {
             int r = aliasService.delete(a);
             if (r > 0) {
-                response.addResponse("Alias removed, %3d: %s = %s", a.getAliasId(), a.getAlias(), a.getCommand());
+                response.addResponse("Alias removed, %s = %s", a.getAlias(), a.getCommand());
             } else {
                 response.addResponse("Alias not removed: %s", results.getString(ARG_ALIAS));
             }

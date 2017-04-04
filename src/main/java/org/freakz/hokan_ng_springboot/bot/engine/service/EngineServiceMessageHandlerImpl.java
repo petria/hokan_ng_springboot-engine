@@ -15,8 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 
-import java.util.Date;
-
 /**
  * Created by Petri Airio on 10.2.2015.
  * -
@@ -86,9 +84,9 @@ public class EngineServiceMessageHandlerImpl implements JmsServiceMessageHandler
         internalRequest.setJmsEnvelope(envelope);
         try {
             internalRequest.init(event);
-            internalRequest.getUserChannel().setLastCommand(event.getMessage());
+/*            internalRequest.getUserChannel().setLastCommand(event.getMessage());
             internalRequest.getUserChannel().setLastCommandTime(new Date());
-            internalRequest.saveUserChannel();
+            internalRequest.saveUserChannel();*/
             handler.handleLine(internalRequest, response);
         } catch (Exception e) {
             log.error("Command handler returned exception {}", e);

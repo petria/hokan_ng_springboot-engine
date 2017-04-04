@@ -6,8 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.common.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.common.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.common.exception.HokanException;
-import org.freakz.hokan_ng_springboot.bot.common.jpa.entity.Alias;
-import org.freakz.hokan_ng_springboot.bot.common.jpa.entity.AliasType;
+import org.freakz.hokan_ng_springboot.bot.common.models.dto.Alias;
 import org.freakz.hokan_ng_springboot.bot.engine.command.HelpGroup;
 import org.freakz.hokan_ng_springboot.bot.engine.command.annotation.HelpGroups;
 import org.springframework.context.annotation.Scope;
@@ -53,10 +52,10 @@ public class AliasCmd extends Cmd {
     @Override
     public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
         if (null == results.getString(ARG_ALIAS)) {
-            List<Alias> aliases = aliasService.findAll();
+            List<org.freakz.hokan_ng_springboot.bot.common.models.dto.Alias> aliases = aliasService.findAll();
             if (aliases.size() > 0) {
                 for (Alias alias : aliases) {
-                    response.addResponse("%3d: %s = %s\n", alias.getAliasId(), alias.getAlias(), alias.getCommand());
+                    response.addResponse("%s = %s\n", alias.getAlias(), alias.getCommand());
                 }
             } else {
                 response.addResponse("No aliases defined!");
@@ -77,12 +76,12 @@ public class AliasCmd extends Cmd {
                 a = new Alias();
                 a.setCreatedBy(request.getUser().getNick());
                 a.setCreated(new Date());
-                a.setAliasType(AliasType.ALIAS_PUBLIC);
+                a.setPublic(true);
                 a.setAlias(alias);
             }
             a.setCommand(command);
             a = aliasService.save(a);
-            response.addResponse("Alias set, %3d: %s = %s", a.getAliasId(), a.getAlias(), a.getCommand());
+            response.addResponse("Alias set, %s = %s", a.getAlias(), a.getCommand());
         }
     }
 
