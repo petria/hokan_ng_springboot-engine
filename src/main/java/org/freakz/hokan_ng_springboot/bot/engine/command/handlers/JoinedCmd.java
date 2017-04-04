@@ -4,10 +4,6 @@ import com.martiansoftware.jsap.JSAPResult;
 import org.freakz.hokan_ng_springboot.bot.common.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.common.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.common.exception.HokanException;
-import org.freakz.hokan_ng_springboot.bot.common.jpa.entity.Channel;
-import org.freakz.hokan_ng_springboot.bot.common.jpa.entity.ChannelState;
-import org.freakz.hokan_ng_springboot.bot.common.jpa.entity.JoinedUser;
-import org.freakz.hokan_ng_springboot.bot.common.jpa.entity.Network;
 import org.freakz.hokan_ng_springboot.bot.common.jpa.service.ChannelService;
 import org.freakz.hokan_ng_springboot.bot.common.jpa.service.JoinedUserService;
 import org.freakz.hokan_ng_springboot.bot.common.jpa.service.NetworkService;
@@ -16,8 +12,6 @@ import org.freakz.hokan_ng_springboot.bot.engine.command.annotation.HelpGroups;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 /**
  * User: petria
@@ -56,7 +50,7 @@ public class JoinedCmd extends Cmd {
     public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
 
         StringBuilder sb = new StringBuilder();
-        List<Network> networks = networkService.findAll();
+/*        List<Network> networks = networkService.findAll();
         for (Network network : networks) {
             List<Channel> channels = channelService.findChannels(network, ChannelState.JOINED);
             if (channels.size() > 0) {
@@ -81,6 +75,8 @@ public class JoinedCmd extends Cmd {
                 }
             }
         }
+        TODO
+        */
         response.setResponseMessage(sb.toString());
     }
 }

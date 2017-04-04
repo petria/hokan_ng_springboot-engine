@@ -48,11 +48,11 @@ public class ChanListCmd extends Cmd {
     @Override
     public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
         boolean verbose = results.getBoolean(ARG_VERBOSE);
-        List<Channel> channels;
+        List<Channel> channels = null;
         if (verbose) {
-            channels = channelService.findAll();
+//            channels = channelService.findAll(); TODO
         } else {
-            channels = channelService.findByChannelNameLike("#%");
+//            channels = channelService.findByChannelNameLike("#%");
         }
 
         StringBuilder sb = new StringBuilder();

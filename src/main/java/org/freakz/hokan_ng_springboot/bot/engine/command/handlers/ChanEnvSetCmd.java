@@ -77,7 +77,7 @@ public class ChanEnvSetCmd extends Cmd {
                 response.addResponse("Valid ChannelID parameter is needed, try: !chanlist");
                 return;
             }
-            theChannel = channelService.findOne(id);
+// TODO            theChannel = channelService.findOne(id);
             if (theChannel == null) {
                 response.addResponse("No valid Channel found with id: %d, try: !chanlist to get ID.", id);
                 return;

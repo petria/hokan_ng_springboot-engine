@@ -55,7 +55,7 @@ public class ChanSetCmd extends Cmd {
         }
         Channel theChannel = request.getChannel();
         if (channelId != null) {
-            long id;
+/*            long id;
             try {
                 id = Long.parseLong(channelId);
             } catch (NumberFormatException ex) {
@@ -67,13 +67,15 @@ public class ChanSetCmd extends Cmd {
                 response.addResponse("No valid Channel found with id: %d, try: !chanlist to get ID.", id);
                 return;
             }
+            TODO
+            */
         }
 
         String startupState = results.getString(ARG_STARTUP_STATE);
         ChannelStartupState state = ChannelStartupState.valueOf(startupState);
         if (state != null) {
             theChannel.setChannelStartupState(state);
-            theChannel = channelService.save(theChannel);
+//             theChannel = channelService.save(theChannel); TODO
             response.addResponse("%s startup state set to: %s", theChannel.getChannelName(), theChannel.getChannelStartupState());
         } else {
             response.addResponse("Invalid startup state: %s", startupState);
