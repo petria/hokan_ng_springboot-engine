@@ -76,7 +76,6 @@ public class AliasCmd extends Cmd {
                 a = new Alias();
                 a.setCreatedBy(request.getUser().getNick());
                 a.setCreated(new Date());
-                a.setPublic(true);
                 a.setAlias(alias);
             }
             a.setCommand(command);
