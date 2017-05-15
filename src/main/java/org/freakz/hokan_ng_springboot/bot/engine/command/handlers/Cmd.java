@@ -337,7 +337,7 @@ public abstract class Cmd implements HokanCommand, CommandRunnable {
 
             envelope.getMessageOut().addPayLoadObject("ENGINE_RESPONSE", response.getResponseMessage());
         } else {
-            jmsSender.send(HokanModule.HokanIo.getQueueName(), "ENGINE_RESPONSE", response, false);
+            jmsSender.send(HokanModule.HokanEngine, HokanModule.HokanIo.getQueueName(), "ENGINE_RESPONSE", response, false);
         }
     }
 
