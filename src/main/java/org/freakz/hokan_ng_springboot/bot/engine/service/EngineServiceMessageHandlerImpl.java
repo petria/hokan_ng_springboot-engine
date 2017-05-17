@@ -69,12 +69,7 @@ public class EngineServiceMessageHandlerImpl implements JmsServiceMessageHandler
     }
 
     private void sendReply(EngineResponse response, JmsEnvelope envelope) {
-//    log.debug("Sending response: {}", response);
-        if (response.getIrcMessageEvent().isWebMessage()) {
-            envelope.getMessageOut().addPayLoadObject("SERVICE_RESPONSE", response);
-        } else {
-            jmsSender.send(HokanModule.HokanEngine, envelope.getMessageIn().getSender().getQueueName(), "ENGINE_RESPONSE", response, false);
-        }
+        jmsSender.send(HokanModule.HokanEngine, envelope.getMessageIn().getSender().getQueueName(), "ENGINE_RESPONSE", response, false);
     }
 
     private void executeHandler(IrcMessageEvent event, Cmd handler, JmsEnvelope envelope) {
