@@ -146,7 +146,7 @@ public abstract class Cmd implements HokanCommand, CommandRunnable {
     protected boolean isPrivate;
     protected boolean isAdminUser;
     protected boolean isToBot;
-    protected boolean isWeb;
+
 
     private String helpWikiUrl;
 
@@ -305,11 +305,7 @@ public abstract class Cmd implements HokanCommand, CommandRunnable {
                 wrapper.request = request;
                 wrapper.response = response;
                 wrapper.results = results;
-                if (request.getIrcEvent().isWebMessage()) {
-                    commandPool.startSyncRunnable(this, request.getUser().getNick(), wrapper);
-                } else {
-                    commandPool.startRunnable(this, request.getUser().getNick(), wrapper);
-                }
+                commandPool.startRunnable(this, request.getUser().getNick(), wrapper);
             }
         }
     }
@@ -353,15 +349,8 @@ public abstract class Cmd implements HokanCommand, CommandRunnable {
         isToBot = ircMessageEvent.isToMe();
         isAdminUser = accessControlService.isAdminUser(request.getUser());
         isChannelOp = accessControlService.isChannelOp(request.getUser(), request.getChannel());
-        isWeb = request.getIrcEvent().isWebMessage();
 
         boolean ret = true;
-        if (isNoWeb() && isWeb) {
-            response.setResponseMessage("Can not be used via WWW: " + getName());
-            response.setReplyTo(ircMessageEvent.getSender());
-            ret = false;
-            return ret;
-        }
 
         if (isLoggedInOnly() && !isLoggedIn && !isAdminUser) {
             response.setResponseMessage("LoggedIn only: " + getName());

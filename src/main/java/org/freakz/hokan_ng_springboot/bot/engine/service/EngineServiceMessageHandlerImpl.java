@@ -74,7 +74,6 @@ public class EngineServiceMessageHandlerImpl implements JmsServiceMessageHandler
 
     private void executeHandler(IrcMessageEvent event, Cmd handler, JmsEnvelope envelope) {
         EngineResponse response = new EngineResponse(event);
-        response.setIsEngineRequest(event.isWebMessage());
 
         InternalRequest internalRequest;
         internalRequest = context.getBean(InternalRequest.class);
