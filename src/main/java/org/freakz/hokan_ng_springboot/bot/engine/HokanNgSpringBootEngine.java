@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.annotation.EnableJms;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 
 import javax.jms.ConnectionFactory;
 import java.util.Map;
@@ -18,6 +19,7 @@ import java.util.Map;
 @EnableAutoConfiguration
 @EnableJms
 @ComponentScan({"org.freakz.hokan_ng_springboot.bot"})
+@EnableGlobalMethodSecurity(prePostEnabled = true, proxyTargetClass = true, securedEnabled = true)
 @Slf4j
 public class HokanNgSpringBootEngine {
 
