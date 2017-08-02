@@ -51,6 +51,9 @@ public class TopCmd extends Cmd {
             for (StatsData statsData : statsDatas) {
                 res += " " + i + ") " + statsData.getNick() + ": " + statsData.getWords();
                 i++;
+                if (i == 11) {
+                    break;
+                }
             }
             response.addResponse(res);
         } else {
