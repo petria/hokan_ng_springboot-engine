@@ -38,7 +38,7 @@ public class UptimeCmd extends Cmd {
         if (sysUptime != null && sysUptime.length > 0) {
             sysUt = sysUptime[0];
         }
-        String uptime1 = String.format("%-13s     :%s\n", "System", sysUt);
+        String uptime1 = String.format("%-16s     :%s\n", "System", sysUt);
         response.addResponse(uptime1);
         for (HokanModule module : HokanModule.values()) {
             if (module.isHidden()) {
