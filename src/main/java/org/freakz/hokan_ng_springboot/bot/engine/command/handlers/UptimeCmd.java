@@ -50,7 +50,7 @@ public class UptimeCmd extends Cmd {
                 Uptime ut = statusModel.getPingResponse().getUptime();
                 modUt = ut.toString();
             }
-            String moduleUptime = String.format("%-13s     : %s\n", module, modUt);
+            String moduleUptime = String.format("%-16s     : %s\n", module, modUt);
             response.addResponse(moduleUptime);
         }
     }
