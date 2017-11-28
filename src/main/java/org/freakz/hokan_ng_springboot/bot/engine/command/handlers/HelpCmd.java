@@ -42,6 +42,7 @@ public class HelpCmd extends Cmd {
                 .setRequired(false)
                 .setGreedy(false);
         registerParameter(flg);
+        setPrivateOnly(true);
     }
 
     @Override
