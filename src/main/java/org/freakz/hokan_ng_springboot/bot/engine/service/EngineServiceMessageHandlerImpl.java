@@ -57,13 +57,15 @@ public class EngineServiceMessageHandlerImpl implements JmsServiceMessageHandler
                 Cmd handler = matches.getMatches().get(0);
                 executeHandler(event, handler, envelope);
             } else {
-                EngineResponse response = new EngineResponse(event);
+/*                EngineResponse response = new EngineResponse(event);
                 String multiple = matches.getFirstWord() + " multiple matches: ";
                 for (Cmd match : matches.getMatches()) {
                     multiple += match.getName() + " ";
                 }
                 response.addResponse(multiple);
                 sendReply(response, envelope);
+                */
+                log.error("TODO!");
             }
         }
     }
