@@ -44,13 +44,10 @@ public class PsCmd extends Cmd {
             }
         }
         if (allRunning.size() > 0) {
-            Comparator<CommandHistory> comparator = new Comparator<CommandHistory>() {
-                @Override
-                public int compare(CommandHistory o1, CommandHistory o2) {
-                    Long pid1 = o1.getPid();
-                    Long pid2 = o2.getPid();
-                    return pid1.compareTo(pid2);
-                }
+            Comparator<CommandHistory> comparator = (o1, o2) -> {
+                Long pid1 = o1.getPid();
+                Long pid2 = o2.getPid();
+                return pid1.compareTo(pid2);
             };
             Collections.sort(allRunning, comparator);
 
