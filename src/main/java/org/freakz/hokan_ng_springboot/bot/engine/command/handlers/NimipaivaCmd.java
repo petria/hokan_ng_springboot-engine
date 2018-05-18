@@ -2,7 +2,6 @@ package org.freakz.hokan_ng_springboot.bot.engine.command.handlers;
 
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.UnflaggedOption;
-import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.common.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.common.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.common.events.ServiceRequestType;
@@ -29,7 +28,7 @@ import static org.freakz.hokan_ng_springboot.bot.common.util.StaticStrings.ARG_N
  */
 @Component
 @Scope("prototype")
-@Slf4j
+
 public class NimipaivaCmd extends Cmd {
 
     private static final String NIMIPAIVAT_TXT = "/Nimipaivat.txt";

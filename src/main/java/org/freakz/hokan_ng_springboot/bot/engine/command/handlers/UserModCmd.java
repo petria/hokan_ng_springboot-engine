@@ -4,7 +4,6 @@ import com.martiansoftware.jsap.FlaggedOption;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.Switch;
 import com.martiansoftware.jsap.UnflaggedOption;
-import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.common.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.common.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.common.exception.HokanException;
@@ -32,7 +31,7 @@ import static org.freakz.hokan_ng_springboot.bot.common.util.StaticStrings.ARG_V
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @Component
-@Slf4j
+
 @Scope("prototype")
 @HelpGroups(
         helpGroups = {HelpGroup.ACCESS_CONTROL, HelpGroup.USERS}

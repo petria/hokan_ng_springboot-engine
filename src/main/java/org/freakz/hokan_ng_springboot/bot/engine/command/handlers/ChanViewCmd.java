@@ -2,7 +2,6 @@ package org.freakz.hokan_ng_springboot.bot.engine.command.handlers;
 
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.UnflaggedOption;
-import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.common.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.common.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.common.exception.HokanException;
@@ -11,6 +10,8 @@ import org.freakz.hokan_ng_springboot.bot.common.jpa.entity.ChannelStats;
 import org.freakz.hokan_ng_springboot.bot.common.util.StringStuff;
 import org.freakz.hokan_ng_springboot.bot.engine.command.HelpGroup;
 import org.freakz.hokan_ng_springboot.bot.engine.command.annotation.HelpGroups;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -21,11 +22,13 @@ import static org.freakz.hokan_ng_springboot.bot.common.util.StaticStrings.ARG_C
  */
 @Component
 @Scope("prototype")
-@Slf4j
+
 @HelpGroups(
         helpGroups = {HelpGroup.CHANNELS, HelpGroup.PROPERTIES}
 )
 public class ChanViewCmd extends Cmd {
+
+    private static final Logger log = LoggerFactory.getLogger(ChanViewCmd.class);
 
     public ChanViewCmd() {
         super();

@@ -1,12 +1,10 @@
 package org.freakz.hokan_ng_springboot.bot.engine.command.handlers;
 
-
 import com.martiansoftware.jsap.IDMap;
 import com.martiansoftware.jsap.JSAP;
 import com.martiansoftware.jsap.JSAPException;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.Parameter;
-import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.common.cmdpool.CommandPool;
 import org.freakz.hokan_ng_springboot.bot.common.cmdpool.CommandRunnable;
 import org.freakz.hokan_ng_springboot.bot.common.enums.HokanModule;
@@ -42,6 +40,8 @@ import org.freakz.hokan_ng_springboot.bot.common.service.SystemScriptRunnerServi
 import org.freakz.hokan_ng_springboot.bot.common.util.CommandArgs;
 import org.freakz.hokan_ng_springboot.bot.engine.command.HelpGroup;
 import org.freakz.hokan_ng_springboot.bot.engine.command.annotation.HelpGroups;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
@@ -61,9 +61,10 @@ import java.util.List;
  *
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
-@Slf4j
 @SuppressWarnings("unchecked")
 public abstract class Cmd implements HokanCommand, CommandRunnable {
+
+    private static final Logger log = LoggerFactory.getLogger(Cmd.class);
 
     @Autowired
     protected AccessControlService accessControlService;
@@ -128,25 +129,35 @@ public abstract class Cmd implements HokanCommand, CommandRunnable {
     @Autowired
     protected ApplicationContext context;
 
-
     protected JSAP jsap = new JSAP();
 
     protected boolean broken;
+
     protected boolean channelOpOnly;
+
     protected boolean loggedInOnly;
+
     protected boolean channelOnly;
+
     protected boolean privateOnly;
+
     protected boolean adminUserOnly;
+
     protected boolean toBotOnly;
+
     protected boolean noWeb;
 
     protected boolean isChannelOp;
-    protected boolean isLoggedIn;
-    protected boolean isPublic;
-    protected boolean isPrivate;
-    protected boolean isAdminUser;
-    protected boolean isToBot;
 
+    protected boolean isLoggedIn;
+
+    protected boolean isPublic;
+
+    protected boolean isPrivate;
+
+    protected boolean isAdminUser;
+
+    protected boolean isToBot;
 
     private String helpWikiUrl;
 
@@ -164,7 +175,6 @@ public abstract class Cmd implements HokanCommand, CommandRunnable {
     public String getMatchPattern() {
         return String.format("!%s", getName().toLowerCase());
     }
-
 
     public String getName() {
         String name = this.getClass().getSimpleName();
@@ -328,7 +338,7 @@ public abstract class Cmd implements HokanCommand, CommandRunnable {
     }
 
     private void sendReply(EngineResponse response, JmsEnvelope envelope) {
-//    log.debug("Sending response: {}", response);
+        //    log.debug("Sending response: {}", response);
         if (response.isEngineRequest()) {
 
             envelope.getMessageOut().addPayLoadObject("ENGINE_RESPONSE", response.getResponseMessage());
@@ -336,7 +346,6 @@ public abstract class Cmd implements HokanCommand, CommandRunnable {
             jmsSender.send(HokanModule.HokanEngine, envelope.getMessageIn().getSender().getQueueName(), "ENGINE_RESPONSE", response, false);
         }
     }
-
 
     public abstract void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException;
 
@@ -457,8 +466,11 @@ public abstract class Cmd implements HokanCommand, CommandRunnable {
     }
 
     public static class ArgsWrapper {
+
         public InternalRequest request;
+
         public EngineResponse response;
+
         public JSAPResult results;
     }
 

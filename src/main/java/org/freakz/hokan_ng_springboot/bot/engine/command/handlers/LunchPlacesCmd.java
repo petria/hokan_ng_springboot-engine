@@ -1,7 +1,6 @@
 package org.freakz.hokan_ng_springboot.bot.engine.command.handlers;
 
 import com.martiansoftware.jsap.JSAPResult;
-import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.common.enums.LunchPlace;
 import org.freakz.hokan_ng_springboot.bot.common.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.common.events.InternalRequest;
@@ -21,7 +20,7 @@ import java.util.List;
  */
 @Component
 @Scope("prototype")
-@Slf4j
+
 @HelpGroups(
         helpGroups = {HelpGroup.DATA_FETCHERS, HelpGroup.LUNCH}
 )

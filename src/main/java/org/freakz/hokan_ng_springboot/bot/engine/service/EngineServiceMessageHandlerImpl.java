@@ -1,6 +1,5 @@
 package org.freakz.hokan_ng_springboot.bot.engine.service;
 
-import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.common.enums.HokanModule;
 import org.freakz.hokan_ng_springboot.bot.common.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.common.events.InternalRequest;
@@ -11,6 +10,8 @@ import org.freakz.hokan_ng_springboot.bot.common.jms.api.JmsSender;
 import org.freakz.hokan_ng_springboot.bot.common.jms.api.JmsServiceMessageHandler;
 import org.freakz.hokan_ng_springboot.bot.engine.command.CommandHandlerService;
 import org.freakz.hokan_ng_springboot.bot.engine.command.handlers.Cmd;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
@@ -22,8 +23,10 @@ import java.util.Date;
  * -
  */
 @Controller
-@Slf4j
+
 public class EngineServiceMessageHandlerImpl implements JmsServiceMessageHandler {
+
+    private static final Logger log = LoggerFactory.getLogger(EngineServiceMessageHandlerImpl.class);
 
     private final ApplicationContext context;
 

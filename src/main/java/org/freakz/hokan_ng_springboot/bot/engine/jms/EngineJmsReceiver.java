@@ -1,6 +1,5 @@
 package org.freakz.hokan_ng_springboot.bot.engine.jms;
 
-import lombok.extern.slf4j.Slf4j;
 import org.freakz.hokan_ng_springboot.bot.common.enums.HokanModule;
 import org.freakz.hokan_ng_springboot.bot.common.jms.JmsEnvelope;
 import org.freakz.hokan_ng_springboot.bot.common.jms.SpringJmsReceiver;
@@ -12,7 +11,7 @@ import org.springframework.stereotype.Component;
  * Created by petria on 5.2.2015.
  */
 @Component
-@Slf4j
+
 public class EngineJmsReceiver extends SpringJmsReceiver {
 
     @Autowired

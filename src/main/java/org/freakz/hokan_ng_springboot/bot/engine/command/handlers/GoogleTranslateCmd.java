@@ -15,7 +15,7 @@ import static org.freakz.hokan_ng_springboot.bot.common.util.StaticStrings.ARG_T
  */
 //@Component
 //@Scope("prototype")
-//@Slf4j
+// 
 public class GoogleTranslateCmd extends Cmd {
 
 
