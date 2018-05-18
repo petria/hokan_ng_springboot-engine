@@ -11,7 +11,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.10.RELEASE</version>
+        <version>1.5.13.RELEASE</version>
         <relativePath/>
     </parent>
 
@@ -28,15 +28,24 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <start-class>org.freakz.hokan_ng_springboot.bot.engine.HokanNgSpringBootEngine</start-class>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-
-        <java.version>1.8</java.version>
         <jsoup.version>1.9.2</jsoup.version>
         <logback.version>1.1.9</logback.version>
     </properties>
 
     <dependencies>
+
+        <dependency>
+            <groupId>org.freakz</groupId>
+            <artifactId>hokan_ng_springboot-common</artifactId>
+            <version>1.0.4-final</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.freakz</groupId>
+            <artifactId>hokan_ng_springboot-custom</artifactId>
+            <version>2.0.0-final</version>
+        </dependency>
+
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -57,18 +66,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.freakz</groupId>
-            <artifactId>hokan_ng_springboot-common</artifactId>
-            <version>1.0.4-final</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.freakz</groupId>
-            <artifactId>hokan_ng_springboot-custom</artifactId>
-            <version>1.0.0-final</version>
         </dependency>
 
         <dependency>
