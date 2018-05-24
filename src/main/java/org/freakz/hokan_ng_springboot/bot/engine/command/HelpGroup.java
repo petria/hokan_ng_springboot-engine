@@ -22,7 +22,6 @@ public enum HelpGroup {
     PROCESS("Process", ""),
     PROPERTIES("Properties", ""),
     SYSTEM("System", ""),
-    TV("TV", ""),
     UPDATERS("Updaters", ""),
     USERS("Users", ""),
     URLS("Urls", ""),
