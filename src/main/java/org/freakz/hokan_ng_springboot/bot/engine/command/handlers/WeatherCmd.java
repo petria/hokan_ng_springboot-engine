@@ -54,20 +54,14 @@ public class WeatherCmd extends Cmd {
 
     }
 
-/*  @Override
-  public String getMatchPattern() {
-    return "!saa.*|!weather.*";
-  }*/
-
     @Override
-//  @SuppressWarnings("unchecked")
     public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
 
         String place = results.getString(ARG_PLACE).toLowerCase();
 
         ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.WEATHER_REQUEST, request.getIrcEvent(), ".*");
-        List<KelikameratWeatherData> datas = serviceResponse.getWeatherResponse();
-        if (datas.size() == 0) {
+        List<KelikameratWeatherData> data = serviceResponse.getWeatherResponse();
+        if (data.size() == 0) {
             response.setResponseMessage("Weather data not ready yet!");
             return;
         }
@@ -76,8 +70,8 @@ public class WeatherCmd extends Cmd {
 
         if (place.equals("minmax")) {
 
-            KelikameratWeatherData max = datas.get(0);
-            KelikameratWeatherData min = datas.get(datas.size() - 1);
+            KelikameratWeatherData max = data.get(0);
+            KelikameratWeatherData min = data.get(data.size() - 1);
 
             sb.append("Min: ");
             sb.append(StringStuff.formatWeather(min));
@@ -88,7 +82,7 @@ public class WeatherCmd extends Cmd {
 
             int xx = 0;
             String regexp = ".*" + place + ".*";
-            for (KelikameratWeatherData wd : datas) {
+            for (KelikameratWeatherData wd : data) {
                 String placeFromUrl = wd.getPlaceFromUrl();
                 String stationFromUrl = wd.getUrl().getStationUrl();
                 if (StringStuff.match(placeFromUrl, regexp) || StringStuff.match(stationFromUrl, regexp)) {
