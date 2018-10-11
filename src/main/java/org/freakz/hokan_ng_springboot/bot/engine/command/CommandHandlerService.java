@@ -2,7 +2,6 @@ package org.freakz.hokan_ng_springboot.bot.engine.command;
 
 import org.freakz.hokan_ng_springboot.bot.engine.command.handlers.Cmd;
 import org.freakz.hokan_ng_springboot.bot.engine.service.CmdHandlerMatches;
-import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 
@@ -17,7 +16,7 @@ public interface CommandHandlerService {
 
     Cmd getCommandHandler(String line);
 
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     CmdHandlerMatches getMatchingCommands(String line);
 
     List<Cmd> getCommandHandlers();
