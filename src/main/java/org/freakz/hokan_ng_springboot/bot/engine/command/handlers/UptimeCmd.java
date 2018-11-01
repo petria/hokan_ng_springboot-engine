@@ -1,13 +1,10 @@
 package org.freakz.hokan_ng_springboot.bot.engine.command.handlers;
 
 import com.martiansoftware.jsap.JSAPResult;
-import org.freakz.hokan_ng_springboot.bot.common.enums.HokanModule;
 import org.freakz.hokan_ng_springboot.bot.common.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.common.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.common.exception.HokanException;
-import org.freakz.hokan_ng_springboot.bot.common.models.HokanStatusModel;
 import org.freakz.hokan_ng_springboot.bot.common.service.SystemScript;
-import org.freakz.hokan_ng_springboot.bot.common.util.Uptime;
 import org.freakz.hokan_ng_springboot.bot.engine.command.HelpGroup;
 import org.freakz.hokan_ng_springboot.bot.engine.command.annotation.HelpGroups;
 import org.springframework.context.annotation.Scope;
@@ -40,7 +37,7 @@ public class UptimeCmd extends Cmd {
         }
         String uptime1 = String.format("%-16s     :%s\n", "System", sysUt);
         response.addResponse(uptime1);
-        for (HokanModule module : HokanModule.values()) {
+/*        for (HokanModule module : HokanModule.values()) {
             if (module.isHidden()) {
                 continue;
             }
@@ -52,7 +49,7 @@ public class UptimeCmd extends Cmd {
             }
             String moduleUptime = String.format("%-16s     : %s\n", module, modUt);
             response.addResponse(moduleUptime);
-        }
+        }*/
     }
 
 }
