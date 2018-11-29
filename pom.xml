@@ -20,6 +20,10 @@
         <start-class>org.freakz.hokan_ng_springboot.bot.engine.HokanNgSpringBootEngine</start-class>
         <jsoup.version>1.9.2</jsoup.version>
         <logback.version>1.1.9</logback.version>
+
+        <hokan.common.version>2.0.2-final</hokan.common.version>
+        <hokan.custom.version>2.0.0-final</hokan.custom.version>
+
     </properties>
 
     <dependencies>
@@ -33,36 +37,14 @@
         <dependency>
             <groupId>org.freakz</groupId>
             <artifactId>hokan_ng_springboot-common</artifactId>
-            <version>2.0.1-final</version>
+            <version>${hokan.common.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.freakz</groupId>
             <artifactId>hokan_ng_springboot-custom</artifactId>
-            <version>2.0.0-final</version>
+            <version>${hokan.custom.version}</version>
         </dependency>
-
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-tomcat</artifactId>
-            <!--<scope>provided</scope>-->
-        </dependency>
-
-<!--        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-aspects</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-aop</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency> -->
 
         <dependency>
             <groupId>com.martiansoftware</groupId>

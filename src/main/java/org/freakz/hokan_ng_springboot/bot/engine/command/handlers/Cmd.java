@@ -1,38 +1,16 @@
 package org.freakz.hokan_ng_springboot.bot.engine.command.handlers;
 
-import com.martiansoftware.jsap.IDMap;
-import com.martiansoftware.jsap.JSAP;
-import com.martiansoftware.jsap.JSAPException;
-import com.martiansoftware.jsap.JSAPResult;
-import com.martiansoftware.jsap.Parameter;
+import com.martiansoftware.jsap.*;
 import org.freakz.hokan_ng_springboot.bot.common.cmdpool.CommandPool;
 import org.freakz.hokan_ng_springboot.bot.common.cmdpool.CommandRunnable;
 import org.freakz.hokan_ng_springboot.bot.common.enums.HokanModule;
-import org.freakz.hokan_ng_springboot.bot.common.events.EngineResponse;
-import org.freakz.hokan_ng_springboot.bot.common.events.InternalRequest;
-import org.freakz.hokan_ng_springboot.bot.common.events.IrcMessageEvent;
-import org.freakz.hokan_ng_springboot.bot.common.events.ServiceRequest;
-import org.freakz.hokan_ng_springboot.bot.common.events.ServiceRequestType;
-import org.freakz.hokan_ng_springboot.bot.common.events.ServiceResponse;
+import org.freakz.hokan_ng_springboot.bot.common.events.*;
 import org.freakz.hokan_ng_springboot.bot.common.exception.HokanEngineException;
 import org.freakz.hokan_ng_springboot.bot.common.exception.HokanException;
 import org.freakz.hokan_ng_springboot.bot.common.jms.JmsEnvelope;
 import org.freakz.hokan_ng_springboot.bot.common.jms.JmsMessage;
 import org.freakz.hokan_ng_springboot.bot.common.jms.api.JmsSender;
-import org.freakz.hokan_ng_springboot.bot.common.jpa.service.AliasService;
-import org.freakz.hokan_ng_springboot.bot.common.jpa.service.ChannelPropertyService;
-import org.freakz.hokan_ng_springboot.bot.common.jpa.service.ChannelService;
-import org.freakz.hokan_ng_springboot.bot.common.jpa.service.ChannelStatsService;
-import org.freakz.hokan_ng_springboot.bot.common.jpa.service.CommandHistoryService;
-import org.freakz.hokan_ng_springboot.bot.common.jpa.service.IrcLogService;
-import org.freakz.hokan_ng_springboot.bot.common.jpa.service.JoinedUserService;
-import org.freakz.hokan_ng_springboot.bot.common.jpa.service.NetworkService;
-import org.freakz.hokan_ng_springboot.bot.common.jpa.service.PropertyService;
-import org.freakz.hokan_ng_springboot.bot.common.jpa.service.SearchReplaceService;
-import org.freakz.hokan_ng_springboot.bot.common.jpa.service.TvNotifyService;
-import org.freakz.hokan_ng_springboot.bot.common.jpa.service.UrlLoggerService;
-import org.freakz.hokan_ng_springboot.bot.common.jpa.service.UserChannelService;
-import org.freakz.hokan_ng_springboot.bot.common.jpa.service.UserService;
+import org.freakz.hokan_ng_springboot.bot.common.jpa.service.*;
 import org.freakz.hokan_ng_springboot.bot.common.service.AccessControlService;
 import org.freakz.hokan_ng_springboot.bot.common.service.HokanStatusService;
 import org.freakz.hokan_ng_springboot.bot.common.service.StatsService;
@@ -48,11 +26,7 @@ import org.springframework.context.ApplicationContext;
 import javax.jms.JMSException;
 import javax.jms.ObjectMessage;
 import java.lang.annotation.Annotation;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * User: petria
@@ -86,9 +60,6 @@ public abstract class Cmd implements HokanCommand, CommandRunnable {
 
     @Autowired
     protected CommandPool commandPool;
-
-    @Autowired
-    protected IrcLogService ircLogService;
 
     @Autowired
     protected JoinedUserService joinedUsersService;
