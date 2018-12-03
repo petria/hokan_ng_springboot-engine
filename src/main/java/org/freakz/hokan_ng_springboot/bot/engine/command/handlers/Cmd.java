@@ -83,9 +83,6 @@ public abstract class Cmd implements HokanCommand, CommandRunnable {
     protected StatsService statsService;
 
     @Autowired
-    protected TvNotifyService tvNotifyService;
-
-    @Autowired
     protected UrlLoggerService urlLoggerService;
 
     @Autowired
