@@ -1,31 +1,22 @@
 package org.freakz.hokan_ng_springboot.bot.engine.command.handlers;
 
 import com.martiansoftware.jsap.JSAPResult;
-import org.freakz.hokan_ng_springboot.bot.common.enums.HokanModule;
 import org.freakz.hokan_ng_springboot.bot.common.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.common.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.common.exception.HokanException;
-import org.freakz.hokan_ng_springboot.bot.common.jpa.entity.CommandHistory;
-import org.freakz.hokan_ng_springboot.bot.common.jpa.entity.CommandStatus;
-import org.freakz.hokan_ng_springboot.bot.engine.command.HelpGroup;
-import org.freakz.hokan_ng_springboot.bot.engine.command.annotation.HelpGroups;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 /**
  * Created by Petri Airio on 18.5.2015.
  */
-@Component
+/*@Component
 @Scope("prototype")
 
 @HelpGroups(
         helpGroups = {HelpGroup.PROCESS, HelpGroup.SYSTEM}
 )
+TODO FIX
+
+*/
 public class PsCmd extends Cmd {
 
     public PsCmd() {
@@ -34,12 +25,15 @@ public class PsCmd extends Cmd {
 
     @Override
     public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+
+ /*       CommandRunner commandRunner = commandPool.getActiveRunners().get(0);
+
         List<CommandHistory> allRunning = new ArrayList<>();
         for (HokanModule module : HokanModule.values()) {
             long sessionId = propertyService.getPropertyAsLong(module.getModuleProperty(), -1);
             if (sessionId != -1) {
                 List<CommandHistory> running = commandHistoryService.findByHokanModuleAndSessionIdAndCommandStatus(module.toString(), sessionId, CommandStatus.RUNNING);
-                allRunning.addAll(running);
+               allRunning.addAll(running);
             }
         }
         if (allRunning.size() > 0) {
@@ -56,7 +50,7 @@ public class PsCmd extends Cmd {
                         cmd.getRunnable().replaceAll("class org.freakz.hokan_ng_springboot.bot.", ""));
             }
         }
-
+*/
     }
 
 }
