@@ -1,9 +1,6 @@
 package org.freakz.hokan_ng_springboot.bot.engine.command.handlers;
 
-import com.martiansoftware.jsap.FlaggedOption;
-import com.martiansoftware.jsap.JSAP;
-import com.martiansoftware.jsap.JSAPResult;
-import com.martiansoftware.jsap.UnflaggedOption;
+import com.martiansoftware.jsap.*;
 import org.freakz.hokan_ng_springboot.bot.common.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.common.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.common.events.ServiceRequestType;
@@ -19,8 +16,7 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 import java.util.List;
 
-import static org.freakz.hokan_ng_springboot.bot.common.util.StaticStrings.ARG_COUNT;
-import static org.freakz.hokan_ng_springboot.bot.common.util.StaticStrings.ARG_PLACE;
+import static org.freakz.hokan_ng_springboot.bot.common.util.StaticStrings.*;
 
 /**
  * User: petria
@@ -46,6 +42,10 @@ public class WeatherCmd extends Cmd {
                 .setShortFlag('c');
         registerParameter(flg);
 
+        Switch verbose = new Switch(ARG_VERBOSE)
+                .setShortFlag('v');
+        registerParameter(verbose);
+
         UnflaggedOption opt = new UnflaggedOption(ARG_PLACE)
                 .setDefault("Jyväskylä")
                 .setRequired(true)
@@ -54,10 +54,23 @@ public class WeatherCmd extends Cmd {
 
     }
 
+    private String formatWeather(KelikameratWeatherData d, boolean verbose) {
+        String template = "%s: %2.1f°C";
+        String placeFromUrl = d.getPlaceFromUrl();
+        placeFromUrl = placeFromUrl.substring(placeFromUrl.indexOf("_") + 1).replaceAll("_", " ");
+        String ret = String.format(template, placeFromUrl, d.getAir(), d.getRoad(), d.getGround());
+        if (verbose) {
+            ret += " [d.getUrl()]";
+        }
+        return ret;
+    }
+
+
     @Override
     public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
 
         String place = results.getString(ARG_PLACE).toLowerCase();
+        boolean verbose = results.getBoolean(ARG_VERBOSE);
 
         ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.WEATHER_REQUEST, request.getIrcEvent(), ".*");
         List<KelikameratWeatherData> data = serviceResponse.getWeatherResponse();
@@ -70,13 +83,13 @@ public class WeatherCmd extends Cmd {
 
         if (place.equals("minmax")) {
 
-            KelikameratWeatherData max = data.get(0);
-            KelikameratWeatherData min = data.get(data.size() - 1);
+            KelikameratWeatherData min = data.get(0);
+            KelikameratWeatherData max = data.get(data.size() - 1);
 
             sb.append("Min: ");
-            sb.append(StringStuff.formatWeather(min));
+            sb.append(formatWeather(min, verbose));
             sb.append(" Max: ");
-            sb.append(StringStuff.formatWeather(max));
+            sb.append(formatWeather(max, verbose));
 
         } else {
 
@@ -92,7 +105,7 @@ public class WeatherCmd extends Cmd {
                     if (xx != 0) {
                         sb.append(", ");
                     }
-                    sb.append(StringStuff.formatWeather(wd));
+                    sb.append(formatWeather(wd, verbose));
                     xx++;
                     if (xx > results.getInt(ARG_COUNT)) {
                         break;
