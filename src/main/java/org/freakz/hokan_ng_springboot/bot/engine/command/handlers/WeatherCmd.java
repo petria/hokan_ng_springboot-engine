@@ -60,7 +60,7 @@ public class WeatherCmd extends Cmd {
         placeFromUrl = placeFromUrl.substring(placeFromUrl.indexOf("_") + 1).replaceAll("_", " ");
         String ret = String.format(template, placeFromUrl, d.getAir(), d.getRoad(), d.getGround());
         if (verbose) {
-            ret += " [d.getUrl()]";
+            ret += " [" + d.getUrl() + "]";
         }
         return ret;
     }
