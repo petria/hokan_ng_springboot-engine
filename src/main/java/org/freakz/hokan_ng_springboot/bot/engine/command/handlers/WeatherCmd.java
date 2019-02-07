@@ -90,6 +90,16 @@ public class WeatherCmd extends Cmd {
             sb.append(formatWeather(min, verbose));
             sb.append(" Max: ");
             sb.append(formatWeather(max, verbose));
+        } else if (place.equals("avg")) {
+
+            float sum = 0.0f;
+            int count = 0;
+            for (KelikameratWeatherData node : data) {
+                sum = sum + node.getAir();
+                count++;
+            }
+            float avg = sum / count;
+            sb.append(String.format("%d weather stations, average temperature: %2.1f°C", count, avg));
 
         } else {
 
