@@ -6,6 +6,7 @@ import org.freakz.hokan_ng_springboot.bot.common.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.common.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.common.exception.HokanException;
 import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import static org.freakz.hokan_ng_springboot.bot.common.util.StaticStrings.ARG_TEXT;
 
@@ -13,7 +14,7 @@ import static org.freakz.hokan_ng_springboot.bot.common.util.StaticStrings.ARG_T
  * Created by Petri Airio on 15.1.2016.
  * -
  */
-//@Component
+@Component
 @Scope("prototype")
 
 public class TestCmd extends Cmd {
