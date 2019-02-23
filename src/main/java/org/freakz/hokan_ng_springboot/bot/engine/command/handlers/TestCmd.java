@@ -30,8 +30,7 @@ public class TestCmd extends Cmd {
     @Override
     public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
         String text = results.getString(ARG_TEXT);
-        //sendToUi(String.format("<%10s> %s: %s", request.getChannel().getChannelName(), request.getUser().getNick(), text));
-        response.addResponse("Sent: %s", text);
+        response.addResponse("Sedjdjddjdjdjdnt: %s", text);
     }
 
 }
