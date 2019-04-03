@@ -1,9 +1,6 @@
 package org.freakz.hokan_ng_springboot.bot.engine.command.handlers;
 
-import com.martiansoftware.jsap.FlaggedOption;
-import com.martiansoftware.jsap.JSAPResult;
-import com.martiansoftware.jsap.Switch;
-import com.martiansoftware.jsap.UnflaggedOption;
+import com.martiansoftware.jsap.*;
 import org.freakz.hokan_ng_springboot.bot.common.events.EngineResponse;
 import org.freakz.hokan_ng_springboot.bot.common.events.InternalRequest;
 import org.freakz.hokan_ng_springboot.bot.common.exception.HokanException;
@@ -14,14 +11,7 @@ import org.freakz.hokan_ng_springboot.bot.engine.command.annotation.HelpGroups;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import static org.freakz.hokan_ng_springboot.bot.common.util.StaticStrings.ARG_EMAIL;
-import static org.freakz.hokan_ng_springboot.bot.common.util.StaticStrings.ARG_FLAGS;
-import static org.freakz.hokan_ng_springboot.bot.common.util.StaticStrings.ARG_FULL_NAME;
-import static org.freakz.hokan_ng_springboot.bot.common.util.StaticStrings.ARG_JOIN_MSG;
-import static org.freakz.hokan_ng_springboot.bot.common.util.StaticStrings.ARG_MASK;
-import static org.freakz.hokan_ng_springboot.bot.common.util.StaticStrings.ARG_NICK;
-import static org.freakz.hokan_ng_springboot.bot.common.util.StaticStrings.ARG_PHONE;
-import static org.freakz.hokan_ng_springboot.bot.common.util.StaticStrings.ARG_VERBOSE;
+import static org.freakz.hokan_ng_springboot.bot.common.util.StaticStrings.*;
 
 /**
  * User: petria
@@ -52,11 +42,6 @@ public class UserModCmd extends Cmd {
                 .setShortFlag('e');
         registerParameter(flg);
 
-/*    flg = new FlaggedOption(ARG_FLAGS)
-        .setRequired(false)
-        .setLongFlag("flags")
-        .setShortFlag('f');
-    registerParameter(flg);*/
 
         flg = new FlaggedOption(ARG_FULL_NAME)
                 .setRequired(false)
@@ -82,6 +67,14 @@ public class UserModCmd extends Cmd {
                 .setShortFlag('p');
         registerParameter(flg);
 
+        flg = new FlaggedOption(ARG_TELEGRAM_ID)
+                .setStringParser(JSAP.INTEGER_PARSER)
+                .setDefault("0")
+                .setRequired(false)
+                .setLongFlag("telegram")
+                .setShortFlag('t');
+        registerParameter(flg);
+
         UnflaggedOption opt = new UnflaggedOption(ARG_NICK)
                 .setRequired(false)
                 .setGreedy(false);
@@ -99,6 +92,7 @@ public class UserModCmd extends Cmd {
         String fullName = results.getString(ARG_FULL_NAME);
         String joinMsg = results.getString(ARG_JOIN_MSG);
         String phone = results.getString(ARG_PHONE);
+        int telegramID = results.getInt(ARG_TELEGRAM_ID);
 
         User hUser;
         if (target.equals("me")) {
@@ -120,16 +114,17 @@ public class UserModCmd extends Cmd {
 
         String ret = "";
         boolean updateUserChannel = false;
+        int oldTelegramID = hUser.getTelegramID();
+        if (oldTelegramID != telegramID) {
+            hUser.setTelegramID(telegramID);
+            ret += "TgramID  : '" + oldTelegramID + "' -> '" + telegramID + "'\n";
+        }
         if (email != null) {
             String old = hUser.getEmail();
             hUser.setEmail(email);
             ret += "Email    : '" + old + "' -> '" + email + "'\n";
+
         }
-/*   TODO  if (flags != null) {
-      String old = hUser.getFlags();
-      hUser.setFlags(flags);
-      ret += "Flags    : '" + old + "' -> '" + flags + "'\n";
-    }*/
         if (fullName != null) {
             String old = hUser.getFullName();
             hUser.setFullName(fullName);

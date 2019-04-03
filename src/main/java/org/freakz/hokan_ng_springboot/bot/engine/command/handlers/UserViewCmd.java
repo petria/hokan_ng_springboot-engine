@@ -69,9 +69,10 @@ public class UserViewCmd extends Cmd {
         }
         ret += "=-\n";
 
-        ret += "SetMask  : " + hUser.getMask() + " (CurrentMask: " + hUser.getRealMask() + ")\n";
-        ret += "Flags    : " + hUser.getFlagsString() + "\n";
-        ret += "Channels :\n";
+        ret += "SetMask    : " + hUser.getMask() + " (CurrentMask: " + hUser.getRealMask() + ")\n";
+        ret += "Flags      : " + hUser.getFlagsString() + "\n";
+        ret += "TelegramID : " + hUser.getTelegramID() + "\n";
+        ret += "Channels   :\n";
 
         List<UserChannel> userChannels = userChannelService.findByUser(hUser);
         userChannels.sort(new Comparator<UserChannel>() {
