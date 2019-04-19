@@ -59,6 +59,9 @@ public abstract class Cmd implements HokanCommand, CommandRunnable {
     protected CommandPool commandPool;
 
     @Autowired
+    protected DataValuesService dataValuesService;
+
+    @Autowired
     protected JoinedUserService joinedUsersService;
 
     @Autowired
