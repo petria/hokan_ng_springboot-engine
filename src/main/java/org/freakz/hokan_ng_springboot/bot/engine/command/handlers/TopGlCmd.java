@@ -10,7 +10,6 @@ import org.freakz.hokan_ng_springboot.bot.engine.command.annotation.HelpGroups;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -20,13 +19,13 @@ import java.util.List;
  */
 @Component
 @HelpGroups(
-        helpGroups = {HelpGroup.SYSTEM}
+        helpGroups = {HelpGroup.DATA_COLLECTION}
 )
 @Scope("prototype")
 
-public class TopGluggaCmd extends Cmd {
+public class TopGlCmd extends Cmd {
 
-    public TopGluggaCmd() {
+    public TopGlCmd() {
         super();
         setHelp("Channel top gluggas.");
 
@@ -42,17 +41,21 @@ public class TopGluggaCmd extends Cmd {
         Comparator<? super DataValuesModel> comparator = (Comparator<DataValuesModel>) (o1, o2) -> {
             Integer i1 = Integer.parseInt(o1.getValue());
             Integer i2 = Integer.parseInt(o2.getValue());
-            return i1.compareTo(i2);
+            return i2.compareTo(i1);
         };
-        Collections.sort(dataValues, comparator);
+        dataValues.sort(comparator);
         int c = 1;
-        StringBuilder sb = new StringBuilder("Top *glugga*: ");
+        StringBuilder sb = new StringBuilder("Top gluggers: ");
         for (DataValuesModel value : dataValues) {
             sb.append(c).append(": ");
             sb.append(value.getNick());
             sb.append("=");
             sb.append(value.getValue());
             sb.append(" ");
+            c++;
+            if (c == 11) {
+                break;
+            }
         }
         response.addResponse(sb.toString());
     }
