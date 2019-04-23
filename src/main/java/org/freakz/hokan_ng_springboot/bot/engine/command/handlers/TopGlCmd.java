@@ -58,7 +58,7 @@ public class TopGlCmd extends Cmd {
         };
         dataValues.sort(comparator);
         int c = 1;
-        StringBuilder sb = new StringBuilder("Top *gluggers*: ");
+        StringBuilder sb = new StringBuilder("Top " + channel + " *gluggers*: ");
         for (DataValuesModel value : dataValues) {
             sb.append(c).append(") ");
             sb.append(value.getNick());
