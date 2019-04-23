@@ -15,6 +15,7 @@ public enum HelpGroup {
     CHANNELS("Channels", ""),
     DATA_COLLECTION("Data collection", ""),
     DATA_FETCHERS("Data fetchers", ""),
+    GLUGGA("GLUGGA", ""),
     HELP("Help", ""),
     LOGS("Logs", ""),
     LUNCH("Lunch", "Lunch menu fetchers"),
