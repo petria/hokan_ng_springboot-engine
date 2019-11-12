@@ -25,7 +25,6 @@ import static org.freakz.hokan_ng_springboot.bot.common.util.StaticStrings.ARG_N
  * @author Petri Airio <petri.j.airio@gmail.com>
  */
 @Component
-
 @Scope("prototype")
 @HelpGroups(
         helpGroups = {HelpGroup.USERS}
