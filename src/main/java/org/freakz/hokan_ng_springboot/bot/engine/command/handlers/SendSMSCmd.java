@@ -45,10 +45,10 @@ public class SendSMSCmd extends Cmd {
         User hUser;
         hUser = userService.findFirstByNick(nick);
         if (hUser == null) {
-            response.addResponse("User not found: %s", nick);
+            response.addResponse("Unknown nick: %s", nick);
             return;
         }
-        if (hUser.getPhone() == null) {
+        if (hUser.getPhone() == null || hUser.getPhone().isEmpty()) {
             response.addResponse("User phone number not set");
             return;
         }
