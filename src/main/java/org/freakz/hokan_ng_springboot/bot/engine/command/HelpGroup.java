@@ -22,6 +22,7 @@ public enum HelpGroup {
     NETWORK("Network", ""),
     PROCESS("Process", ""),
     PROPERTIES("Properties", ""),
+    SMS("SMS", "SMS text message sender"),
     SYSTEM("System", ""),
     UPDATERS("Updaters", ""),
     USERS("Users", ""),

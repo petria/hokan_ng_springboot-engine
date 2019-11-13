@@ -18,9 +18,9 @@ import static org.freakz.hokan_ng_springboot.bot.common.util.StaticStrings.ARG_N
 @HelpGroups(
         helpGroups = {HelpGroup.SYSTEM}
 )
-public class SendSMSCmd extends Cmd {
+public class SMSSendCmd extends Cmd {
 
-    public SendSMSCmd() {
+    public SMSSendCmd() {
         setHelp("Sends SMS message if there is enough credits left!");
 
         UnflaggedOption unflaggedOption = new UnflaggedOption(ARG_NICK)
@@ -56,7 +56,7 @@ public class SendSMSCmd extends Cmd {
         smsRequest.setTarget(hUser.getPhone());
         smsRequest.setMessage(message);
 
-        ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.SEND_SMS_SERVICE_REQUEST, request.getIrcEvent(), smsRequest);
+        ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.SMS_SEND_SERVICE_REQUEST, request.getIrcEvent(), smsRequest);
         String answer = serviceResponse.getSendSMSResponse();
         response.addResponse("Send SMS answer: %s", answer);
 
