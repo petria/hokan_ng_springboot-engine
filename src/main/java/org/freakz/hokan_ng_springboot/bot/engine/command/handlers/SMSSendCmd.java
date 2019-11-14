@@ -49,7 +49,7 @@ public class SMSSendCmd extends Cmd {
             return;
         }
         if (hUser.getPhone() == null || hUser.getPhone().isEmpty()) {
-            response.addResponse("User phone number not set");
+            response.addResponse("User %s phone number not set", hUser.getNick());
             return;
         }
         SendSMSRequest smsRequest = new SendSMSRequest();
