@@ -16,7 +16,7 @@ import static org.freakz.hokan_ng_springboot.bot.common.util.StaticStrings.ARG_N
 @Component
 @Scope("prototype")
 @HelpGroups(
-        helpGroups = {HelpGroup.SYSTEM}
+        helpGroups = {HelpGroup.SMS}
 )
 public class SMSSendCmd extends Cmd {
 
@@ -57,8 +57,12 @@ public class SMSSendCmd extends Cmd {
         smsRequest.setMessage(message);
 
         ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.SMS_SEND_SERVICE_REQUEST, request.getIrcEvent(), smsRequest);
-        String answer = serviceResponse.getSendSMSResponse();
-        response.addResponse("Send SMS answer: %s", answer);
+        SendSMSResponse answer = serviceResponse.getSendSMSResponse();
+        if (answer.getStatus().equals("OK")) {
+            response.addResponse("SMS sent cost: %s€, credits left: %s€", answer.getCost(), answer.getCredits());
+        } else {
+            response.addResponse("SMS sent failed: %s %s", answer.getErrorCode(), answer.getErrorReason());
+        }
 
     }
 }

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("prototype")
 @HelpGroups(
-        helpGroups = {HelpGroup.SYSTEM}
+        helpGroups = {HelpGroup.SMS}
 )
 public class SMSCreditsCmd extends Cmd {
 
