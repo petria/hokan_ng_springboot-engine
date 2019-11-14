@@ -33,7 +33,7 @@ public class SMSSendCmd extends Cmd {
                 .setGreedy(false);
         registerParameter(unflaggedOption);
 
-        setChannelOnly(true);
+//        setChannelOnly(true);
         setChannelOpOnly(true);
 
     }
