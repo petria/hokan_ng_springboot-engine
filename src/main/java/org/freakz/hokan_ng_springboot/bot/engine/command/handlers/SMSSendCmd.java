@@ -33,8 +33,8 @@ public class SMSSendCmd extends Cmd {
                 .setGreedy(false);
         registerParameter(unflaggedOption);
 
-        setChannelOnly(true);
-        setChannelOpOnly(true);
+        //setChannelOnly(true);
+//        setChannelOpOnly(true);
 
     }
 
@@ -42,6 +42,15 @@ public class SMSSendCmd extends Cmd {
     public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
         String nick = results.getString(ARG_NICK);
         String message = results.getString(ARG_MESSAGE);
+        if (!accessControlService.isAdminUser(request.getUser())) {
+            if (request.getUser().getPhone() == null || request.getUser().getPhone().isEmpty()) {
+                response.setReplyTo(request.getUser().getNick());
+                response.addResponse("Before sending SMS your own number must be set. Use command: !usermod -v -p <num> to do it!\n");
+                return;
+            }
+        }
+
+
         User hUser;
         hUser = userService.findFirstByNick(nick);
         if (hUser == null) {
@@ -49,7 +58,7 @@ public class SMSSendCmd extends Cmd {
             return;
         }
         if (hUser.getPhone() == null || hUser.getPhone().isEmpty()) {
-            response.addResponse("User phone number not set");
+            response.addResponse("User %s phone number not set", hUser.getNick());
             return;
         }
         SendSMSRequest smsRequest = new SendSMSRequest();
