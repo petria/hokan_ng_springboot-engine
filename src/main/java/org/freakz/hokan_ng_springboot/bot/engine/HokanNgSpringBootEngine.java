@@ -19,8 +19,6 @@ import java.util.Map;
 @EnableAutoConfiguration
 @EnableJms
 @ComponentScan({"org.freakz.hokan_ng_springboot.bot"})
-//@EnableGlobalMethodSecurity(prePostEnabled = true, proxyTargetClass = true, securedEnabled = true)
-
 public class HokanNgSpringBootEngine {
 
     private static final Logger log = LoggerFactory.getLogger(HokanNgSpringBootEngine.class);
