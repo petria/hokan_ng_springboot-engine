@@ -34,8 +34,8 @@ public class KoronaCmd extends Cmd {
     private Integer[] extractNumbers(String title) {
         String[] split = title.split(" ");
         Integer infected = Integer.parseInt(split[6]);
-        Integer healed = Integer.parseInt(split[9]);
-        Integer dead = Integer.parseInt(split[12]);
+        Integer healed = Integer.parseInt(split[10]);
+        Integer dead = Integer.parseInt(split[13]);
         Integer[] diffs = {0, 0, 0, 0, 0, 0};
 
         if (infected > valueMap.get("infected")) {
