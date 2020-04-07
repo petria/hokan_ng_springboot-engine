@@ -50,10 +50,11 @@ public class KoronaCmd extends Cmd {
         Integer[] n = serviceResponse.getKoronas();
         if (n != null) {
             String res =
-                    String.format("Suomen koronavirus-tartuntatilanne - Tartunnat : %d (+%d) - Parantuneet: %d (+%d) - Menehtyneet: %d (+%d)",
-                            n[0], n[3],
-                            n[1], n[4],
-                            n[2], n[5]
+                    String.format("Korona update - Dead : %d (+%d) - InIcu: %d (+%d) - InWard: %d (+%d) - Total: %d (+%d)",
+                            n[0], n[4],
+                            n[1], n[5],
+                            n[2], n[6],
+                            n[3], n[7]
                     );
             response.addResponse("%s", res);
         } else {
