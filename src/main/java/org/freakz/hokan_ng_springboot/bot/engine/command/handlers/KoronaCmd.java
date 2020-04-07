@@ -50,7 +50,7 @@ public class KoronaCmd extends Cmd {
         Integer[] n = serviceResponse.getKoronas();
         if (n != null) {
             String res =
-                    String.format("Korona update - Dead : %d (+%d) - InIcu: %d (+%d) - InWard: %d (+%d) - Total: %d (+%d)",
+                    String.format("Korona update - Dead : %d (+%d) - InIcu: %d (+%d) - InWard: %d (+%d) - Total hospitalised: %d (+%d)",
                             n[0], n[4],
                             n[1], n[5],
                             n[2], n[6],
