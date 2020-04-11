@@ -25,7 +25,7 @@ public class SMSCreditsCmd extends Cmd {
     @Override
     public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
 
-        ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.SMS_CREDIT_SERVICE_REQUEST, request.getIrcEvent(), null);
+        ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.SMS_CREDIT_SERVICE_REQUEST, request.getIrcEvent(), (Object[]) null);
         String answer = serviceResponse.getSendSMSCreditResponse();
         if (answer != null) {
             response.addResponse("SMS credits: %s", answer);

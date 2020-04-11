@@ -33,12 +33,6 @@ public class MetarCmd extends Cmd {
 
     }
 
-/*  @Override
-  public String getMatchPattern() {
-    return "!metar.*";
-  }*/
-
-
     @Override
     public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
         String station = results.getString(ARG_STATION);
