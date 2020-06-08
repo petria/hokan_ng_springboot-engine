@@ -456,7 +456,6 @@ public abstract class Cmd implements HokanCommand, CommandRunnable {
             log.error("jms", e);
         }
         return new ServiceResponse(requestType);
-
     }
 
 }

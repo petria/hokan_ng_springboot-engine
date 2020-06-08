@@ -34,7 +34,7 @@ public class WeatherTerassiCmd extends Cmd {
     public WeatherTerassiCmd() {
 
         UnflaggedOption opt = new UnflaggedOption(ARG_PLACE)
-                .setDefault("Jyväskylä")
+          .setDefault("Oulu")
                 .setRequired(true)
                 .setGreedy(false);
         registerParameter(opt);
@@ -82,8 +82,8 @@ public class WeatherTerassiCmd extends Cmd {
 
         for (String city : cityData.getResolvedCityNames()) {
 
-            ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.ILMATIETEENLAITOS_HOURLY_REQUEST, request.getIrcEvent(), city);
-            HourlyWeatherData hourlyWeatherData = serviceResponse.getHourlyWeatherData();
+          ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.FORECA_WEATHER_HOURLY_REQUEST, request.getIrcEvent(), city);
+          HourlyWeatherData hourlyWeatherData = serviceResponse.getHourlyWeatherData();
             if (hourlyWeatherData.getTimes() != null) {
                 MinMax mm = getOptimalHours(hourlyWeatherData);
                 StringBuilder sb = new StringBuilder();

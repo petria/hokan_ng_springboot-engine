@@ -52,8 +52,8 @@ public class WeatherHourlyCmd extends Cmd {
 
         for (String city : cityData.getResolvedCityNames()) {
 
-            ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.ILMATIETEENLAITOS_HOURLY_REQUEST, request.getIrcEvent(), city);
-            HourlyWeatherData hourlyWeatherData = serviceResponse.getHourlyWeatherData();
+            ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.FORECA_WEATHER_HOURLY_REQUEST, request.getIrcEvent(), city);
+          HourlyWeatherData hourlyWeatherData = serviceResponse.getHourlyWeatherData();
 
             if (hourlyWeatherData != null && hourlyWeatherData.getTimes() != null) {
                 StringBuilder sb = new StringBuilder();
