@@ -82,7 +82,7 @@ public class WeatherTerassiCmd extends Cmd {
 
         for (String city : cityData.getResolvedCityNames()) {
 
-          ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.FORECA_WEATHER_HOURLY_REQUEST, request.getIrcEvent(), city);
+          ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.ILMATIETEENLAITOS_HOURLY_REQUEST, request.getIrcEvent(), city);
           HourlyWeatherData hourlyWeatherData = serviceResponse.getHourlyWeatherData();
             if (hourlyWeatherData.getTimes() != null) {
                 MinMax mm = getOptimalHours(hourlyWeatherData);

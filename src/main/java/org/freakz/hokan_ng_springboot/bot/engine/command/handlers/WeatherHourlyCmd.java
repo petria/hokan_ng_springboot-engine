@@ -20,72 +20,71 @@ import static org.freakz.hokan_ng_springboot.bot.common.util.StaticStrings.ARG_P
 
 /**
  * Created by Petri Airio on 11.8.2016.
- *
  */
 @Component
 @Scope("prototype")
 @HelpGroups(
-        helpGroups = {HelpGroup.DATA_FETCHERS}
+  helpGroups = {HelpGroup.DATA_FETCHERS}
 )
 public class WeatherHourlyCmd extends Cmd {
 
-    @Autowired
-    private CityResolver cityResolver;
+  @Autowired
+  private CityResolver cityResolver;
 
-    public WeatherHourlyCmd() {
+  public WeatherHourlyCmd() {
 
-        UnflaggedOption opt = new UnflaggedOption(ARG_PLACE)
-                .setDefault("Oulu")
-                .setRequired(true)
-                .setGreedy(false);
-        registerParameter(opt);
+    UnflaggedOption opt = new UnflaggedOption(ARG_PLACE)
+      .setDefault("Oulu")
+      .setRequired(true)
+      .setGreedy(false);
+    registerParameter(opt);
 
-        setHelp("Queries weather from http://alk.tiehallinto.fi/alk/tiesaa/");
+    setHelp("Queries weather from http://alk.tiehallinto.fi/alk/tiesaa/");
 
 
-    }
+  }
 
-    @Override
-    public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-        String place = results.getString(ARG_PLACE).toLowerCase();
-        CityData cityData = cityResolver.resolveCityNames(place);
+  @Override
+  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+    String place = results.getString(ARG_PLACE).toLowerCase();
+    CityData cityData = cityResolver.resolveCityNames(place);
 
-        for (String city : cityData.getResolvedCityNames()) {
+    for (String city : cityData.getResolvedCityNames()) {
 
-            ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.FORECA_WEATHER_HOURLY_REQUEST, request.getIrcEvent(), city);
-          HourlyWeatherData hourlyWeatherData = serviceResponse.getHourlyWeatherData();
+      ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.ILMATIETEENLAITOS_HOURLY_REQUEST, request.getIrcEvent(), city);
+      HourlyWeatherData hourlyWeatherData = serviceResponse.getHourlyWeatherData();
 
-            if (hourlyWeatherData != null && hourlyWeatherData.getTimes() != null) {
-                StringBuilder sb = new StringBuilder();
-                sb.append("Hourly forecast: ");
-                sb.append(city);
-                sb.append("\n");
-                String hours = "";
-                String temps = "";
-                String format = getFormat(hourlyWeatherData.getLongestTemp());
-                for (int i = 0; i < hourlyWeatherData.getTimes().length; i++) {
-                    hours += String.format(format, hourlyWeatherData.getTimes()[i]);
-                    temps += String.format(format, hourlyWeatherData.getTemperatures()[i]);
-                }
-                sb.append(hours);
-                sb.append("\n");
-                sb.append(temps);
-                sb.append("\n");
-                response.addResponse("%s", sb.toString());
-
-            } else {
-
-                response.addResponse("Nothing found: %s, use whole city names!", place);
-
-            }
+      if (hourlyWeatherData != null && hourlyWeatherData.getTimes() != null) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Hourly forecast: ");
+        sb.append(city);
+        sb.append("\n");
+        String hours = "";
+        String temps = "";
+        String format = getFormat(hourlyWeatherData.getLongestTemp());
+        for (int i = 0; i < hourlyWeatherData.getTimes().length; i++) {
+          hours += String.format(format, hourlyWeatherData.getTimes()[i]);
+          temps += String.format(format, hourlyWeatherData.getTemperatures()[i]);
         }
+        sb.append(hours);
+        sb.append("\n");
+        sb.append(temps);
+        sb.append("\n");
+        response.addResponse("%s", sb.toString());
 
+      } else {
+
+        response.addResponse("Nothing found: %s!!", place);
+
+      }
     }
 
-    private String getFormat(int longestTemp) {
-        String format = "%" + (longestTemp + 1) + "s";
-        return format;
-    }
+  }
+
+  private String getFormat(int longestTemp) {
+    String format = "%" + (longestTemp + 1) + "s";
+    return format;
+  }
 
 
 }

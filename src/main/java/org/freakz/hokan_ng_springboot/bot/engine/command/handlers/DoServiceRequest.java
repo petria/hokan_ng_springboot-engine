@@ -18,7 +18,7 @@ public class DoServiceRequest<T> {
 
     public T doServicesRequest(ServiceRequestType requestType, IrcMessageEvent ircEvent, Object... parameters) throws HokanException {
         ServiceRequest request = new ServiceRequest(requestType, ircEvent, new CommandArgs(ircEvent.getMessage()), parameters);
-        ObjectMessage objectMessage = BeanUtil.getBean(JmsSender.class).sendAndGetReply(HokanModule.HokanServices.getQueueName(), "SERVICE_REQUEST2", request, false);
+      ObjectMessage objectMessage = BeanUtil.getBean(JmsSender.class).sendAndGetReply(HokanModule.HokanServices.getQueueName(), "SERVICE_REQUEST", request, false);
         if (objectMessage == null) {
             throw new HokanException("ServiceResponse null, is Services module running?");
         }
