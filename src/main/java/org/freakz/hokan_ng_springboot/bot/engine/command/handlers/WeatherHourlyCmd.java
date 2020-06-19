@@ -39,7 +39,7 @@ public class WeatherHourlyCmd extends Cmd {
     UnflaggedOption opt = new UnflaggedOption(ARG_PLACE)
       .setDefault("Oulu")
       .setRequired(true)
-      .setGreedy(false);
+      .setGreedy(true);
     registerParameter(opt);
 
     setHelp("Queries weather from http://alk.tiehallinto.fi/alk/tiesaa/");
@@ -50,7 +50,8 @@ public class WeatherHourlyCmd extends Cmd {
   @Override
   public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
     String place = results.getString(ARG_PLACE).toLowerCase();
-    CityData cityData = cityResolver.resolveCityNames(place);
+    String[] args = results.getStringArray(ARG_PLACE);
+    CityData cityData = cityResolver.resolveCityNames(args);
 
     List<String> hoursL = new ArrayList<>();
     List<String> tempsL = new ArrayList<>();
