@@ -113,7 +113,7 @@ public class WeatherHourlyCmd extends Cmd {
           if (hourss == null) {
             hourss = hours;
           }
-          tempss = temps + "\n";
+          tempss += temps + "\n";
 
         }
         String resp = "Hourly forecast: " + cities + "\n";
