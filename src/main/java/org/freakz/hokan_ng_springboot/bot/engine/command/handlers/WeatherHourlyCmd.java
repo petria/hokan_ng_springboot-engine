@@ -41,10 +41,7 @@ public class WeatherHourlyCmd extends Cmd {
       .setRequired(true)
       .setGreedy(true);
     registerParameter(opt);
-
-    setHelp("Queries weather from http://alk.tiehallinto.fi/alk/tiesaa/");
-
-
+    setHelp("Queries weather from https://www.ilmatieteenlaitos.fi/saa/");
   }
 
   @Override
