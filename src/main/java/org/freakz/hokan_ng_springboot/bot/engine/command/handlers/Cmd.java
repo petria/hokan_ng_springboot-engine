@@ -275,7 +275,7 @@ public abstract class Cmd implements HokanCommand, CommandRunnable {
             }
 
             if (!parseRes) {
-                response.setResponseMessage("Invalid arguments, usage: " + getName() + " " + jsap.getUsage());
+                response.setResponseMessage(getUsage());
                 sendReply(response, request.getJmsEnvelope());
             } else {
 
@@ -286,6 +286,10 @@ public abstract class Cmd implements HokanCommand, CommandRunnable {
                 commandPool.startRunnable(this, request.getUser().getNick(), wrapper);
             }
         }
+    }
+
+    public String getUsage() {
+        return String.format("Invalid arguments, usage: %s %s", getName(), jsap.getUsage());
     }
 
     public String getHelpWikiUrl() {
