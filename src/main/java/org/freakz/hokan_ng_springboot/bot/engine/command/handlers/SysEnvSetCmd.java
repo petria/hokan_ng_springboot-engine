@@ -54,7 +54,11 @@ public class SysEnvSetCmd extends Cmd {
         if (property == null) {
             property = new PropertyEntity(propertyNameList.get(0), split[1], "");
         } else {
-            property.setValue(split[1]);
+            if (split[1].equals("''")) {
+                property.setValue(null);
+            } else {
+                property.setValue(split[1]);
+            }
         }
         propertyService.save(property);
         response.addResponse("System property set: [%d] %s=%s", property.getId(), property.getPropertyName(), property.getValue());
