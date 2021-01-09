@@ -27,100 +27,114 @@ import static org.freakz.hokan_ng_springboot.bot.common.util.StaticStrings.ARG_P
 @Component
 @Scope("prototype")
 @HelpGroups(
-  helpGroups = {HelpGroup.DATA_FETCHERS}
+        helpGroups = {HelpGroup.DATA_FETCHERS}
 )
 public class WeatherHourlyCmd extends Cmd {
 
-  @Autowired
-  private CityResolver cityResolver;
+    @Autowired
+    private CityResolver cityResolver;
 
-  public WeatherHourlyCmd() {
+    public WeatherHourlyCmd() {
 
-    UnflaggedOption opt = new UnflaggedOption(ARG_PLACE)
-      .setDefault("Oulu")
-      .setRequired(true)
-      .setGreedy(true);
-    registerParameter(opt);
-    setHelp("Queries weather from https://www.ilmatieteenlaitos.fi/saa/");
-  }
-
-  @Override
-  public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-    String place = results.getString(ARG_PLACE).toLowerCase();
-    String[] args = results.getStringArray(ARG_PLACE);
-    CityData cityData = cityResolver.resolveCityNames(args);
-
-    List<String> hoursL = new ArrayList<>();
-    List<String> tempsL = new ArrayList<>();
-
-    List<HourlyWeatherData> datas = new ArrayList<>();
-    for (String city : cityData.getResolvedCityNames()) {
-
-      ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.ILMATIETEENLAITOS_HOURLY_REQUEST, request.getIrcEvent(), city);
-      HourlyWeatherData hourlyWeatherData = serviceResponse.getHourlyWeatherData();
-      if (hourlyWeatherData != null && hourlyWeatherData.getTimes() != null) {
-        datas.add(hourlyWeatherData);
-      }
+        UnflaggedOption opt = new UnflaggedOption(ARG_PLACE)
+                .setDefault("Oulu")
+                .setRequired(true)
+                .setGreedy(true);
+        registerParameter(opt);
+        setHelp("Queries weather from https://www.ilmatieteenlaitos.fi/saa/");
     }
 
-    if (datas.size() == 0) {
-      response.addResponse("Nothing found: %s!!", place);
-    } else {
-      if (datas.size() == 1) {
-        String city = cityData.getResolvedCityNames().get(0);
-        HourlyWeatherData hourlyWeatherData = datas.get(0);
-        StringBuilder sb = new StringBuilder();
-        sb.append("Hourly forecast: ");
-        sb.append(city);
-        sb.append("\n");
-        String hours = "";
-        String temps = "";
-        String format = getFormat(hourlyWeatherData.getLongestTemp());
-        for (int i = 0; i < hourlyWeatherData.getTimes().length; i++) {
-          hours += String.format(format, hourlyWeatherData.getTimes()[i]);
-          temps += String.format(format, hourlyWeatherData.getTemperatures()[i]);
+    @Override
+    public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
+        String place = results.getString(ARG_PLACE).toLowerCase();
+        String[] args = results.getStringArray(ARG_PLACE);
+        boolean matchOnlyOne = false;
+        if (args.length == 1) {
+            if (place.startsWith("=")) {
+                place = place.substring(1);
+                args[0] = place;
+                matchOnlyOne = true;
+            }
         }
-        hoursL.add(hours);
-        tempsL.add(temps);
 
-        sb.append(hours);
-        sb.append("\n");
-        sb.append(temps);
-        sb.append("\n");
-        response.addResponse("%s", sb.toString());
+        CityData cityData = cityResolver.resolveCityNames(args);
 
-      } else {
-        String cities = "";
-        String tempss = "";
-        String hourss = null;
-        for (int i = 0; i < datas.size(); i++) {
-          if (i > 0) {
-            cities += ", ";
-          }
-          cities += cityData.getResolvedCityNames().get(i);
+        List<String> hoursL = new ArrayList<>();
+        List<String> tempsL = new ArrayList<>();
 
-          HourlyWeatherData hourlyWeatherData = datas.get(i);
-          String hours = "";
-          String temps = "";
+        List<HourlyWeatherData> datas = new ArrayList<>();
+        for (String city : cityData.getResolvedCityNames()) {
+            if (matchOnlyOne) {
+                if (!city.equalsIgnoreCase(place)) {
+                    continue;
+                }
+            }
 
-          String format = getFormat(hourlyWeatherData.getLongestTemp());
-          for (int i2 = 0; i2 < hourlyWeatherData.getTimes().length; i2++) {
-            hours += String.format(format, hourlyWeatherData.getTimes()[i2]);
-            temps += String.format(format, hourlyWeatherData.getTemperatures()[i2]);
-          }
-          if (hourss == null) {
-            hourss = hours;
-          }
-          tempss += temps + "\n";
-
+            ServiceResponse serviceResponse = doServicesRequest(ServiceRequestType.ILMATIETEENLAITOS_HOURLY_REQUEST, request.getIrcEvent(), city);
+            HourlyWeatherData hourlyWeatherData = serviceResponse.getHourlyWeatherData();
+            if (hourlyWeatherData != null && hourlyWeatherData.getTimes() != null) {
+                datas.add(hourlyWeatherData);
+            }
         }
-        String resp = "Hourly forecast: " + cities + "\n";
-        resp += hourss + "\n";
-        resp += tempss + "\n";
 
-        response.addResponse(resp);
-      }
-    }
+        if (datas.size() == 0) {
+            response.addResponse("Nothing found: %s!!", place);
+        } else {
+            if (datas.size() == 1) {
+                String city = cityData.getResolvedCityNames().get(0);
+                HourlyWeatherData hourlyWeatherData = datas.get(0);
+                StringBuilder sb = new StringBuilder();
+                sb.append("Hourly forecast: ");
+                sb.append(city);
+                sb.append("\n");
+                String hours = "";
+                String temps = "";
+                String format = getFormat(hourlyWeatherData.getLongestTemp());
+                for (int i = 0; i < hourlyWeatherData.getTimes().length; i++) {
+                    hours += String.format(format, hourlyWeatherData.getTimes()[i]);
+                    temps += String.format(format, hourlyWeatherData.getTemperatures()[i]);
+                }
+                hoursL.add(hours);
+                tempsL.add(temps);
+
+                sb.append(hours);
+                sb.append("\n");
+                sb.append(temps);
+                sb.append("\n");
+                response.addResponse("%s", sb.toString());
+
+            } else {
+                String cities = "";
+                String tempss = "";
+                String hourss = null;
+                for (int i = 0; i < datas.size(); i++) {
+                    if (i > 0) {
+                        cities += ", ";
+                    }
+                    cities += cityData.getResolvedCityNames().get(i);
+
+                    HourlyWeatherData hourlyWeatherData = datas.get(i);
+                    String hours = "";
+                    String temps = "";
+
+                    String format = getFormat(hourlyWeatherData.getLongestTemp());
+                    for (int i2 = 0; i2 < hourlyWeatherData.getTimes().length; i2++) {
+                        hours += String.format(format, hourlyWeatherData.getTimes()[i2]);
+                        temps += String.format(format, hourlyWeatherData.getTemperatures()[i2]);
+                    }
+                    if (hourss == null) {
+                        hourss = hours;
+                    }
+                    tempss += temps + "\n";
+
+                }
+                String resp = "Hourly forecast: " + cities + "\n";
+                resp += hourss + "\n";
+                resp += tempss + "\n";
+
+                response.addResponse(resp);
+            }
+        }
 
 
 /*
@@ -161,12 +175,12 @@ public class WeatherHourlyCmd extends Cmd {
 
     }
 */
-  }
+    }
 
-  private String getFormat(int longestTemp) {
-    String format = "%" + (longestTemp + 1) + "s";
-    return format;
-  }
+    private String getFormat(int longestTemp) {
+        String format = "%" + (longestTemp + 1) + "s";
+        return format;
+    }
 
 
 }
