@@ -47,7 +47,7 @@ public class WeatherCmd extends Cmd {
         registerParameter(verbose);
 
         UnflaggedOption opt = new UnflaggedOption(ARG_PLACE)
-                .setDefault("Jyväskylä")
+                .setDefault("Oulu")
                 .setRequired(true)
                 .setGreedy(false);
         registerParameter(opt);
