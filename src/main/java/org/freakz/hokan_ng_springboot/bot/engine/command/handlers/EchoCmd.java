@@ -23,7 +23,13 @@ public class EchoCmd extends Cmd {
 
     @Override
     public void handleRequest(InternalRequest request, EngineResponse response, JSAPResult results) throws HokanException {
-        response.addResponse("%s", request.getIrcEvent().getMessage());
+        String msg = request.getIrcEvent().getMessage();
+        int idx = msg.indexOf(" ");
+        if (idx != -1) {
+            response.addResponse("%s", msg.substring(idx));
+        } else {
+            response.addResponse("%s", "Kiekuuko kaiku, kuuntelen!");
+        }
     }
 
 }
