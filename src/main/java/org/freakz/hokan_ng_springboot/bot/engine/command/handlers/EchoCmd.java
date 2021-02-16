@@ -26,7 +26,7 @@ public class EchoCmd extends Cmd {
         String msg = request.getIrcEvent().getMessage();
         int idx = msg.indexOf(" ");
         if (idx != -1) {
-            response.addResponse("%s", msg.substring(idx));
+            response.addResponse("%s", msg.substring(idx + 1));
         } else {
             response.addResponse("%s", "Kiekuuko kaiku, kuuntelen!");
         }
